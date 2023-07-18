@@ -467,7 +467,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </clipPath>
                         </defs>
                         </svg>
-                        <div>History</div> 
+                        <div>Chat History</div> 
                       </NavLink>
                     </li>
                     :""}
