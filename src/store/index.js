@@ -4,6 +4,7 @@ import usersSlice from './slice/usersSlice';
 import clientsSlice from './slice/clientsSlice';
 import jobsSlice from './slice/jobsSlice';
 import chatSlice from './slice/chatSlice';
+import historySlice from './slice/historySlice';
 import invoiceSlice from './slice/invoiceSlice';
 import quotationSlice from './slice/quotationSlice';
 import notificationSlice from './slice/notificationSlice';
@@ -19,6 +20,7 @@ export default configureStore({
         invoice: invoiceSlice,
         quotation: quotationSlice,
         notification: notificationSlice,
-        setting: settingSlice
+        setting: settingSlice,
+        history: historySlice,
     }
 })

@@ -22,16 +22,15 @@ const InvoiceModal = ({ open, setOpen, handleSend }) => {
     }, [open])
 
     useEffect(() => {
-        console.log(currentInvoice);
         if (!isEmpty(currentInvoice)) {
             setName(currentInvoice.client_name);
             setEmail(currentInvoice.client_email);
             setInvoice(currentInvoice.invoice_number);
             setContent(`
-Dear ${currentInvoice.client_name},
-Please check our quotation offer on {QUOTE_LINK} 
-Hope to hear back soon from you.
-Best Regards, Pmarket.
+                Dear ${currentInvoice.client_name},
+                Please check our quotation offer on {QUOTE_LINK} 
+                Hope to hear back soon from you.
+                Best Regards, Pmarket.
             `);
         }
     }, [currentInvoice])

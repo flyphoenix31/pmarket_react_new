@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { isEmpty, serverURL, toastr } from '../../config';
 import { setUser } from "./authSlice";
-import store from "..";
+import store from "../index";
 
 const initialState = {
     invoiceList: [],
@@ -13,7 +13,31 @@ const initialState = {
     previewInvoice: {},
     previewType: ''
 }
+export const updateImg = createAsyncThunk(
+    'invoice/updateImg',
+    async (param) => {
+        try {
+            console.log("param", param)
+            const res = await axios.post(serverURL + '/api/invoice/updateimg', param, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            const data = await res.data;
+            if (data.status) {
+                if (!isEmpty(data.message))
+                    toastr.warning(data.message);
+                return []
+            }
+            else 
+                toastr.success('Successfully updated');
+            return data.list;
 
+        } catch (error) {
+            console.log(error);
+            // store.dispatch(setUser({}));
+            return [];
+        }
+    }
+)
 export const sendQuotation = createAsyncThunk(
     'invoice/sendQuotation',
     async (param) => {

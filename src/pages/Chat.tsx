@@ -8,53 +8,7 @@ import { serverURL, isEmpty } from '../config';
 import { setContactList, getMessageList } from '../utils';
 import { sendMessage } from '../store/slice/chatSlice';
 
-// const chatList = [
-//     {
-//         description: 'I want to make an appointment tomorrow from 2:00 to 5:00pm?',
-//         time: '1:55pm',
-//         from: 'Andri Thomas'
-//     },
-//     {
-//         description: 'Hello, Thomas! I will check the schedule and inform you',
-//         time: '1:55pm',
-//         from: 'me'
-//     },
-//     {
-//         description: 'Ok, Thanks for your reply.',
-//         time: '1:55pm',
-//         from: 'Andri Thomas'
-//     },
-//     {
-//         description: 'I want to make an appointment tomorrow from 2:00 to 5:00pm?',
-//         time: '1:55pm',
-//         from: 'me'
-//     },
-//     {
-//         description: 'Hello, Thomas! I will check the schedule and inform you',
-//         time: '1:55pm',
-//         from: 'Andri Thomas'
-//     },
-//     {
-//         description: 'Ok, Thanks for your reply.',
-//         time: '1:55pm',
-//         from: 'me'
-//     },
-//     {
-//         description: 'I want to make an appointment tomorrow from 2:00 to 5:00pm?',
-//         time: '1:55pm',
-//         from: 'Andri Thomas'
-//     },
-//     {
-//         description: 'Hello, Thomas! I will check the schedule and inform you',
-//         time: '1:55pm',
-//         from: 'me'
-//     },
-//     {
-//         description: 'Ok, Thanks for your reply.',
-//         time: '1:55pm',
-//         from: 'Andri Thomas'
-//     }
-// ]
+
 
 const Chat = () => {
 
@@ -70,8 +24,11 @@ const Chat = () => {
     const panelRef = useRef();
     const fileUpload = useRef();
 
-    const [imageFile, setImageFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+    // const [file, setfile] = useState(null);
+    // const [imagePreview, setImagePreview] = useState(null);
+    const [preview, setPreview] = useState();
+    const [file, setFile] = useState(null);
+    
 
     useEffect(() => {
         setContactList();
@@ -84,26 +41,42 @@ const Chat = () => {
         }
     }, [contactList])
 
-
+    const imageExist = (data) => {
+        console.log("data", data.includes("jpg") || data.includes("jpeg") || data.includes("png"));
+        if(data.includes("jpg") || data.includes("jpeg") || data.includes("png")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     useEffect(() => {
+        
         const newIndex = contactList.findIndex(user => user.id === currentId);
         setCurrentUser(newIndex >= 0 ? contactList[newIndex] : {});
     }, [contactList, currentId])
 
     useEffect(() => {
+        if(file != null){
+            console.log("file", file);
+            if(file.name.includes(".png") == false && file.name.includes(".jpg") == false){
+                setPreview(null);
+            }
+        }
         panelRef.current.scrollTo(0, panelRef.current.scrollHeight);
-    }, [messageList, imageFile])
+    }, [messageList, file])
 
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const textMessage = messageRef.current.value;
-        if ((!isEmpty(textMessage) || imageFile !== null) && currentId >= 0) {
+        if ((!isEmpty(textMessage) || file !== null) && currentId >= 0) {
             const formData = new FormData();
-            if (imageFile !== null) formData.append('file', imageFile);
+            if (file !== null) formData.append('file', file);
             formData.append('to', currentId);
             formData.append('message', textMessage);
+            formData.append('userinfo', currentUser.name);
             dispatch(sendMessage(formData));
         }
     }
@@ -115,8 +88,12 @@ const Chat = () => {
 
     const handleFileChanged = (event) => {
         if (isEmpty(event.target) || isEmpty(event.target.files)) return;
-        setImageFile(event.target.files[0]);
-        setImagePreview(URL.createObjectURL(event.target.files[0]));
+        setFile(event.target.files[0]);
+        if(imageExist(event.target.files[0].name)){
+            setPreview(URL.createObjectURL(event.target.files[0]));
+        }else{
+            setPreview(null);
+        }
     }
 
     const handleUserClick = (id) => {
@@ -126,16 +103,16 @@ const Chat = () => {
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             handleSubmit(event);
-            setImageFile(null);
-            setImagePreview(null);
+            setFile(null);
+            setPreview(null);
             messageRef.current.value = '';
         }
     }
 
     const handleCancelImage = (event) => {
         event.preventDefault();
-        setImageFile(null);
-        setImagePreview(null);
+        setFile(null);
+        setPreview(null);
     }
 
     return (
@@ -266,8 +243,16 @@ const Chat = () => {
                                                         //     color: '#ffffff'
                                                         // }}
                                                         >
-                                                            <img src={serverURL + item.filePath} style={{ width: '150px', height: '150px', margin: '0 auto' }} alt='' />
-                                                            {item.fileName}
+                                                            {imageExist(item.filePath) ?
+                                                            <div>
+                                                                <img src={serverURL + item.filePath} style={{ width: '150px', height: '150px', margin: '0 auto' }} alt='' />
+                                                                <div>{item.fileName}</div>
+                                                            </div>
+                                                             : 
+                                                             <div style={{fontSize:"25px",padding:'50px'}}>{item.fileName}</div>
+                                                             }
+                                                            
+                                                            
                                                         </a>
                                                     )
                                                 }
@@ -300,20 +285,28 @@ const Chat = () => {
                             <div className="sticky bottom-0 border-t border-stroke bg-white py-5 px-6 dark:border-strokedark dark:bg-boxdark" style={{ flexGrow: 0 }}>
                                 {/* <img src={UserOne} style={{width: '100px', height: '100px'}} /> */}
                                 {
-                                    imageFile === null ? '' : (
+                                    file === null ? '' : (
                                         <div style={{ position: 'relative', width: '200px', border: '2px dotted #1A222C', borderRadius: '5px', padding: '10px', marginBottom: '10px' }}>
                                             {
                                                 <>
                                                     <div>
-                                                        <img
-                                                            src={imagePreview}
-                                                            style={{ width: '200px', height: '200px' }}
+                                                        {imageExist(file.name) ? <img
+                                                            src={preview != null ? preview : ""}
+                                                            style={{ width: '200px', height: '200px', display: 'block'}}
                                                             alt=''
-                                                        />
+                                                            onError={(event) => {event.preventDefault(); setPreview(null);}}
+                                                        /> : ''}
+                                                        
                                                     </div>
+                                                    {imageExist(file.name) ?  
                                                     <div className='text-center' style={{ width: '100%' }}>
-                                                        {imageFile.name}
+                                                        {file.name}
+                                                    </div> : 
+                                                    <div className='text-center' style={{ width: '100%', fontSize:'25px', padding:'50px' }}>
+                                                        {file.name}
                                                     </div>
+                                                    }
+                                                   
                                                     <div style={{position: 'absolute', right: 2, top: 2, cursor: 'pointer'}} onClick={handleCancelImage}>
                                                         <svg width="18" height="18" viewBox="0 0 512 512" className="fill-current">
                                                             <polygon xmlns="http://www.w3.org/2000/svg" points="335.188,154.188 256,233.375 176.812,154.188 154.188,176.812 233.375,256 154.188,335.188 176.812,357.812   256,278.625 335.188,357.812 357.812,335.188 278.625,256 357.812,176.812 " />

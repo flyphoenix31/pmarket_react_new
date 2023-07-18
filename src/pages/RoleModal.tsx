@@ -87,6 +87,7 @@ const RoleModal = ({ open, setOpen, pList, refreshTable, currentItem }) => {
                     refreshTable();
                     toastr.success(`Successfully ${currentItem === null ? 'added' : 'updated'}`);
                     setOpen(false);
+                    navigate('/member/setting/roles');
                 } else {
                     setError(data.errors);
                 }

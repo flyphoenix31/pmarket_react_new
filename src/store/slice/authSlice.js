@@ -22,6 +22,7 @@ export const setUserInformation = createAsyncThunk(
             } else {
                 toastr.success(`Welcome ${data.user.name}!`);
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('user_id', data.user.id);
                 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
                 return data.user;
             }

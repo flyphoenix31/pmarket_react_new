@@ -4,6 +4,48 @@ import { setUser } from '../store/slice/authSlice'
 import { setContactList as _setContactList } from "../store/slice/chatSlice"
 import { getMessageList as _getMessageList } from "../store/slice/chatSlice"
 import store from "../store";
+import moment from 'moment/moment';
+export const getRoleInfo = async (data) => {
+    try{
+        const res = await axios.post(serverURL + '/api/user/getroleinfo', {data});
+        const resdata = res.data;
+        if(resdata.status == 0){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    catch(error){
+        console.error(error);
+        return false
+    }
+}
+
+export const getCurrentFormatedDate = () => {
+    return moment(new Date()).format("yyyy-MM-DD HH:mm:ss");
+}
+export const getCurrentFormatedDate1 = (date) => {
+    return moment(date).format("yyyy-MM-DD HH:mm:ss");
+}
+export const onSum = (items) => {
+    var temp = 0;
+    items.map((item, index) => (
+        temp += Number(Number(item.unit_price) * Number(item.quantity))
+    ))
+    return temp;
+}
+export const randomString = (length) => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
 
 export const setContactList = async () => {
     try {
@@ -28,6 +70,7 @@ export const setContactList = async () => {
         return;
     }
 }
+
 
 export const getMessageList = async (id) => {
     try {

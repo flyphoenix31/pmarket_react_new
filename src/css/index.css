@@ -161,3 +161,151 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+.totalprice{
+  font-size: 20px;
+  color: rgb(88, 104, 122);
+  font-weight: bolder;
+  right:0%;
+  bottom: 37%;
+  position: absolute;
+}
+.dialoganim {
+  animation: dialoganim 0.5s;
+  transition: cubic-bezier(0.175, 0.885, 0.32, 1.275) ease-in-out;
+}
+.widget-heading{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.widget-five {
+  background: #fff;
+  padding: 20px 0px;
+  height: 70%;
+  border-radius: 10px;
+}
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 130px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown-divider {
+  height: 0;
+  margin: 0.1rem 0;
+  overflow: hidden;
+  border-top: 1px solid darkgrey;
+}
+.sharegenauto{
+  line-height: 1.4;
+  padding: 5px 8px;
+  font-size: 15px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  width: fit-content;
+  background: rgba(0, 150, 136, 0.26);
+  color: #009688;
+  font-weight: 500;
+}
+.sharelink{
+  line-height: 1.4;
+  padding: 5px 8px;
+  font-size: 15px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  width: fit-content;
+  background: #f1f2f3;
+  font-weight: 500;
+}
+
+.btn-neffect{
+  /* padding: 0.4375rem 1.25rem; */
+  text-shadow: none;
+  white-space: normal;
+  word-wrap: break-word;
+  transition: .2s ease-out;
+  touch-action: manipulation;
+  cursor: pointer;
+  will-change: opacity, transform;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  box-shadow: 0 10px 20px -10px rgb(33 150 243 / 40%);
+}
+.btn-peffect{
+  /* padding: 0.4375rem 1.25rem; */
+  text-shadow: none;
+  white-space: normal;
+  word-wrap: break-word;
+  transition: .2s ease-out;
+  touch-action: manipulation;
+  cursor: pointer;
+  will-change: opacity, transform;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  box-shadow: 0 10px 20px -10px rgb(47 115 169 / 80%);
+}
+.btn-neffect:hover{
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+.btn-peffect:hover{
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+@keyframes dialoganim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+
+}
+@media (max-width: 800px){
+  .topnonedeflex{
+    display: block;
+  }
+  .totalprice{
+    font-size: 2.8vw;
+    right:0%;
+    bottom: 33%;
+  }
+}
+@media (max-width: 500px){
+  .totalprice{
+    font-size: 2vw;
+    right:0%;
+    bottom: 25%;
+  }
+}
+

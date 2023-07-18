@@ -2,8 +2,8 @@ import { toast } from "react-toastify";
 
 // export const serverURL = 'http://192.168.1.159:80';
 // export const serverURL = 'http://192.168.1.159:82';
-// export const serverURL = 'localhost:81';
-export const serverURL = '';
+export const serverURL = 'http://localhost:80';
+// export const serverURL = '';
 
 export const isEmpty = (value) => {
 
@@ -18,6 +18,8 @@ export const isEmpty = (value) => {
     return false;
 
 }
+
+
 
 const toast_option = {
     position: "top-right",

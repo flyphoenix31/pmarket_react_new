@@ -300,12 +300,11 @@ const InvoiceEdit = () => {
 
   const [previewMode, setPreviewMode] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [invoice_img, setInvoiceImg] = useState(null);
   const errors = useSelector((state) => state.invoice.errors);
   const redirect = useSelector((state) => state.invoice.redirect);
   const invoiceList = useSelector((state) => state.invoice.invoiceList);
   const currentInvoice = useSelector((state) => state.invoice.currentInvoice);
-
   const init_invoice = {
     description: '',
     unit_price: '',
@@ -356,6 +355,7 @@ const InvoiceEdit = () => {
       setDiscountType(currentInvoice.discount_type_id);
       setDiscountValue(currentInvoice.discount_value);
       setInvoiceList(currentInvoice.items);
+      setInvoiceImg(currentInvoice.invoice_img)
     }
   }, [currentInvoice])
 
@@ -383,7 +383,8 @@ const InvoiceEdit = () => {
       tax_value,
       discount_type_id,
       discount_value,
-      items
+      items,
+      invoice_img,
     }
 
     dispatch(updateInvoice(data));
@@ -426,6 +427,7 @@ const InvoiceEdit = () => {
       due_date={due_date}
       name={name}
       notes = {notes}
+      invoice_img = {invoice_img}
     />
   );
 
@@ -438,11 +440,11 @@ const InvoiceEdit = () => {
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-4">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
+              {/* <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
                   Edit Invoice
                 </h3>
-              </div>
+              </div> */}
               {
                 previewMode ? invoicePreview : (
 

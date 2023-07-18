@@ -30,6 +30,8 @@ const Role = () => {
     ]).then(([pRes, rRes]) => {
       console.log(pRes, rRes);
       if(!pRes.data.status && !rRes.data.status) {
+        console.log("presultlist:", pRes);
+        console.log("rresultlist", rRes);
         setList(pRes.data.list);
         setPlist(rRes.data.list);
       }

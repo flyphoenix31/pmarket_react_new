@@ -41,7 +41,7 @@ const DropdownMessage = () => {
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
+  },[]);
 
   const handleClick = (event) => {
     event.preventDefault();

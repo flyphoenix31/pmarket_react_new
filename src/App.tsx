@@ -8,6 +8,9 @@ import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import Users from './pages/Users';
 import Chat from './pages/Chat';
+import History from './pages/History';
+import Shared from './pages/Shared';
+import SharePage from './pages/SharePage';
 import socket from './config/socket';
 import { setUserInformation } from './store/slice/authSlice';
 import Jobs from './pages/Jobs';
@@ -64,6 +67,14 @@ function App() {
         <Route path="/member/auth/signin" element={<SignIn />} />
         <Route path="/member/auth/signup" element={<SignUp />} />
         <Route
+            path="/member/shared/:token"
+            element={
+              <Suspense fallback={<Loader />}>
+                <SharePage />
+              </Suspense>
+            }
+          />
+        <Route
           path="/member/quote/view/:id"
           element={
             <Suspense fallback={<Loader />}>
@@ -89,6 +100,23 @@ function App() {
               </Suspense>
             }
           />
+          <Route
+            path="/member/history"
+            element={
+              <Suspense fallback={<Loader />}>
+                <History />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/member/share"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Shared />
+              </Suspense>
+            }
+          />
+          
           <Route
             path="/member/users"
             element={

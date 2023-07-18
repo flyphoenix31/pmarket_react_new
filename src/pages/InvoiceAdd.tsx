@@ -260,7 +260,7 @@ const InvoiceAdd = () => {
   const handleSubmit = (event: any) => {
 
     event.preventDefault();
-
+    
     const data = {
       name,
       invoice_date: moment(invoice_date).format('YYYY-MM-DD'),
@@ -303,7 +303,7 @@ const InvoiceAdd = () => {
     // setClientPhone(user.phone)
     // setClientAddress(user.address)
     // console.log(user);
-    console.log(user);
+    console.log("handleuser:",user);
     dispatch(findOneQuotation(user.id));
   }
 
@@ -326,6 +326,7 @@ const InvoiceAdd = () => {
       due_date={due_date}
       name={name}
       notes={notes}
+      title = {user.title}
     />
   );
 
