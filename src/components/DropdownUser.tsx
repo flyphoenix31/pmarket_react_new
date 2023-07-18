@@ -23,6 +23,11 @@ const DropdownUser = (props:any) => {
     navigate('/member/auth/signin');
   }
 
+  const handleProfile = (event: any) => {
+    event.preventDefault();
+    navigate('/member/profile');
+  }
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -104,7 +109,7 @@ const DropdownUser = (props:any) => {
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
             <Link
-              to="/profile"
+              to="/member/profile"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -127,7 +132,7 @@ const DropdownUser = (props:any) => {
               My Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="#"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -156,7 +161,7 @@ const DropdownUser = (props:any) => {
               <SettingSVG />
               Account Settings
             </Link>
-          </li>
+          </li> */}
         </ul>
         <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={handleLogout}>
           <svg

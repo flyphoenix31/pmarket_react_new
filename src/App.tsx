@@ -7,6 +7,7 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import Users from './pages/Users';
+import UserProfile from './pages/UserProfile';
 import Chat from './pages/Chat';
 import History from './pages/History';
 import Shared from './pages/Shared';
@@ -141,6 +142,14 @@ function App() {
               </Suspense>
             }
           />
+          <Route 
+            path="/member/profile"
+            element={
+              <Suspense fallback={<Loader />}>
+                <UserProfile />
+              </Suspense>
+            }
+          />
           <Route
             path="/member/clients"
             element={
@@ -266,14 +275,6 @@ function App() {
             element={
               <Suspense fallback={<Loader />}>
                 <Calendar />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/member/profile"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Profile />
               </Suspense>
             }
           />

@@ -22,13 +22,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
   
-  const [role_flag , setRoleFlag ] = useState(false);
+  const [chat_flag , setChatFlag ] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
   let data = { role: "chat_history", roleid: userinfo.role_id };
   getRoleInfo(data)
     .then(result  => {
-        setRoleFlag(result);
-        console.log("role data:" , role_flag);
+        setChatFlag(result);
+        console.log("role data:" , chat_flag);
       })
         
       useEffect(() => {
@@ -436,7 +436,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       Chat
                     </NavLink>
                   </li>
-                  {role_flag  ?
+                  {chat_flag  ?
                     <li>
                       <NavLink
                         to="/member/history"

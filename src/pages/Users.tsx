@@ -30,54 +30,6 @@ const Users = () => {
     'Action'
   ];
 
-  // const tableBodyList = [
-  //   {
-  //     image: UserOne,
-  //     name: 'Barney Murray',
-  //     email: 'Barney.M@gmail.com',
-  //     position: 'Senior Backend Developer',
-  //     age: 29,
-  //     start_date: new Date('2010/5/1'),
-  //     salary: '23650'
-  //   },
-  //   {
-  //     image: UserTwo,
-  //     name: 'Rogers Stanton',
-  //     email: 'Rogers.S@gmail.com',
-  //     position: 'Product Manager',
-  //     age: 26,
-  //     start_date: new Date('2011/09/30'),
-  //     salary: '5640'
-  //   },
-  //   {
-  //     image: UserThree,
-  //     name: 'Chelsey Hackett',
-  //     email: 'Chelsey.H@gmail.com',
-  //     position: 'Product Manager',
-  //     age: 26,
-  //     start_date: new Date('2011/09/30'),
-  //     salary: '421541'
-  //   },
-  //   {
-  //     image: UserFour,
-  //     name: 'Waylon Kihn',
-  //     email: 'Waylon.K@gmail.com',
-  //     position: 'Senior HTML Developer',
-  //     age: 23,
-  //     start_date: new Date('2017/11/01'),
-  //     salary: '5490'
-  //   },
-  //   {
-  //     image: UserFive,
-  //     name: 'Jaunita Lindgren',
-  //     email: 'Jaunita.L@gmail.com',
-  //     position: 'Senior Backend Developer',
-  //     age: 25,
-  //     start_date: new Date('	2018/12/01'),
-  //     salary: '321254'
-  //   }
-  // ];
-
   const navigate = useNavigate();
 
   const handleAddNew = (event: any) => {
@@ -183,18 +135,6 @@ const Users = () => {
                     </th>
                   ))
                 }
-                {/* <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                  Package
-                </th>
-                <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                  Invoice date
-                </th>
-                <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                  Status
-                </th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">
-                  Actions
-                </th> */}
               </tr>
             </thead>
             <tbody>

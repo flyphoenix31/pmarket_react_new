@@ -31,12 +31,12 @@ const InvoicePreview = ({
     settingData,
     invoice_img,
 }) => {
-    const [role_flag , setRoleFlag ] = useState(false);
+    const [invoice_flag , setInvoiceFlag ] = useState(false);
     const userinfo = useSelector((state: any) => state.auth.userInfo);
     let data = { role: "invoice_img", roleid: userinfo.role_id };
     getRoleInfo(data)
         .then(result  => {
-            setRoleFlag(result);
+            setInvoiceFlag(result);
             console.log("invoice_img:" , result);
         })
 
@@ -100,7 +100,7 @@ const InvoicePreview = ({
                                             <img src={isEmpty(imgPreview) ? invoice_imgInit : imgPreview} alt="User" style={{height: '100px' }} />
                                         </div>
                                     </div>
-                                    {role_flag ?
+                                    {invoice_flag ?
                                         <div className='flex'>
                                             <div
                                                 id="FileUpload"
