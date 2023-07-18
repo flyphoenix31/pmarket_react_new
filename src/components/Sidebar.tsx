@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import { ClientSVG, InvoiceSVG, QuotationSVG, SettingSVG } from './SVG';
 import { getRoleInfo } from '../utils';
+
 import { useSelector } from 'react-redux';
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -22,14 +23,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
   
-  const [chat_flag , setChatFlag ] = useState(false);
+  const [chatmenu_flag , setChatMenuFlag ] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
-  let data = { role: "chat_history", roleid: userinfo.role_id };
+  let data = { role: "chat_history_menu", roleid: userinfo.role_id };
   
   
   getRoleInfo(data)
     .then(result  => {
-        setChatFlag(result);
+        setChatMenuFlag(result);
       })
         
       useEffect(() => {
@@ -437,7 +438,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       Chat
                     </NavLink>
                   </li>
-                  {chat_flag  ?
+                  {chatmenu_flag  ?
                     <li>
                       <NavLink
                         to="/member/history"

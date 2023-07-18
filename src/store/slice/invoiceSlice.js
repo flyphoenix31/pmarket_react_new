@@ -13,11 +13,11 @@ const initialState = {
     previewInvoice: {},
     previewType: ''
 }
-export const updateImg = createAsyncThunk(
-    'invoice/updateImg',
+export const updateInvoicePreview = createAsyncThunk(
+    'invoice/updateinvoicepreview',
     async (param) => {
         try {
-            const res = await axios.post(serverURL + '/api/invoice/updateimg', param, {
+            const res = await axios.post(serverURL + '/api/invoice/updateinvoicepreview', param, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             const data = await res.data;

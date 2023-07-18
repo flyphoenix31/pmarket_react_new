@@ -5,6 +5,7 @@ import Breadcrumb from '../components/Breadcrumb.js';
 import { isEmpty, serverURL } from '../config/index.js';
 import { updateJob, findOneJob } from '../store/slice/jobsSlice.js';
 import { MoneySVG, TitleSVG } from '../components/SVG.js';
+import { getRoleInfo } from '../utils';
 
 const JobEdit = () => {
 
@@ -25,6 +26,15 @@ const JobEdit = () => {
   const jobList = useSelector((state) => state.jobs.jobList);
   const currentJob = useSelector((state) => state.jobs.currentJob);
 
+  const [jobupdate_flag, setJobsUpdateFlag] = useState(false);
+  const userinfo = useSelector((state: any) => state.auth.userInfo);
+  let u_data = { role: "jobs_update", roleid: userinfo.role_id };
+  
+  getRoleInfo(u_data)
+    .then(jobsupdate  => {
+      setJobsUpdateFlag(jobsupdate);
+    })
+  
   let { id } = useParams();
 
   useEffect(() => {
@@ -516,17 +526,21 @@ const JobEdit = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      className="btn-neffect flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       onClick={handleClose}
                     >
                       Close
                     </button>
+                    {
+                      jobupdate_flag ?
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                      className="btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Save
                     </button>
+                    : ""
+                    }
                   </div>
                 </form>
               </div>

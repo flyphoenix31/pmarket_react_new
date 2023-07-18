@@ -31,8 +31,8 @@ socket.on('newMessage', (data) => {
     else if (data.to_user === authStore.userInfo.id && window.location.pathname !== '/member/chat') {
         // store.dispatch(setNotification(true));
     }
-    console.error(authStore.userInfo.id, data.to_user);
-    if (authStore.userInfo.id === data.to_user) {
+    // console.error(authStore.userInfo.id, data.to_user);
+    if (authStore.userInfo.id === data.to_user) {1
         toast.info('New message arrived ', {
             position: "top-right",
             autoClose: 3000,
@@ -41,10 +41,24 @@ socket.on('newMessage', (data) => {
             pauseOnHover: true,
             draggable: false,
             progress: undefined,
-            theme: authStore.theme, 
+            // theme: authStore.theme, 
         });
     }
 })
+
+// socket.on('jobMessage', (data) => {
+//     // store.dispatch(setNewMessage(data));
+//     console.log("jobcreated:" , data)
+//     toast.info('New Job Created ', {
+//         position: "top-right",
+//         autoClose: 3000,
+//         hideProgressBar: true,
+//         closeOnClick: true,
+//         pauseOnHover: true,
+//         draggable: false,
+//         progress: undefined,
+//     });
+// })
 
 socket.on('connectionState', list => {
     store.dispatch(setOnlineUsers(list));

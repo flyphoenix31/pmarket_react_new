@@ -1,26 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { isEmpty } from '../config/index.js';
-import moment from 'moment';
-import { findOneQuotation } from '../store/slice/quotationSlice.js';
-import { newInvoice, setRedirect, setCurrentInvoice } from '../store/slice/invoiceSlice.js';
-import InvoicePreview from './InvoicePreview.js';
-import {
-  CheckSVG,
-  ContentSVG,
-  MoneySVG,
-  NumberSVG,
-  TitleSVG,
-  HumanSVG,
-  EmailSVG,
-  AddressSVG,
-  PhoneSVG,
-  PercentSVG
-} from '../components/SVG.js';
+import { updateInvoice, setRedirect, findOneInvoice } from '../store/slice/invoiceSlice.js';
+import { HumanSVG, EmailSVG, AddressSVG, PhoneSVG, CalendarSVG, MoneySVG, PercentSVG, TitleSVG } from '../components/SVG.js';
 import ClientModal from './ClientModal.js';
-import QuotationFindModal from './QuotationFindModal.js';
+import InvoicePreview from './InvoicePreview.js';
 
 const InvoiceContent = ({ data, setData, errors }) => {
   return (
@@ -41,7 +28,7 @@ const InvoiceContent = ({ data, setData, errors }) => {
               }
               <div className="relative">
                 <span className="absolute left-4.5 top-4">
-                  <ContentSVG />
+                  <CalendarSVG />
                 </span>
                 <input
                   className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -73,7 +60,7 @@ const InvoiceContent = ({ data, setData, errors }) => {
               }
               <div className="relative">
                 <span className="absolute left-4.5 top-4">
-                  <MoneySVG />
+                  <CalendarSVG />
                 </span>
                 <input
                   className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -105,7 +92,7 @@ const InvoiceContent = ({ data, setData, errors }) => {
               }
               <div className="relative">
                 <span className="absolute left-4.5 top-4">
-                  <CheckSVG />
+                  <CalendarSVG />
                 </span>
                 <input
                   className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -188,9 +175,9 @@ const InvoiceContent = ({ data, setData, errors }) => {
 const InvoiceAdd = () => {
 
   const [name, setName] = useState('');
-  const [invoice_date, setInvoiceData] = useState(moment(new Date()).format('YYYY-MM-DD'));
+  const [invoice_date, setInvoiceData] = useState('');
   const [invoice_number, setInvoiceNumber] = useState('');
-  const [due_date, setDueDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
+  const [due_date, setDueDate] = useState('');
   const [notes, setNotes] = useState('');
 
   const [company_name, setCompanyName] = useState('');
@@ -203,18 +190,18 @@ const InvoiceAdd = () => {
   const [client_address, setClientAddress] = useState('');
 
   const [currency_id, setCurrencyId] = useState('1');
-  const [tax_type_id, setTaxType] = useState(0);
-  const [tax_value, setTaxValue] = useState(0);
-  const [discount_type_id, setDiscountType] = useState(0);
-  const [discount_value, setDiscountValue] = useState(0);
+  const [tax_type_id, setTaxType] = useState('1');
+  const [tax_value, setTaxValue] = useState('10');
+  const [discount_type_id, setDiscountType] = useState('1');
+  const [discount_value, setDiscountValue] = useState('20');
 
   const [previewMode, setPreviewMode] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const [invoice_img, setInvoiceImg] = useState(null);
   const errors = useSelector((state) => state.invoice.errors);
   const redirect = useSelector((state) => state.invoice.redirect);
-  const currentQuotation = useSelector((state) => state.quotation.currentQuotation);
-
+  const invoiceList = useSelector((state) => state.invoice.invoiceList);
+  const currentInvoice = useSelector((state) => state.invoice.currentInvoice);
   const init_invoice = {
     description: '',
     unit_price: '',
@@ -229,39 +216,52 @@ const InvoiceAdd = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  let { id } = useParams();
+
+  // useEffect(() => {
+  //   if (isEmpty(invoiceList))
+  //     navigate('/member/invoice');
+  //   dispatch(findOneInvoice(id));
+  // }, [invoiceList])
+
+  // useEffect(() => {
+  //   if (redirect) {
+  //     dispatch(setRedirect(false));
+  //     navigate('/member/invoice');
+  //   }
+  // }, [redirect])
+
   useEffect(() => {
-    if (redirect) {
-      dispatch(setRedirect(false));
-      navigate('/member/invoice');
+    if (!isEmpty(currentInvoice)) {
+      setName(currentInvoice.name);
+      setInvoiceData(moment(currentInvoice.invoice_date).format('YYYY-MM-DD'));
+      setInvoiceNumber(currentInvoice.invoice_number);
+      setDueDate(moment(currentInvoice.due_date).format('YYYY-MM-DD'));
+      setNotes(currentInvoice.notes);
+      setCompanyName(currentInvoice.company_name);
+      setCompanyEmail(currentInvoice.company_email);
+      setCompanyPhone(currentInvoice.company_phone);
+      setCompanyAddress(currentInvoice.company_address);
+      setClientName(currentInvoice.client_name);
+      setClientEmail(currentInvoice.client_email);
+      setClientPhone(currentInvoice.client_phone);
+      setClientAddress(currentInvoice.client_address);
+      setCurrencyId(currentInvoice.currency_id);
+      setTaxType(currentInvoice.tax_type_id);
+      setTaxValue(currentInvoice.tax_value);
+      setDiscountType(currentInvoice.discount_type_id);
+      setDiscountValue(currentInvoice.discount_value);
+      setInvoiceList(currentInvoice.items);
+      setInvoiceImg(currentInvoice.invoice_img)
     }
-  }, [redirect])
-
-  useEffect(() => {
-
-    console.log(currentQuotation);
-
-    if (isEmpty(currentQuotation)) return;
-
-    setName(currentQuotation.name);
-    setNotes(currentQuotation.notes);
-    setCompanyName(currentQuotation.company_name);
-    setCompanyEmail(currentQuotation.company_email);
-    setCompanyPhone(currentQuotation.company_phone);
-    setCompanyAddress(currentQuotation.company_address);
-    setClientName(currentQuotation.client_name);
-    setClientEmail(currentQuotation.client_email);
-    setClientPhone(currentQuotation.client_phone);
-    setClientAddress(currentQuotation.client_address);
-
-    setInvoiceList(currentQuotation.items.reduce((list, p) => [...list, { ...p, has_tax: 0 }], []));
-
-  }, [currentQuotation]);
+  }, [currentInvoice])
 
   const handleSubmit = (event: any) => {
 
     event.preventDefault();
-    
+
     const data = {
+      id,
       name,
       invoice_date: moment(invoice_date).format('YYYY-MM-DD'),
       invoice_number,
@@ -280,10 +280,11 @@ const InvoiceAdd = () => {
       tax_value,
       discount_type_id,
       discount_value,
-      items
+      items,
+      invoice_img,
     }
 
-    dispatch(newInvoice(data));
+    dispatch(updateInvoice(data));
     // navigate('/member/invoice');
   }
 
@@ -298,13 +299,10 @@ const InvoiceAdd = () => {
   }
 
   const handleSelect = (user) => {
-    // setClientName((isEmpty(user.title) ? '' : (titleList[user.title] + '. ')) + user.name)
-    // setClientEmail(user.email)
-    // setClientPhone(user.phone)
-    // setClientAddress(user.address)
-    // console.log(user);
-    console.log("handleuser:",user);
-    dispatch(findOneQuotation(user.id));
+    setClientName((isEmpty(user.title) ? '' : (titleList[user.title] + '. ')) + user.name)
+    setClientEmail(user.email)
+    setClientPhone(user.phone)
+    setClientAddress(user.address)
   }
 
   const totalPrice = items.reduce((value, item) => value + (item.unit_price * item.quantity), 0);
@@ -325,41 +323,30 @@ const InvoiceAdd = () => {
       invoice_date={invoice_date}
       due_date={due_date}
       name={name}
-      notes={notes}
-      title = {user.title}
+      notes = {notes}
+      invoice_img = {invoice_img}
     />
   );
 
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Invoice" />
-        <QuotationFindModal open={open} setOpen={setOpen} handleSelect={handleSelect} />
+        <Breadcrumb pageName="Invoice Add" />
+        <ClientModal open={open} setOpen={setOpen} handleSelect={handleSelect} />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-4">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke py-4 px-7 dark:border-strokedark flex">
+              {/* <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  New Invoice
+                  Edit Invoice
                 </h3>
-                <span
-                  style={{
-                    marginLeft: 'auto',
-                    marginRight: '5px',
-                    color: 'rgb(60, 80, 224)',
-                    cursor: 'pointer'
-                  }}
-                  className='rounded border px-3'
-                  onClick={e => { e.preventDefault(); setOpen(true) }}
-                >
-                  From here
-                </span>
-              </div>
+              </div> */}
               {
                 previewMode ? invoicePreview : (
+
                   <div className="p-7">
-                    <form onSubmit={e => { e.preventDefault() }}>
+                    <form onSubmit={handleSubmit}>
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                         <div className="w-full sm:w-1/2">
                           <label
@@ -370,23 +357,23 @@ const InvoiceAdd = () => {
                           </label>
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
-                              <NumberSVG />
+                              <EmailSVG />
                             </span>
                             <input
                               className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                               type="text"
                               name="invoice_number"
                               id="invoice_number"
-                              // onChange={e => { e.preventDefault(); setInvoiceNumber(e.target.value) }}
-                              placeholder="It will be automatically generated"
-                              readOnly
+                              value={invoice_number}
+                              onChange={e => { e.preventDefault(); setInvoiceNumber(e.target.value) }}
+                              placeholder="Write invoice number here"
                             />
                           </div>
                           <label
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="invoice_number"
                           >
-                            {isEmpty(errors) || isEmpty(errors.invoice_number) ? '' : errors.invoice_number}
+                            {errors.invoice_number}
                           </label>
                         </div>
                         <div className="w-full sm:w-1/2">
@@ -414,7 +401,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="name"
                           >
-                            {isEmpty(errors) || isEmpty(errors.name) ? '' : errors.name}
+                            {errors.name}
                           </label>
                         </div>
                       </div>
@@ -445,7 +432,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="company_name"
                           >
-                            {isEmpty(errors) || isEmpty(errors.company_name) ? '' : errors.company_name}
+                            {errors.company_name}
                           </label>
                         </div>
 
@@ -455,6 +442,18 @@ const InvoiceAdd = () => {
                             htmlFor="client_name"
                           >
                             To
+                            <span
+                              style={{
+                                marginLeft: 'auto',
+                                marginRight: '5px',
+                                color: 'rgb(60, 80, 224)',
+                                cursor: 'pointer'
+                              }}
+                              className='rounded border px-3'
+                              onClick={e => { e.preventDefault(); setOpen(true) }}
+                            >
+                              From here
+                            </span>
                           </label>
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
@@ -474,7 +473,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="client_name"
                           >
-                            {isEmpty(errors) || isEmpty(errors.client_name) ? '' : errors.client_name}
+                            {errors.client_name}
                           </label>
                         </div>
                       </div>
@@ -499,7 +498,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="company_email"
                           >
-                            {isEmpty(errors) || isEmpty(errors.company_email) ? '' : errors.company_email}
+                            {errors.company_email}
                           </label>
                         </div>
 
@@ -522,7 +521,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="client_email"
                           >
-                            {isEmpty(errors) || isEmpty(errors.client_email) ? '' : errors.client_email}
+                            {errors.client_email}
                           </label>
                         </div>
                       </div>
@@ -547,7 +546,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="company_address"
                           >
-                            {isEmpty(errors) || isEmpty(errors.company_address) ? '' : errors.company_address}
+                            {errors.company_address}
                           </label>
                         </div>
 
@@ -570,7 +569,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="client_address"
                           >
-                            {isEmpty(errors) || isEmpty(errors.client_address) ? '' : errors.client_address}
+                            {errors.client_address}
                           </label>
                         </div>
                       </div>
@@ -595,7 +594,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="company_phone"
                           >
-                            {isEmpty(errors) || isEmpty(errors.company_phone) ? '' : errors.company_phone}
+                            {errors.company_phone}
                           </label>
                         </div>
 
@@ -618,7 +617,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="client_phone"
                           >
-                            {isEmpty(errors) || isEmpty(errors.client_phone) ? '' : errors.client_phone}
+                            {errors.client_phone}
                           </label>
                         </div>
                       </div>
@@ -642,7 +641,7 @@ const InvoiceAdd = () => {
                               id="invoice_date"
                               value={invoice_date}
                               onChange={e => { e.preventDefault(); setInvoiceData(e.target.value) }}
-                              placeholder="Write invoice date name here"
+                              placeholder="2023-07-01"
                             /> */}
                             <input
                               type="date"
@@ -655,7 +654,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="invoice_date"
                           >
-                            {isEmpty(errors) || isEmpty(errors.invoice_date) ? '' : errors.invoice_date}
+                            {errors.invoice_date}
                           </label>
                         </div>
 
@@ -669,15 +668,15 @@ const InvoiceAdd = () => {
                           <div className="relative">
                             {/* <span className="absolute left-4.5 top-4">
                               <CalendarSVG />
-                            </span> */}
-                            {/* <input
+                            </span>
+                            <input
                               className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                               type="text"
                               name="due_date"
                               id="due_date"
                               value={due_date}
                               onChange={e => { e.preventDefault(); setDueDate(e.target.value) }}
-                              placeholder="Write due date name here"
+                              placeholder="2023-07-31"
                             /> */}
                             <input
                               type="date"
@@ -690,7 +689,7 @@ const InvoiceAdd = () => {
                             className="mb-0 block text-sm font-medium mt-2 text-danger"
                             htmlFor="due_date"
                           >
-                            {isEmpty(errors) || isEmpty(errors.due_date) ? '' : errors.due_date}
+                            {errors.due_date}
                           </label>
                         </div>
                       </div>
@@ -880,7 +879,7 @@ const InvoiceAdd = () => {
                         </div>
                       </div>
 
-                      <InvoiceContent data={items} setData={setInvoiceList} errors={isEmpty(errors) || isEmpty(errors.itemErrors) ? {} : errors.itemErrors} />
+                      <InvoiceContent data={items} setData={setInvoiceList} errors={errors.itemErrors} />
 
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                         <div className="w-full sm:w-1/3"></div>
@@ -950,28 +949,11 @@ const InvoiceAdd = () => {
                           className="mb-0 block text-sm font-medium mt-2 text-danger"
                           htmlFor="notes"
                         >
-                          {isEmpty(errors) || isEmpty(errors.notes) ? '' : errors.notes}
+                          {errors.notes}
                         </label>
                       </div>
-
-                      {/* <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      onClick={handleClose}
-                    >
-                      Close
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div> */}
                     </form>
                   </div>
-
-
                 )
               }
             </div >
@@ -986,7 +968,7 @@ const InvoiceAdd = () => {
               <div className="p-7">
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded bg-success py-2 px-6 font-medium text-gray hover:shadow-1"
+                    className="w-full btn-peffect justify-center rounded bg-success py-2 px-6 font-medium text-gray hover:shadow-1"
                     onClick={(e) => { e.preventDefault(); setPreviewMode(!previewMode) }}
                   >
                     {previewMode ? 'Edit' : 'Preview'}
@@ -994,7 +976,7 @@ const InvoiceAdd = () => {
                 </div>
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                    className="w-full btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                     onClick={handleSubmit}
                   >
                     Save
@@ -1002,7 +984,7 @@ const InvoiceAdd = () => {
                 </div>
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="w-full btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     onClick={handleClose}
                   >
                     Close

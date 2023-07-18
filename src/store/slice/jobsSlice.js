@@ -23,6 +23,7 @@ export const setJobList = createAsyncThunk(
                     toastr.warning(data.message);
                 return [];
             }
+            console.log("----------jobsList:", data.list);
             return data.list;
 
         } catch (error) {
