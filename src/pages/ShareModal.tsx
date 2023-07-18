@@ -6,6 +6,7 @@ import axios from 'axios';
 import { getCurrentFormatedDate, randomString } from '../utils';
 import $ from 'jquery';
 import { CopySVG, SaveSVG } from '../components/SVG';
+import { useSelector } from 'react-redux';
 
 const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, refreshList }) => {
     
@@ -15,9 +16,11 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
     const [emails, setEmails] = useState('');
     const [editIndex, setEditIndex] = useState(-1);
     const [ctoken, setToken] = useState('');
-    
-    const tempUrl = window.location.host;
+    const [emailflag, setEmailFlag] = useState(true);
     const navigate = useNavigate();
+    let str = "Please enter your email address.";
+    const [warningstr, setWarningStr] = useState(str);
+    const tempUrl = window.location.host;
     useEffect(() => {
         if(editIndex == -1){
             setEmails('');
@@ -37,6 +40,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         if(editIndex == 1){
             return true;
         }
+        if(isEmpty(str)) return false;
         if (str.match(validRegex)) {
             return true;
         } else {
@@ -89,19 +93,32 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
 
     const handleSavem = (event: any) => {
         if(validateEmail(emails) == false) return;
-        axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails})
+
+        axios.post(serverURL + '/api/user/checkemail', {email: emails})
             .then(res => {
-                const data = res.data;
-                if(!data.status) {
-                    refreshList();
-                    handleClose(event);
-                    toastr.success('Email successfully sended!');
-                    navigate('/member/share');
+                let data = res.data;
+                if(data.status == 1){
+                    let str = "Email is not exist...";
+                    setWarningStr(str);
+                    setEmailFlag(false);
+                    return;
                 }
-            })
-            .catch((error) => {
-                setShare(false);
-                navigate('/member/auth/signin');
+                else{
+                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails})
+                        .then(res => {
+                            const data = res.data;
+                            if(!data.status) {
+                                refreshList();
+                                handleClose(event);
+                                toastr.success('Email successfully sended!');
+                                navigate('/member/share');
+                            }
+                        })
+                        .catch((error) => {
+                            setShare(false);
+                            navigate('/member/auth/signin');
+                        })
+                }
             })
     }
 
@@ -230,7 +247,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                                         name="email"
                                         id="email"
                                         value={emails}
-                                        onChange={e => {setEmails(e.target.value); setEditIndex(2);}}
+                                        onChange={e => {setEmails(e.target.value); setEditIndex(2); setEmailFlag(true);setWarningStr("Please enter your email address.")}}
                                         placeholder="Type your emails"
                                         required
                                     />
@@ -252,10 +269,10 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                                         </svg>
                                     </span>
                                     {
-                                        validateEmail(emails) ?
+                                        (validateEmail(emails) && emailflag == true) ?
                                         ""
                                         :
-                                        <div className='block text-danger' style={{fontSize:'17px',textAlign:'left',padding:'5px 0px 0px 5px'}}>Please enter your email address.</div>
+                                        <div className='block text-danger' style={{fontSize:'17px',textAlign:'left',padding:'5px 0px 0px 5px'}}>{ warningstr }</div>
                                     }
                                 </div>
                             </div>

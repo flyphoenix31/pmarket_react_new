@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { serverURL } from '../config';
+import { isEmpty, serverURL } from '../config';
 import { setUser } from '../store/slice/authSlice'
 import { setContactList as _setContactList } from "../store/slice/chatSlice"
 import { getMessageList as _getMessageList } from "../store/slice/chatSlice"
 import store from "../store";
 import moment from 'moment/moment';
+
 export const getRoleInfo = async (data) => {
     try{
         const res = await axios.post(serverURL + '/api/user/getroleinfo', {data});
@@ -21,6 +22,7 @@ export const getRoleInfo = async (data) => {
         return false
     }
 }
+
 
 export const getCurrentFormatedDate = () => {
     return moment(new Date()).format("yyyy-MM-DD HH:mm:ss");
@@ -93,5 +95,24 @@ export const getMessageList = async (id) => {
         store.dispatch(_getMessageList({ id: -1, list: [] }));
         // return resolve();
         return;
+    }
+}
+
+
+export const getRoleFlag = async (userinfo, str) => {
+    try{
+        if(!isEmpty(userinfo)){
+            let index =await userinfo.permissions.findIndex((item) => { 
+              if(item.name == str){
+                return item;
+              } 
+            }) ;
+            if(index > 0) return true;
+            else return false;
+        }
+    }
+    catch(err){
+        console.log("getRoleFlag Error:", err);
+        return false;
     }
 }

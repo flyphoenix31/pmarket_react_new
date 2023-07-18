@@ -21,7 +21,6 @@ export const setUserList = createAsyncThunk(
                     toastr.warning(data.message);
                 return []
             }
-            console.log(data);
             return data.users;
 
         } catch (error) {
@@ -109,7 +108,6 @@ const usersSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(setUserList.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.userList = action.payload;
             setUserList();
         })

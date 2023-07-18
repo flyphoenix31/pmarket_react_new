@@ -69,7 +69,6 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(setUserInformation.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.userInfo = action.payload;
             state.isAuthenticated = !isEmpty(action.payload);
         })

@@ -8,7 +8,7 @@ import $ from 'jquery';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoginSVG } from '../components/SVG';
 const ShareLoginModal = ({is_open, setLoginOpen, refreshList}) => {
-    const emailRef = useRef();
+const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -132,7 +132,7 @@ const ShareLoginModal = ({is_open, setLoginOpen, refreshList}) => {
                                         <div className="relative">
                                             <input
                                                 type="password"
-                                                placeholder="6+ Characters, 1 Capital letter"
+                                                placeholder="Please enter your password"
                                                 ref={passwordRef}
                                                 className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                                             />

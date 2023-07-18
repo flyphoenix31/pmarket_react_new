@@ -38,8 +38,11 @@ const DefaultLayout = () => {
 
   useEffect(() => {
     if (!isEmpty(roleList) && !isEmpty(userInfo)) {
+      let index = roleList.findIndex(roleItem => {
+        if(roleItem.id == userInfo.role_id) return roleItem;
+      })
       setHeaderInfo({
-        role: roleList[userInfo.role_id],
+        role: roleList[index],
         userInfo: userInfo
       })
     }

@@ -25,6 +25,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [chat_flag , setChatFlag ] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
   let data = { role: "chat_history", roleid: userinfo.role_id };
+  
+  
   getRoleInfo(data)
     .then(result  => {
         setChatFlag(result);

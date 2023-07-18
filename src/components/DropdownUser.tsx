@@ -8,8 +8,6 @@ import { setUser } from '../store/slice/authSlice';
 
 const DropdownUser = (props:any) => {
 
-  console.log("=============dropdown:", props);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
