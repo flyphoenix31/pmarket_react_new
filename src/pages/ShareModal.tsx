@@ -17,7 +17,6 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
     const [ctoken, setToken] = useState('');
     
     const tempUrl = window.location.host;
-    // console.log("---------tempUrl", tempUrl);
     const navigate = useNavigate();
     useEffect(() => {
         if(editIndex == -1){
@@ -33,7 +32,6 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
             setFileLink(tempUrl + "/member/shared/" + ctoken);
         }
     },[])
-    // console.log("token:",token,"editIndex:" ,editIndex,"email:",emails,"password:", password);
     const validateEmail = (str) => {
         var validRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(editIndex == 1){
@@ -47,9 +45,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
     }
 
     const copyContentToClipboard = async () => {
-        console.log("--------------fileLink:", filelink);
         let mfilelink = document.getElementById("filelink");
-        console.log("mfilelink:", mfilelink);
         mfilelink.select();
         document.execCommand('copy');    
     }
@@ -79,13 +75,10 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         setFileLink(tempUrl + "/member/shared/" + mtoken);
         setToken(mtoken);
         token = mtoken;
-        // console.log("mtoken:", mtoken, password)
         axios.post(serverURL + '/api/shared/savetp', {id: preid, token:mtoken, password: password})
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if(!data.status) {
-                    // console.log("tokengeneratesuccess:", data);
                     setPassword('');
                 }
             })
@@ -99,7 +92,6 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails})
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if(!data.status) {
                     refreshList();
                     handleClose(event);
@@ -108,7 +100,6 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                 }
             })
             .catch((error) => {
-                console.log("newfoldererror", error)
                 setShare(false);
                 navigate('/member/auth/signin');
             })
@@ -131,7 +122,6 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         axios.post(serverURL + '/api/shared/save', {id: preid, password: password})
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if(!data.status) {
                     refreshList();
                     toastr.success('Name is renamed successfully!');

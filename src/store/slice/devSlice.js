@@ -14,7 +14,6 @@ export const setUserList = createAsyncThunk(
     'dev/setUserList',
     async () => {
         try {
-            console.log(12);
             const res = await axios.get(serverURL + '/api/user/list');
             const data = await res.data;
             if (data.status) {

@@ -28,10 +28,7 @@ const Role = () => {
       axios.get(serverURL + '/api/role/list-with-permission'),
       axios.get(serverURL + '/api/permission/list')
     ]).then(([pRes, rRes]) => {
-      console.log(pRes, rRes);
       if(!pRes.data.status && !rRes.data.status) {
-        console.log("presultlist:", pRes);
-        console.log("rresultlist", rRes);
         setList(pRes.data.list);
         setPlist(rRes.data.list);
       }

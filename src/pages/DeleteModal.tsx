@@ -5,7 +5,6 @@ import { isEmpty, serverURL, toastr} from '../config';
 import axios from 'axios';
 import { getCurrentFormatedDate } from '../utils';
 const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
-    console.log("deletepreid", preid);
     const [error, setError] = useState('');
     const [item, setItem] = useState('');
 
@@ -22,7 +21,6 @@ const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
         axios.post(serverURL + '/api/shared/delete', {id: preid})
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if(!data.status) {
                     refreshList();
                     toastr.success('It was succefully deleted!');

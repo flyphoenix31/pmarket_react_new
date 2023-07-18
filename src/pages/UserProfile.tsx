@@ -26,7 +26,6 @@ const UserProfile = () => {
 
 
   const userinfo = useSelector((state: any) => state.auth.userInfo);
-  console.log("===========userinfo:", userinfo);
   const id = localStorage.getItem('user_id');
   useEffect(() => {
     if (!isEmpty(userinfo)) {

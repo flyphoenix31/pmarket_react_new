@@ -18,14 +18,12 @@ const QuotationPreviewCli = () => {
   const previewType = useSelector((state) => state.invoice.previewType);
   const settingData = useSelector((state) => state.invoice.previewInvoice);
 
-  console.log(previewInvoice);
-
   useEffect(() => {
     dispatch(getInvoicePreview(id));
     dispatch(getSetting());
   }, [])
 
-  const totalPrice = isEmpty(previewInvoice) || isEmpty(previewInvoice.items) ? 0 : previewInvoice.items.reduce((value, item) => value + (item.unit_price * item.quantity), 0);
+  let totalPrice = isEmpty(previewInvoice) || isEmpty(previewInvoice.items) ? 0 : previewInvoice.items.reduce((value, item) => value + (item.unit_price * item.quantity), 0);
 
   return (
     <>

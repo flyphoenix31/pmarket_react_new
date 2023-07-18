@@ -42,7 +42,7 @@ const QuotationAdd = () => {
       invoice_id,
       mail_content
     }
-    console.log(data);
+    
     dispatch(newQuotation(data));
   }
 

@@ -17,7 +17,6 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
     const [preview, setPreview] = useState();
     const [file, setFile] = useState(null);
     const imageExist = (data) => {
-        console.log("data", data.includes("jpg") || data.includes("jpeg") || data.includes("png"));
         if(data.includes("jpg") || data.includes("jpeg") || data.includes("png")){
             return true;
         }
@@ -34,7 +33,6 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
 
     useEffect(() => {
         if(file != null){
-            console.log("file", file);
             if(file.name.includes(".png") == false && file.name.includes(".jpg") == false){
                 // file = null;
                 // setFile(file);

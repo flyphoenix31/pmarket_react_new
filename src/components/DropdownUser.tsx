@@ -7,6 +7,9 @@ import { SettingSVG } from './SVG';
 import { setUser } from '../store/slice/authSlice';
 
 const DropdownUser = (props:any) => {
+
+  console.log("=============dropdown:", props);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -25,6 +28,7 @@ const DropdownUser = (props:any) => {
 
   const handleProfile = (event: any) => {
     event.preventDefault();
+    setDropdownOpen(false);
     navigate('/member/profile');
   }
 
@@ -108,10 +112,7 @@ const DropdownUser = (props:any) => {
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
-            <Link
-              to="/member/profile"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
-            >
+            <button className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={handleProfile}>
               <svg
                 className="fill-current"
                 width="22"
@@ -130,10 +131,10 @@ const DropdownUser = (props:any) => {
                 />
               </svg>
               My Profile
-            </Link>
+            </button>
           </li>
           {/* <li>
-            <Link
+            <button
               to="#"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
@@ -151,16 +152,16 @@ const DropdownUser = (props:any) => {
                 />
               </svg>
               My Contacts
-            </Link>
+            </button>
           </li>
           <li>
-            <Link
+            <button
               to="/settings"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <SettingSVG />
               Account Settings
-            </Link>
+            </button>
           </li> */}
         </ul>
         <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={handleLogout}>

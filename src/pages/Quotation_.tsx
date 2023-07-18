@@ -38,8 +38,6 @@ const Quotation = () => {
       return { className: 'text-success bg-success', data: 'Viewed: ' + status };
   }
 
-  console.log(quotationList);
-
   return (
     <>
       <Breadcrumb pageName="Quotation" />

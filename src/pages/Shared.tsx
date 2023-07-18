@@ -35,14 +35,11 @@ const Shared = () => {
     const [preid, setPreId] = useState('');
     const [prename, setPreName] = useState('');
     const tempUrl = window.location.host;
-    // console.log("---------------tempUrl:", tempUrl);
-    console.log("---------user_id", user_id);
 
     const getFolederList = async () => {
         try {
             const res = await axios.post(serverURL + '/api/shared/list', { isdeleted: 0, user_id: user_id });
             const data = res.data;
-            console.log("--------result", data.result)
             if (data.status == 0) {
                 setList(data.result);
             }

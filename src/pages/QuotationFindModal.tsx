@@ -12,8 +12,6 @@ const QuotationFindModal = ({ open, setOpen, handleSelect }) => {
     const dispatch = useDispatch();  
     const quotationList = useSelector((state:any) => state.quotation.quotationList);
 
-    console.log(quotationList);
-
     useEffect(() => {
         if (open) {
             dispatch(setQuotationList());

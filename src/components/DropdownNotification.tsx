@@ -41,7 +41,6 @@ const DropdownNotification = () => {
 
   useEffect(() => {
     if(isAuthenticated) {
-      console.log(localStorage.getItem('token'));
       dispatch(setNotificationList());
     }
   }, [isAuthenticated])

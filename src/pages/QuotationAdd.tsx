@@ -179,8 +179,6 @@ const QuotationAdd = () => {
   const company_phone = settingData.company_phone;
   const company_address = settingData.company_address;
 
-  console.log(settingData);
-
   const init_quotation = {
     description: '',
     unit_price: '',
@@ -204,8 +202,6 @@ const QuotationAdd = () => {
   const handleSubmit = (event: any) => {
 
     event.preventDefault();
-
-    console.log(items);
 
     const data = {
       name,

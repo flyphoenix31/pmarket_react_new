@@ -17,7 +17,6 @@ export const sendQuotation = createAsyncThunk(
     'quotation/sendQuotation',
     async (param) => {
         try {
-            console.log(param);
             const res = await axios.post(serverURL + '/api/quotation/send-quotation', param);
             const data = await res.data;
             if (data.status) {

@@ -23,7 +23,6 @@ const QuotationModal = ({ open, setOpen, handleSend }) => {
     }, [open])
 
     useEffect(() => {
-        console.log(currentQuotation);
         if (!isEmpty(currentQuotation)) {
             setName(currentQuotation.client_name);
             setEmail(currentQuotation.client_email);

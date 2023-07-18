@@ -18,7 +18,6 @@ const Invoice = () => {
   const invoiceList = useSelector((state) => state.invoice.invoiceList);
 
   useEffect(() => {
-    console.log('setInvoiceList');
     dispatch(setInvoiceList());
   }, [])
 

@@ -47,7 +47,6 @@ const DefaultLayout = () => {
 
   useEffect(() => {
     if (!auth && isEmpty(localStorage.getItem('token'))) {
-      console.log('Auth', auth);
       navigate('/member/auth/signin');
     }
   }, [auth])

@@ -17,7 +17,6 @@ export const updateImg = createAsyncThunk(
     'invoice/updateImg',
     async (param) => {
         try {
-            console.log("param", param)
             const res = await axios.post(serverURL + '/api/invoice/updateimg', param, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
@@ -42,7 +41,6 @@ export const sendQuotation = createAsyncThunk(
     'invoice/sendQuotation',
     async (param) => {
         try {
-            console.log(param);
             const res = await axios.post(serverURL + '/api/invoice/send-quotation', param);
             const data = await res.data;
             if (data.status) {
@@ -67,7 +65,6 @@ export const getInvoicePreview = createAsyncThunk(
         try {
             const res = await axios.get(serverURL + '/api/mailed-quotation/view-quotation', { params: { uuid: param } });
             const data = await res.data;
-            console.log(data);
             if (!data.status) return data;
             else if (!isEmpty(data.message))
                 toastr.warning(data.message);
@@ -105,8 +102,6 @@ export const newInvoice = createAsyncThunk(
 
             const res = await axios.post(serverURL + '/api/invoice/new', param);
             const data = await res.data;
-
-            console.log(data);
 
             if (!data.status)
                 toastr.success('Successfully added');

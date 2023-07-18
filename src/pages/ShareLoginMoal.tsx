@@ -21,7 +21,6 @@ const ShareLoginModal = ({is_open, setLoginOpen, refreshList}) => {
       email: emailRef.current.value,
       password: passwordRef.current.value
     }
-    console.log("userinfodata:", data);
     
     axios.post(serverURL + '/api/shared/sharelogin', data)
         .then(result => {
@@ -39,7 +38,6 @@ const ShareLoginModal = ({is_open, setLoginOpen, refreshList}) => {
             refreshList();
             setLoginOpen(false);
             toastr.success(`Welcome to download file`);
-            console.log("-------shareloginresult:", result);
         })
   }
 
@@ -48,13 +46,11 @@ const ShareLoginModal = ({is_open, setLoginOpen, refreshList}) => {
         axios.post(serverURL + '/api/shared/savem', { id: preid, email: emails })
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if (!data.status) {
                     toastr.success('Email successfully sended!');
                 }
             })
             .catch((error) => {
-                console.log("newfoldererror", error)
                 setLoginOpen(false);
             })
     }

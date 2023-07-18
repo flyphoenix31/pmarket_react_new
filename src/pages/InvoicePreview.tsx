@@ -37,7 +37,6 @@ const InvoicePreview = ({
     getRoleInfo(data)
         .then(result  => {
             setInvoiceFlag(result);
-            console.log("invoice_img:" , result);
         })
 
     const fileUpload = useRef(null);
@@ -77,7 +76,6 @@ const InvoicePreview = ({
         const formData = new FormData();
         if (imgFile !== null) formData.append('invoice_img', imgFile);
         formData.append("id", id);
-        console.log(imgFile)
         dispatch(updateImg(formData));
         navigate('/member/invoice');
       }

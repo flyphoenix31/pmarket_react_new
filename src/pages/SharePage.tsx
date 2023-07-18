@@ -21,15 +21,12 @@ const SharedPage = () => {
     const [list, setList] = useState([]);
     const [is_open, setLoginOpen] = useState(true);
     const [is_token, setToken] = useState(false);
-    console.log("---------user_id", user_id);
     const token = window.location.pathname.substr(15);
     const tempUrl = window.location.host;
-    console.log("---------------token:", token);
     const getToken = async () => {
         try {
             const res = await axios.post(serverURL + '/api/shared/gettoken', { is_deleted: 0, token: token });
             const data = res.data;
-            console.log("--------result", data)
             if (data.status) {
                 setLoading(true);
                 setToken(false);
@@ -47,7 +44,6 @@ const SharedPage = () => {
             const res = await axios.post(serverURL + '/api/shared/sharelist', { is_deleted: 0,user_id: user_id, token: token });
          
             const data = res.data;
-            console.log("--------result", data)
             if (data.status == 0) {
                 setList(data.result);
             }

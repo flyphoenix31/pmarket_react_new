@@ -14,9 +14,7 @@ export const setUserList = createAsyncThunk(
     'users/setUserList',
     async () => {
         try {
-            console.log('setUserList');
             const res = await axios.get(serverURL + '/api/user/list');
-            console.log('hello');
             const data = await res.data;
             if (data.status) {
                 if (!isEmpty(data.message))
@@ -38,7 +36,6 @@ export const setRoleList = createAsyncThunk(
     'users/setRoleList',
     async () => {
         try {
-            console.log('setRoleList');
             const res = await axios.get(serverURL + '/api/role/list');
             const data = await res.data;
             if (data.status) {

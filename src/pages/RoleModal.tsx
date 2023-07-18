@@ -43,7 +43,6 @@ const RoleModal = ({ open, setOpen, pList, refreshTable, currentItem }) => {
                 else
                     return [...res, p];
             }, []);
-            console.log(checkedList);
             setItem(currentItem.name);
             setList(checkedList);
         }

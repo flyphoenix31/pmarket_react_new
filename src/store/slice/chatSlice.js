@@ -64,7 +64,6 @@ export const sendMessage = createAsyncThunk(
                 // { headers: { 'Content-Type': 'multipart/form-data' } }
             );
             const data = await res.data;
-            console.log("filedata:", data)
             if (data.status) {
                 if (!isEmpty(data.message))
                     toastr.warning(data.message);

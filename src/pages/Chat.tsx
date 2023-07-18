@@ -42,7 +42,6 @@ const Chat = () => {
     }, [contactList])
 
     const imageExist = (data) => {
-        console.log("data", data.includes("jpg") || data.includes("jpeg") || data.includes("png"));
         if(data.includes("jpg") || data.includes("jpeg") || data.includes("png")){
             return true;
         }
@@ -58,7 +57,6 @@ const Chat = () => {
 
     useEffect(() => {
         if(file != null){
-            console.log("file", file);
             if(file.name.includes(".png") == false && file.name.includes(".jpg") == false){
                 setPreview(null);
             }

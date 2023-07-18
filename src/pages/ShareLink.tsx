@@ -16,7 +16,6 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
     const [ctoken, setToken] = useState('');
     
     const tempUrl = window.location.host;
-    // console.log("---------tempUrl", tempUrl);
     const navigate = useNavigate();
     let temp_filelink = '';
     let temp_emials = '';
@@ -37,8 +36,6 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
         // setEmails(preemail);
         // setFileLink(tempUrl + "/member/shared/" + token);
     },[])
-    console.log("token:",token,"editIndex:",editIndex,"email:",preemail);
-    console.log("temp_filelink:", temp_filelink, "temp_emails", temp_emials);
     const validateEmail = (str) => {
         var validRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(editIndex == 1){
@@ -52,10 +49,8 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
     }
 
     const copyContentToClipboard = async () => {
-        console.log("fileLink", temp_filelink);
         // await navigator.clipboard.writeText(temp_filelink);
         let mfilelink = document.getElementById("filelink");
-        console.log("mfilelink:", mfilelink);
         mfilelink.select();
         document.execCommand('copy');  
 

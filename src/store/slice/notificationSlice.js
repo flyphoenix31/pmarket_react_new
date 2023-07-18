@@ -13,7 +13,6 @@ export const setNotificationList = createAsyncThunk(
     'notification/setNotificationList',
     async () => {
         try {
-            console.log('onSlice');
             const res = await axios.get(serverURL + '/api/notification/unreadList');
             const data = await res.data;
             if (data.status) {

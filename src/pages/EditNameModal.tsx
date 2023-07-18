@@ -11,7 +11,6 @@ const EditNameModal = ({preid, prename, editname, setEditName, refreshList }) =>
     const [editIndex, setEditIndex] = useState(-1);
 
     const navigate = useNavigate();
-    console.log("prename", prename, editIndex)
     useEffect(() => {
         if(editIndex == -1){
             setItem(prename)
@@ -29,7 +28,6 @@ const EditNameModal = ({preid, prename, editname, setEditName, refreshList }) =>
         axios.post(serverURL + '/api/shared/editname', {id: preid, name: item})
             .then(res => {
                 const data = res.data;
-                console.log("data: ", data)
                 if(!data.status) {
                     refreshList();
                     toastr.success('Name is renamed successfully!');
@@ -38,7 +36,6 @@ const EditNameModal = ({preid, prename, editname, setEditName, refreshList }) =>
                 }
             })
             .catch((error) => {
-                console.log("newfoldererror", error)
                 setEditName(false);
                 navigate('/member/auth/signin');
             })

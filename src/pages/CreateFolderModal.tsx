@@ -30,7 +30,6 @@ const CreateFolderModal = ({ opencreate, setOpenCreate, refreshList }) => {
                 }
             })
             .catch((error) => {
-                console.log("newfoldererror", error)
                 setOpenCreate(false);
                 navigate('/member/auth/signin');
             })
