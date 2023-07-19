@@ -208,9 +208,9 @@ const InvoicePreview = ({
                                 />
                             </div> */}
                             <div>
-                                <p style={{ fontSize: '20px', padding:'5px' }} className='mt-3'>{isEmpty(company_address) ? 'Company address' : company_address}</p>
-                                <p style={{ fontSize: '20px', padding:'5px' }}>{isEmpty(company_phone) ? 'Company phone' : company_phone}</p>
-                                <p style={{ fontSize: '20px', padding:'5px' }}>{isEmpty(company_email) ? 'Company email' : company_email}</p>
+                                <p style={{ fontSize: '20px', padding:'5px' }} className='mt-3'>{isEmpty(mcompany_address) ? 'Company address' : mcompany_address}</p>
+                                <p style={{ fontSize: '20px', padding:'5px' }}>{isEmpty(mcompany_phone) ? 'Company phone' : mcompany_phone}</p>
+                                <p style={{ fontSize: '20px', padding:'5px' }}>{isEmpty(mcompany_email) ? 'Company email' : mcompany_email}</p>
                             </div>
                         </div>
                     </div>

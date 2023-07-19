@@ -287,7 +287,7 @@ const InvoiceEdit = () => {
     }
 
     dispatch(updateInvoice(data));
-    // navigate('/member/invoice');
+    navigate('/member/invoice');
   }
 
   const handleClose = (event: any) => {
