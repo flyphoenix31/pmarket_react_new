@@ -54,7 +54,7 @@ const JobAdd = () => {
     }
     let temp;
     dispatch(temp = newJob(data));
-    // navigate('/member/jobs');
+    navigate('/member/jobs');
   }
 
   const handleClose = (event: any) => {

@@ -87,7 +87,7 @@ const JobEdit = () => {
     }
 
     dispatch(updateJob(data));
-    // navigate('/member/jobs');
+    navigate('/member/jobs');
   }
 
   const handleClose = (event: any) => {
