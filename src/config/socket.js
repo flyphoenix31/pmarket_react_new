@@ -3,6 +3,7 @@ import { isEmpty, serverURL } from '.';
 import { toast } from 'react-toastify';
 import store from '../store';
 import { setUserList } from '../store/slice/usersSlice';
+import { setJobList } from '../store/slice/jobsSlice';
 import { setOnlineUsers, setNewMessage } from '../store/slice/chatSlice';
 import { setNotificationList } from '../store/slice/notificationSlice';
 import { setContactList } from '../utils';
@@ -32,6 +33,7 @@ socket.on('newMessage', (data) => {
         // store.dispatch(setNotification(true));
     }
     // console.error(authStore.userInfo.id, data.to_user);
+    
     if (authStore.userInfo.id === data.to_user) {1
         toast.info('New message arrived ', {
             position: "top-right",
@@ -41,24 +43,27 @@ socket.on('newMessage', (data) => {
             pauseOnHover: true,
             draggable: false,
             progress: undefined,
-            // theme: authStore.theme, 
+            theme: authStore.theme, 
         });
     }
 })
 
-// socket.on('jobMessage', (data) => {
-//     // store.dispatch(setNewMessage(data));
-//     console.log("jobcreated:" , data)
-//     toast.info('New Job Created ', {
-//         position: "top-right",
-//         autoClose: 3000,
-//         hideProgressBar: true,
-//         closeOnClick: true,
-//         pauseOnHover: true,
-//         draggable: false,
-//         progress: undefined,
-//     });
-// })
+socket.on('jobMessage', (data) => {
+    let role_name = localStorage.getItem('role_name');
+    console.log("jobcreated:" , role_name);
+    if(role_name == "designer"){
+        toast.info('New Job Created ', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+        });
+        store.dispatch(setJobList());
+    }
+})
 
 socket.on('connectionState', list => {
     store.dispatch(setOnlineUsers(list));

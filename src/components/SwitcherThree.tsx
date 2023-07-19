@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const SwitcherThree = () => {
-  const [enabled, setEnabled] = useState(false);
-
+const SwitcherThree = (shareMode) => {
+  const [enabled, setEnabled] = useState(0);
+  const [editIndex, setEditIndex] = useState(-1);
+  console.log("shareMode", enabled);
+  useEffect(() => {
+    if(editIndex == -1){
+      setEnabled(0)
+    }
+  })
   return (
     <div>
       <label

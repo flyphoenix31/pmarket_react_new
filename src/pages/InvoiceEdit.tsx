@@ -8,6 +8,7 @@ import { updateInvoice, setRedirect, findOneInvoice } from '../store/slice/invoi
 import { HumanSVG, EmailSVG, AddressSVG, PhoneSVG, CalendarSVG, MoneySVG, PercentSVG, TitleSVG } from '../components/SVG.js';
 import ClientModal from './ClientModal.js';
 import InvoicePreview from './InvoicePreview.js';
+import { getSetting } from '../store/slice/settingSlice';
 
 const InvoiceContent = ({ data, setData, errors }) => {
   return (
@@ -215,13 +216,14 @@ const InvoiceEdit = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const settingData = useSelector((state) => state.setting.data);
   let { id } = useParams();
 
   useEffect(() => {
     if (isEmpty(invoiceList))
       navigate('/member/invoice');
     dispatch(findOneInvoice(id));
+    dispatch(getSetting());
   }, [invoiceList])
 
   useEffect(() => {
@@ -324,6 +326,7 @@ const InvoiceEdit = () => {
       due_date={due_date}
       name={name}
       notes = {notes}
+      settingData = {settingData}
       invoice_img = {invoice_img}
     />
   );

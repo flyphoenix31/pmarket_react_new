@@ -33,6 +33,7 @@ const Role = () => {
         setPlist(rRes.data.list);
       }
     }).catch(error => {
+      console.log("----------error_getrolelist", error);
       navigate('/member/auth/signin');
     })
   }
@@ -47,6 +48,7 @@ const Role = () => {
       // resolve(data);
     } catch (error) {
       // reject(error);
+      console.log("----------error_getpermissionlist", error);
       navigate('/member/auth/signin');
     }
     // })

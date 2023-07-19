@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const SwitcherFour = () => {
   const [enabled, setEnabled] = useState<boolean>(false);
-
+  useEffect(() => {
+    
+  })
   return (
     <div>
       <label

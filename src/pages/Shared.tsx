@@ -8,7 +8,7 @@ import FolderImg from '../images/shared/Folder_Small.png';
 import { FileSVG } from '../components/SVG.js';
 import Breadcrumb from '../components/Breadcrumb'; 1
 import { useNavigate } from 'react-router-dom';
-
+import SwitcherThree  from '../components/SwitcherThree.js';
 import CreateFolderModal from './CreateFolderModal.js';
 import UploadFileModal from './UploadFileModal.js';
 import ShareModal from './ShareModal.js';
@@ -34,6 +34,7 @@ const Shared = () => {
     const [password, setPassword] = useState('');
     const [preid, setPreId] = useState('');
     const [prename, setPreName] = useState('');
+    const [shareMode, setShareMode] = useState(0);   //0(false) => Private Mode,  1(true) => Full Mode
     const tempUrl = window.location.host;
 
     const getFolederList = async () => {
@@ -48,7 +49,7 @@ const Shared = () => {
             // navigate('/member/auth/signin');
         }
     }
-
+    // console.log("-----enabled:", enabled);
     useEffect(() => {
         getFolederList();
     }, [])
@@ -60,7 +61,7 @@ const Shared = () => {
             <UploadFileModal openupload={openupload} setOpenUpload={setOpenUpload} refreshList={getFolederList} />
             <EditNameModal preid={preid} prename={prename} editname={editname} setEditName={setEditName} refreshList={getFolederList} />
             <DeleteModal preid={preid} is_deleted={is_deleted} setDelete={setDelete} refreshList={getFolederList} />
-            <ShareModal preid={preid} preemail={email} prepassword={password} token={token} is_shared={is_shared} setShare={setShare} refreshList={getFolederList} />
+            <ShareModal mshareMode={shareMode} preid={preid} preemail={email} prepassword={password} token={token} is_shared={is_shared} setShare={setShare} refreshList={getFolederList} />
             <ShareLink preid={preid} preemail={email} token={token} is_sharelink={is_sharelink} setShareLink={setShareLink} refreshList={getFolederList} />
             <div className="flex flex-col gap-10">
                 <div className="h-[calc(100vh-186px)] overflow-hidden sm:h-[calc(100vh-174px)]">
@@ -92,7 +93,7 @@ const Shared = () => {
                                                             <a href={serverURL + item.filepath} className="task-info flex">
                                                                 <div className="w-img">
                                                                     {/* <img src={FolderImg} alt="" /> */}
-                                                                    <FileSVG />
+                                                                    <FileSVG/>
                                                                 </div>
                                                             </a>
                                                             <div className="w-title ml-2">
@@ -101,17 +102,20 @@ const Shared = () => {
                                                             </div>
 
                                                         </div>
-                                                        <div className="task-action">
-                                                            <div className="dropdown">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                                <div className="dropdown-content">
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Edit Share</a>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
-                                                                    <div className="dropdown-divider"></div>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
+                                                        <div>
+                                                            <div className="task-action pr-2" style={{textAlign:'right'}}>
+                                                                <div className="dropdown">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                                                    <div className="dropdown-content">
+                                                                        <a href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password); setShareMode(item.shareMode);console.log("itemshareMode:",item.shareMode)}}>Edit Share</a>
+                                                                        <a href="#" onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
+                                                                        <a href="#" onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
+                                                                        <div className="dropdown-divider"></div>
+                                                                        <a href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            {/* <SwitcherThree shareMode={item.shareMode}/> */}
                                                         </div>
                                                     </div>
                                                 </div>

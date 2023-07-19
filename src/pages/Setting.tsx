@@ -75,6 +75,7 @@ const Setting = () => {
 
     // useDispatch()(newUser(formData));
     dispatch(setSetting(formData));
+    // navigate('/member/setting/company');
   }
 
   return (
@@ -316,20 +317,6 @@ const Setting = () => {
                     </div>
                   </div>
 
-                  {/* <div className="flex justify-end gap-4.5">
-                    <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                      type="submit"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-70"
-                      type="submit"
-                    >
-                      Save
-                    </button>
-                  </div> */}
                 </form>
               </div>
             </div>

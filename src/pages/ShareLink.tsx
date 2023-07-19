@@ -8,7 +8,7 @@ import $ from 'jquery';
 import { CopySVG, SaveSVG } from '../components/SVG';
 
 const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshList }) => {
-    
+    console.log("---------------sharelink sharemode:", preemail);
     const [error, setError] = useState('');
     const [filelink, setFileLink] = useState('');
     const [emails, setEmails] = useState('');
@@ -123,6 +123,7 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
                             </div>
                         
                         </div>
+                        {!isEmpty(preemail) ?
                         <div>
                             <div style={{fontSize:'17px', color:'grey', textAlign:'left'}} className='mb-1'>Recipients</div> 
                             <div>
@@ -157,6 +158,8 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
                                 </div>
                             </div>
                         </div>
+                        : ""
+                        }
                         <div className="flex justify-end gap-4.5 mt-4.5">
                             <button
                                 className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white" style={{color:'cornflowerblue'}}

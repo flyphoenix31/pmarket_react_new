@@ -36,15 +36,6 @@ const JobAdd = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    // const formData = new FormData();
-    // formData.append('title', title);
-    // formData.append('delivery_day', delivery_day);
-    // formData.append('budget', budget);
-    // formData.append('job_nature', job_nature);
-    // formData.append('categories', categories);
-    // formData.append('short_description', short_description);
-    // formData.append('full_description', full_description);
-
     const id_categories = categories.reduce((list, value) => [...list, value.id], []);
 
     const data = {
@@ -61,9 +52,9 @@ const JobAdd = () => {
       jobUsers: [],
       tags: ''
     }
-
-    dispatch(newJob(data));
-    navigate('/member/jobs');
+    let temp;
+    dispatch(temp = newJob(data));
+    // navigate('/member/jobs');
   }
 
   const handleClose = (event: any) => {

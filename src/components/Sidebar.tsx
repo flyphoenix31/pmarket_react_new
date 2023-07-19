@@ -23,16 +23,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
   
-  const [chatmenu_flag , setChatMenuFlag ] = useState(false);
+  const [chatmenu_flag , setChatMenuFlag] = useState(false);
+  const [settingmenu_flag, setSettingMenuFlag] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
-  let data = { role: "chat_history_menu", roleid: userinfo.role_id };
+  let hdata = { role: "chat_history_menu", roleid: userinfo.role_id };
+  let sdata = { role: "setting_menu", roleid: userinfo.role_id};
   
-  
-  getRoleInfo(data)
+  getRoleInfo(hdata)
     .then(result  => {
         setChatMenuFlag(result);
       })
-        
+  getRoleInfo(sdata)
+    .then(result  => {
+        setSettingMenuFlag(result);
+      })
+      
       useEffect(() => {
         const clickHandler = ({ target }: MouseEvent) => {
           if (!sidebar.current || !trigger.current) return;
@@ -71,7 +76,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <aside
           ref={sidebar}
           className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}
+            }`} 
         >
           {/* <!-- SIDEBAR HEADER --> */}
           <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
@@ -109,7 +114,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     
           <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
             {/* <!-- Sidebar Menu --> */}
-            <nav className="mt-1 py-4 px-4 lg:mt-0 lg:px-6">
+            <nav className="mt-1 py-4 px-4 lg:mt-0 lg:px-6" style={{overscrollBehaviorY:'contain', overflowY:'auto'}}>
               {/* <!-- Menu Group --> */}
               <div>
                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
@@ -621,7 +626,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </li>
                 </ul>
               </div> */}
-    
+              { settingmenu_flag ?
               <div>
                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                   SETTING
@@ -648,24 +653,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 : setSidebarExpanded(true);
                             }}
                           >
-                            <SettingSVG />
-                            Settings
-                            <svg
-                              className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                }`}
-                              width="20"
-                              height="20"
-                              viewBox="0 0 20 20"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                clipRule="evenodd"
-                                d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                fill=""
-                              />
-                            </svg>
+                          <SettingSVG />
+                          Settings
+                          <svg
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                              }`}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                              fill=""
+                            />
+                          </svg>
                           </NavLink>
                           <div
                             className={`translate transform overflow-hidden ${!open && 'hidden'
@@ -705,6 +710,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                   Permission
                                 </NavLink>
                               </li>
+                              {/* <li>
+                                <NavLink
+                                  to="/member/setting/invoice"
+                                  className={({ isActive }) =>
+                                    'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                    (isActive && '!text-white')
+                                  }
+                                >
+                                  Invoice
+                                </NavLink>
+                              </li> */}
                             </ul>
                           </div>
                         </React.Fragment>
@@ -713,6 +729,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </SidebarLinkGroup>
                 </ul>
               </div>
+              : ""
+              }
     
               {/* <!-- Others Group --> */}
               {/* <div>

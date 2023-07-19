@@ -32,6 +32,7 @@ import QuotationPreviewCli from './pages/QuotationPreviewCli';
 import Setting from './pages/Setting';
 import Permission from './pages/Permission';
 import Role from './pages/Role';
+import InvoiceSetting from './pages/InvoiceSetting';
 import QuotationEdit from './pages/QuotationEdit';
 
 const Calendar = lazy(() => import('./pages/Calendar'));
@@ -270,6 +271,15 @@ function App() {
               </Suspense>
             }
           />
+           <Route
+            path="/member/setting/invoice"
+            element={
+              <Suspense fallback={<Loader />}>
+                <InvoiceSetting />
+              </Suspense>
+            }
+          />
+
           <Route
             path="/member/calendar"
             element={

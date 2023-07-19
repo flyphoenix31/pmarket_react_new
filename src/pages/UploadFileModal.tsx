@@ -51,6 +51,7 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
                 formData.append('file', file);
                 formData.append('user_id', userinfo.id);
                 formData.append('created_at', getCurrentFormatedDate());
+                console.log("formdata", formData)
                 axios.post(serverURL + '/api/shared/fileupload', formData)
                     .then(res => {
                         const data = res.data;

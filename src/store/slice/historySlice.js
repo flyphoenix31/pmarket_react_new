@@ -79,9 +79,14 @@ export const newJob = createAsyncThunk(
             const res = await axios.post(serverURL + '/api/job/new', param);
             const data = await res.data;
             if (data.status) {
-                if (!isEmpty(data.message))
+                if (!isEmpty(data.message)){
                     toastr.warning(data.message);
-                return { id: -1, list: [] };
+                    return { id: -1, list: [] };
+                }
+                if(!isEmpty(data.errors)){
+                    toastr.warning(data.errors.message);
+                    return { id: -1, list: []};
+                }
             }
             else
                 toastr.success('Successfully added');
@@ -119,9 +124,14 @@ export const updateJob = createAsyncThunk(
             const res = await axios.post(serverURL + '/api/job/update', param);
             const data = await res.data;
             if (data.status) {
-                if (!isEmpty(data.message))
+                if (!isEmpty(data.message)){
                     toastr.warning(data.message);
-                return []
+                    return []
+                }
+                if(!isEmpty(data.errors)){
+                    toastr.warning(data.errors.message);
+                    return []
+                }
             }
             toastr.success('Successfully updated');
 

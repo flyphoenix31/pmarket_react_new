@@ -41,6 +41,8 @@ const DefaultLayout = () => {
       let index = roleList.findIndex(roleItem => {
         if(roleItem.id == userInfo.role_id) return roleItem;
       })
+      console.log("roleinfo:",roleList[index])
+      localStorage.setItem('role_name', roleList[index].name);
       setHeaderInfo({
         role: roleList[index],
         userInfo: userInfo

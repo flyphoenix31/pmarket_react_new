@@ -7,9 +7,10 @@ import { getCurrentFormatedDate, randomString } from '../utils';
 import $ from 'jquery';
 import { CopySVG, SaveSVG } from '../components/SVG';
 import { useSelector } from 'react-redux';
+import SwitcherThree from '../components/SwitcherThree';
 
-const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, refreshList }) => {
-    
+const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, setShare, refreshList }) => {
+    console.log("msharemode", mshareMode)
     const [error, setError] = useState('');
     const [password, setPassword] = useState('');
     const [filelink, setFileLink] = useState('');
@@ -17,12 +18,18 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
     const [editIndex, setEditIndex] = useState(-1);
     const [ctoken, setToken] = useState('');
     const [emailflag, setEmailFlag] = useState(true);
+    const [shareMode ,setShareMode] = useState(false);
     const navigate = useNavigate();
     let str = "Please enter your email address.";
     const [warningstr, setWarningStr] = useState(str);
     const tempUrl = window.location.host;
     useEffect(() => {
         if(editIndex == -1){
+            if(mshareMode == 0){
+                setShareMode(false);
+            }else{
+                setShareMode(true);
+            }
             setEmails('');
             setPassword('');
             setToken('');
@@ -67,8 +74,8 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         setFileLink('');
     }
     const handleSavetk = (event: any) => {
+        console.log("---------sharemode", shareMode);
         event.preventDefault();
-        setEditIndex(1)
         let mtoken = '';
         if(isEmpty(token)){
             mtoken = randomString(5);
@@ -79,16 +86,35 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
         setFileLink(tempUrl + "/member/shared/" + mtoken);
         setToken(mtoken);
         token = mtoken;
-        axios.post(serverURL + '/api/shared/savetp', {id: preid, token:mtoken, password: password})
-            .then(res => {
-                const data = res.data;
-                if(!data.status) {
-                    setPassword('');
-                }
-            })
-            .catch((error) => {
-                console.log("newfoldererror", error)
-            })
+        if(shareMode == false){
+            setEditIndex(1);
+            axios.post(serverURL + '/api/shared/savetp', {id: preid, token:mtoken, password: password, email:'', shareMode: 0})
+                .then(res => {
+                    const data = res.data;
+                    if(!data.status) {
+                        setPassword('');
+                    }
+                })
+                .catch((error) => {
+                    console.log("newfoldererror", error)
+                })
+        }
+        else{
+            setEditIndex(-1);
+            axios.post(serverURL + '/api/shared/savetp', {id: preid, token:mtoken, password: '', email:'', shareMode: 1})
+                .then(res => {
+                    const data = res.data;
+                    if(!data.status) {
+                        setPassword('');
+                        handleClose(event);
+                        navigate('/member/share');
+                        toastr.success('Full Mode was successful.');
+                    }
+                })
+                .catch((error) => {
+                    console.log("newfoldererror", error)
+                })
+        }
     }
 
     const handleSavem = (event: any) => {
@@ -110,7 +136,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                             if(!data.status) {
                                 refreshList();
                                 handleClose(event);
-                                toastr.success('Email successfully sended!');
+                                toastr.success('Email successfully sended.');
                                 navigate('/member/share');
                             }
                         })
@@ -171,7 +197,72 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                     </div>
                     {firstFlag(ctoken, emails) ?
                     <div>
-                        <div style={{textAlign:'left', fontSize:'18px'}} className='mb-5 sharegenauto'>Link will Auto Generate </div>
+                        <div style={{textAlign:'left', fontSize:'20px',width:'100%'}} className='mb-5 sharegenauto flex justify-between'>
+                            <div style={{display:'inline-grid'}}>
+                                <span>1.Link will Auto Generate.</span>
+                                <span>2.Set the sharing method.</span>
+                                
+                            </div>
+                            <div style={{display:'inline-grid'}}>
+                                <div className='sharemode' style={{placeSelf:'center'}}>
+                                    <label
+                                        htmlFor="toggle3"
+                                        className="flex cursor-pointer select-none items-center" style={{height:'100%'}}
+                                    >
+                                        <div className="relative">
+                                        <input
+                                            type="checkbox"
+                                            id="toggle3"
+                                            className="sr-only"
+                                            onChange={() => {
+                                                setShareMode(!shareMode);
+                                            }}
+                                        />
+                                        <div className="block h-8 w-14 rounded-full bg-meta-9 dark:bg-[#5A616B]"></div>
+                                            <div
+                                                className={`dot absolute left-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-white transition ${
+                                                shareMode && '!right-1 !translate-x-full !bg-primary dark:!bg-white'
+                                                }`}
+                                            >
+                                                <span className={`hidden ${shareMode && '!block'}`}>
+                                                <svg
+                                                    className="fill-white dark:fill-black"
+                                                    width="11"
+                                                    height="8"
+                                                    viewBox="0 0 11 8"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                    d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
+                                                    fill=""
+                                                    stroke=""
+                                                    strokeWidth="0.4"
+                                                    ></path>
+                                                </svg>
+                                                </span>
+                                                <span className={`${shareMode && 'hidden'}`}>
+                                                <svg
+                                                    className="h-4 w-4 stroke-current"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                    ></path>
+                                                </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <span style={{fontSize:'17px'}}>(Private / Full)</span>
+                            </div>
+                         </div>
                         <div className='mb-5.5'>
                             <div style={{textAlign:'left', paddingBottom:'5px', fontSize:'20px'}}>{isEmpty(prepassword) ? 'Password' : "Change Password"}</div>
                             <div className="relative">
@@ -199,7 +290,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                         <div className="flex justify-end gap-4.5">
                             <button
                                 className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"  style={{color:'cornflowerblue'}}
-                                onClick={handleClose}
+                                onClick={ e => {handleClose(e);setEditIndex(-1)}}
                             >
                                 Discard
                             </button>
@@ -280,7 +371,7 @@ const ShareModal = ({preid, preemail,prepassword, token, is_shared, setShare, re
                         <div className="flex justify-end gap-4.5 mt-4.5">
                             <button
                                 className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white" style={{color:'cornflowerblue'}}
-                                onClick={handleClose}
+                                onClick={ e => {handleClose(e); setEditIndex(-1);}}
                             >
                                 I'm Done
                             </button>
