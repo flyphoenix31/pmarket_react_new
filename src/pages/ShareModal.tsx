@@ -260,7 +260,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                         </div>
                                     </label>
                                 </div>
-                                <span style={{fontSize:'17px'}}>(Private / Full)</span>
+                                <span style={{fontSize:'17px'}}>(Private / Public)</span>
                             </div>
                          </div>
                         <div className='mb-5.5'>

@@ -92,7 +92,7 @@ const Shared = () => {
                                                         <div className='flex'>
                                                             <a href={serverURL + item.filepath} className="task-info flex">
                                                                 <div className="w-img">
-                                                                    {/* <img src={FolderImg} alt="" /> */}
+                                                                    <img src={FolderImg} alt="" />
                                                                     <FileSVG/>
                                                                 </div>
                                                             </a>

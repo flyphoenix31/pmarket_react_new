@@ -6,7 +6,7 @@ import { setUserList } from '../store/slice/usersSlice';
 import { setJobList } from '../store/slice/jobsSlice';
 import { setOnlineUsers, setNewMessage } from '../store/slice/chatSlice';
 import { setNotificationList } from '../store/slice/notificationSlice';
-import { setContactList } from '../utils';
+import { setContactList, setLogout } from '../utils';
 
 const socket = io(isEmpty(serverURL) ? '/' : serverURL, { transports: ["websocket"] });
 socket.disconnect();
@@ -17,6 +17,7 @@ socket.on("connect", () => {
 
 socket.on("disconnect", () => {
     console.log('disconnected');
+    setLogout();
 });
 
 socket.on('newMessage', (data) => {

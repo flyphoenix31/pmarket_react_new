@@ -6,7 +6,7 @@ import invoice_imgInit from '../images/invoice/threestudio.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { updateInvoicePreview } from '../store/slice/invoiceSlice.js'
-
+import TotalpriceImg from '../images/task/totalprice.png'
 import { getRoleInfo } from '../utils';
 const InvoicePreview = ({
     name,
@@ -308,7 +308,7 @@ const InvoicePreview = ({
                         <div className='flex mt-15'>
                             <div className='w-full' style={{textAlign:'left',paddingLeft:'25px'}}></div>
                             <div className='w-full' style={{textAlign:'center', position:'relative'}}>
-                                <img src={'/src/images/task/totalprice.png'} alt="totalprice.png" />
+                                <img src={TotalpriceImg} alt="totalprice.png" />
                                 <p className='text-lg totalprice'>
                                     {   
                                         onSum(items)

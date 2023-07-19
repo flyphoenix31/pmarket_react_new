@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import { ClientSVG, InvoiceSVG, QuotationSVG, SettingSVG } from './SVG';
-import { getRoleInfo } from '../utils';
+import { getRoleInfo, setLogout } from '../utils';
 
 import { useSelector } from 'react-redux';
 interface SidebarProps {
@@ -23,6 +23,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
   
+  const navigate = useNavigate();
   const [chatmenu_flag , setChatMenuFlag] = useState(false);
   const [settingmenu_flag, setSettingMenuFlag] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
@@ -33,10 +34,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     .then(result  => {
         setChatMenuFlag(result);
       })
+    .catch(err => {
+      console.log("hdata_getrole_info", err);
+      // setLogout();
+      navigate('/member/auth/signin')
+    })
   getRoleInfo(sdata)
     .then(result  => {
         setSettingMenuFlag(result);
       })
+    .catch(err => {
+      console.log("sdata_getrole_info", err);
+      navigate('/member/auth/signin');
+      // setLogout();
+    })
       
       useEffect(() => {
         const clickHandler = ({ target }: MouseEvent) => {

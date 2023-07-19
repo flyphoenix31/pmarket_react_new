@@ -116,3 +116,11 @@ export const getRoleFlag = async (userinfo, str) => {
         return false;
     }
 }
+
+export const setLogout = async () => {
+    window.localStorage.setItem('user_id', '');
+    window.localStorage.setItem('role_name', '');
+    window.localStorage.setItem('token', '');
+    window.localStorage.clear();
+    window.location.href = '/member/auth/signin';
+}

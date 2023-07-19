@@ -33,6 +33,7 @@ import Setting from './pages/Setting';
 import Permission from './pages/Permission';
 import Role from './pages/Role';
 import InvoiceSetting from './pages/InvoiceSetting';
+import EmailManage from './pages/EmailManage';
 import QuotationEdit from './pages/QuotationEdit';
 
 const Calendar = lazy(() => import('./pages/Calendar'));
@@ -270,6 +271,14 @@ function App() {
                 <Permission />
               </Suspense>
             }
+          />
+          <Route
+          path="/member/setting/emailmanage"
+          element={
+            <Suspense fallback={<Loader />}>
+              <EmailManage />
+            </Suspense>
+          }
           />
            <Route
             path="/member/setting/invoice"

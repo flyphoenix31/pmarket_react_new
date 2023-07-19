@@ -9,7 +9,6 @@ import { setContactList, getMessageList } from '../utils';
 import { sendMessage } from '../store/slice/chatSlice';
 
 
-
 const Chat = () => {
 
     const dispatch = useDispatch();
