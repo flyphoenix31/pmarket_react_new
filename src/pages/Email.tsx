@@ -11,28 +11,11 @@ const Email = () => {
   const emailList = useSelector((state) => state.email.emailList);
   console.log("-------------------emaliList", emailList);
   let { roles } = useParams();
-  let user_id = localStorage.getItem('user_id');
+  let user_email = window.localStorage.getItem('email');
   console.log("=========id:", roles);
-  console.log("=========id:", user_id);
-  
-  let displayList = [];
-  if(roles == "all"){
-    displayList = emailList;
-  }
-  if(roles == 'send'){
-    emailList.forEach(element => {
-      if(element.from_user == user_id){
-        displayList.push(element);
-      }
-    });
-  }
-  if(roles == 'receive'){
-    emailList.forEach(element => {
-      if(element.to_user == user_id){
-        displayList.push(element);
-      }
-    });
-  }
+  console.log("=========id:", user_email);
+
+ 
   useEffect(() => {
     dispatch(setEmailList());
   }, [])
@@ -41,13 +24,51 @@ const Email = () => {
     'Id',
     'Sender',
     'Receiver',
-    'Content',
+    'Token',
     'Date',
     // 'Status',
     // 'Action'
   ];
+  const stableHeaderList = [
+    'Id',
+    'Receiver',
+    'Token',
+    'Date',
+    // 'Status',
+    // 'Action'
+  ];
+  const rtableHeaderList = [
+    'Id',
+    'Sender',
+    'Token',
+    'Date',
+    // 'Status',
+    // 'Action'
+  ];
+  let displayList = [];
+  let tempHeader = [];
+  if (roles == "all") {
+    displayList = emailList;
+    tempHeader = tableHeaderList;
+  }
+  if (roles == 'send') {
+    emailList.forEach(element => {
+      if (element.sender_emamil == user_email) {
+        displayList.push(element);
+      }
+    });
+    tempHeader = stableHeaderList;
+  }
+  if (roles == 'receive') {
+    emailList.forEach(element => {
+      if (element.receiver_email == user_email) {
+        displayList.push(element);
+      }
+    });
+    tempHeader = tableHeaderList;
+  }
 
- 
+
   const navigate = useNavigate();
 
   const handleAddNew = (event: any) => {
@@ -72,15 +93,27 @@ const Email = () => {
 
   return (
     <>
-      {roles == "all" ? <Breadcrumb pageName="All Emails" /> : '' }
-      {roles == "Send" ? <Breadcrumb pageName="Sende Emails" /> : '' }
-      {roles == "Receive" ? <Breadcrumb pageName="Receive Emails" /> : '' }
+      {roles == "all" ? <Breadcrumb pageName="All" /> : ''}
+      {roles == "send" ? <Breadcrumb pageName="Send" /> : ''}
+      {roles == "receive" ? <Breadcrumb pageName="Receive" /> : ''}
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="py-6 px-4 md:px-6 xl:px-7.5 flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap" style={{ padding: '10px 0px 30px 0px' }}>
           <div className="flex flex-wrap gap-3 sm:gap-5">
-            <h4 className="text-xl font-semibold text-black dark:text-white">
-              History list
+            {roles == "all" ?
+              <h4 className="text-xl font-semibold text-black dark:text-white">
+                All list
+              </h4> : ''}
+            {roles == "send" ? <h4 className="text-xl font-semibold text-black dark:text-white">
+              Send list
             </h4>
+              : ''}
+            {roles == "receive" ?
+              <h4 className="text-xl font-semibold text-black dark:text-white">
+                Receive list
+              </h4> : ''}
+            {/* <h4 className="text-xl font-semibold text-black dark:text-white">
+              Emails list
+            </h4> */}
           </div>
         </div>
         <div className="max-w-full overflow-x-auto">
@@ -94,7 +127,7 @@ const Email = () => {
                     </th>
                   ))
                 }
-               
+
               </tr>
             </thead>
             <tbody>
@@ -105,13 +138,13 @@ const Email = () => {
                       <p className="text-black dark:text-white">{memail.id}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{memail.from_user_email}</p>
+                      <p className="text-black dark:text-white">{memail.sender_email}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{memail.to_user_email}</p>
+                      <p className="text-black dark:text-white">{memail.receiver_email}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{memail.message}</p>
+                      <p className="text-black dark:text-white">{memail.token}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">{moment(memail.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>

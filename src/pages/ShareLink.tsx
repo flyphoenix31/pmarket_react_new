@@ -53,7 +53,6 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
    
     const handleSavem = (event: any) => {
         event.preventDefault();
-        if(validateEmail(emails) == false) return;
         console.log("------Send Email------");
         // axios.post(serverURL + '/api/shared/sharelink', {id: preid, email: emails})
         //     .then(res => {

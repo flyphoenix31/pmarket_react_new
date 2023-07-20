@@ -21,9 +21,11 @@ export const setUserInformation = createAsyncThunk(
                 return {}
             } else {
                 toastr.success(`Welcome ${data.user.name}!`);
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user_id', data.user.id);
-                axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+                window.localStorage.setItem('token', data.token);
+                window.localStorage.setItem('user_id', data.user.id);
+                window.localStorage.setItem('user_name', data.user.name);
+                window.localStorage.setItem('user_email', data.user.email);
+                axios.defaults.headers.common['Authorization'] = window.localStorage.getItem('token');
                 return data.user;
             }
 
@@ -37,7 +39,7 @@ export const getCurrentUser = createAsyncThunk(
     'auth/getCurrentUser',
     async (param) => {
         try {
-            axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+            axios.defaults.headers.common['Authorization'] = window.localStorage.getItem('token');
             const res = await axios.get(serverURL + '/api/user/current', param);
             const data = await res.data;
             if (data.status) {
@@ -64,10 +66,10 @@ export const authSlice = createSlice({
             state.userInfo = action.payload;
             state.isAuthenticated = !isEmpty(action.payload);
             axios.defaults.headers.common['Authorization'] = '';
-            localStorage.setItem('token', '');
-            localStorage.setItem('user_id', '');
-            localStorage.setItem('role_name', '');
-            localStorage.clear();
+            window.localStorage.setItem('token', '');
+            window.localStorage.setItem('user_id', '');
+            window.localStorage.setItem('role_name', '');
+            window.localStorage.clear();
         }
     },
     extraReducers: (builder) => {
@@ -80,7 +82,7 @@ export const authSlice = createSlice({
             state.isAuthenticated = !isEmpty(action.payload);
             if (isEmpty(action.payload) && window.location.pathname !== '/member/auth/signin') {
                 axios.defaults.headers.common['Authorization'] = '';
-                localStorage.setItem('token', '');
+                window.localStorage.setItem('token', '');
             }
         })
     }

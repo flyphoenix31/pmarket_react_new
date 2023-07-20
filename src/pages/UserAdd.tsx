@@ -6,7 +6,7 @@ import userInit from '../images/user/user-07.png';
 import { isEmpty } from '../config/index.js';
 import { removeStrAfteratSymbol } from '../utils/index';
 import { newUser, setRedirect } from '../store/slice/usersSlice.js';
-import { ArrowDownSVG, ContentSVG, EmailSVG, PhoneSVG, UserSVG, WebSVG } from '../components/SVG.js';
+import { ArrowDownSVG, ContentSVG, EmailSVG, KeySVG, PhoneSVG, UserSVG, WebSVG } from '../components/SVG.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import $ from 'jquery';
@@ -253,22 +253,7 @@ const UserAdd = () => {
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 32 32"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule='evenodd'
-                              clipRule='evenodd'
-                              d="M20.959 1.209c-5.405 0.007-9.784 4.386-9.791 9.79v0.001c0 0.247 0.023 0.488 0.041 0.73l-9.739 9.739c-0.136 0.136-0.22 0.324-0.22 0.531 0 0 0 0 0 0v0 8c0 0.414 0.336 0.75 0.75 0.75h8c0.414-0 0.75-0.336 0.75-0.75v0-3.25h3.25c0.414-0 0.75-0.336 0.75-0.75v0-3.25h3.25c0 0 0.001 0 0.002 0 0.207 0 0.394-0.084 0.53-0.219l1.774-1.774c0.217 0.014 0.433 0.034 0.654 0.034 5.399-0.011 9.771-4.391 9.771-9.791s-4.372-9.78-9.77-9.791h-0.001zM20.959 19.291c-0.309-0-0.614-0.017-0.915-0.048l0.038 0.003c-0.018-0.001-0.032 0.006-0.050 0.005-0.024-0.001-0.042 0.006-0.066 0.007-0.183 0.007-0.348 0.080-0.473 0.196l0-0-0.017 0.007-1.787 1.789h-3.689c-0.414 0-0.75 0.336-0.75 0.75v0 3.25h-3.25c-0.414 0-0.75 0.336-0.75 0.75v0 3.25h-6.5v-6.939l9.757-9.757 0.010-0.023c0.114-0.123 0.186-0.286 0.194-0.466l0-0.001c0.001-0.024 0.006-0.042 0.006-0.066-0.001-0.020 0.007-0.037 0.005-0.057-0.034-0.282-0.054-0.609-0.054-0.941 0-4.579 3.712-8.291 8.291-8.291s8.291 3.712 8.291 8.291c0 4.579-3.712 8.291-8.291 8.291h-0zM23 7.25c-0.966 0-1.75 0.784-1.75 1.75s0.784 1.75 1.75 1.75c0.966 0 1.75-0.784 1.75-1.75v0c-0.001-0.966-0.784-1.749-1.75-1.75h-0zM22.75 9c0-0.138 0.112-0.25 0.25-0.25s0.25 0.112 0.25 0.25v0c0 0.275-0.5 0.275-0.5 0z"
-                            />
-                          </g>
-                        </svg>
+                        <KeySVG />
                       </span>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"

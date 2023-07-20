@@ -7,6 +7,7 @@ import Breadcrumb from '../components/Breadcrumb'; 1
 import { serverURL, isEmpty } from '../config';
 import { setContactList, getMessageList } from '../utils';
 import { sendMessage } from '../store/slice/chatSlice';
+import { SendSVG } from '../components/SVG';
 
 
 const Chat = () => {
@@ -343,10 +344,7 @@ const Chat = () => {
                                         </div>
                                     </div>
                                     <button className="flex h-13 w-full max-w-13 items-center justify-center rounded-md bg-primary text-white hover:bg-opacity-90">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M22 2L11 13" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path>
-                                        </svg>
+                                        <SendSVG />
                                     </button>
                                 </form>
                             </div>

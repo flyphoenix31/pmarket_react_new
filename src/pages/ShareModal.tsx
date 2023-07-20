@@ -10,7 +10,8 @@ import { useSelector } from 'react-redux';
 import SwitcherThree from '../components/SwitcherThree';
 
 const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, setShare, refreshList }) => {
-    console.log("msharemode", mshareMode)
+    console.log("msharemode", mshareMode);
+    let send_email = window.localStorage.getItem('user_email');
     const [error, setError] = useState('');
     const [password, setPassword] = useState('');
     const [filelink, setFileLink] = useState('');
@@ -130,7 +131,8 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                     return;
                 }
                 else{
-                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails})
+                    console.log("-----------filelink:", filelink);
+                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, token: ctoken })
                         .then(res => {
                             const data = res.data;
                             if(!data.status) {
@@ -138,6 +140,8 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                 handleClose(event);
                                 toastr.success('Email successfully sended.');
                                 navigate('/member/share');
+                            }else{
+                                toastr.success(data.message);
                             }
                         })
                         .catch((error) => {

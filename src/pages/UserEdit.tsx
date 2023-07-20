@@ -5,6 +5,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import userInit from '../images/user/user-07.png';
 import { isEmpty, serverURL } from '../config';
 import { updateUser, setUserList } from '../store/slice/usersSlice.js';
+import { KeySVG, WebSVG } from '../components/SVG.js';
 
 const UserEdit = () => {
 
@@ -37,7 +38,7 @@ const UserEdit = () => {
         setName(userList[editIndex].name);
         setPhone(userList[editIndex].phone);
         setEmail(userList[editIndex].email);
-        setPassword(userList[editIndex].password);
+        // setPassword(userList[editIndex].password);
         setGender(userList[editIndex].gender);
         setBio(userList[editIndex].bio);
         setRole(userList[editIndex].role_id);
@@ -223,22 +224,7 @@ const UserEdit = () => {
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 32 32"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule='evenodd'
-                              clipRule='evenodd'
-                              d="M20.959 1.209c-5.405 0.007-9.784 4.386-9.791 9.79v0.001c0 0.247 0.023 0.488 0.041 0.73l-9.739 9.739c-0.136 0.136-0.22 0.324-0.22 0.531 0 0 0 0 0 0v0 8c0 0.414 0.336 0.75 0.75 0.75h8c0.414-0 0.75-0.336 0.75-0.75v0-3.25h3.25c0.414-0 0.75-0.336 0.75-0.75v0-3.25h3.25c0 0 0.001 0 0.002 0 0.207 0 0.394-0.084 0.53-0.219l1.774-1.774c0.217 0.014 0.433 0.034 0.654 0.034 5.399-0.011 9.771-4.391 9.771-9.791s-4.372-9.78-9.77-9.791h-0.001zM20.959 19.291c-0.309-0-0.614-0.017-0.915-0.048l0.038 0.003c-0.018-0.001-0.032 0.006-0.050 0.005-0.024-0.001-0.042 0.006-0.066 0.007-0.183 0.007-0.348 0.080-0.473 0.196l0-0-0.017 0.007-1.787 1.789h-3.689c-0.414 0-0.75 0.336-0.75 0.75v0 3.25h-3.25c-0.414 0-0.75 0.336-0.75 0.75v0 3.25h-6.5v-6.939l9.757-9.757 0.010-0.023c0.114-0.123 0.186-0.286 0.194-0.466l0-0.001c0.001-0.024 0.006-0.042 0.006-0.066-0.001-0.020 0.007-0.037 0.005-0.057-0.034-0.282-0.054-0.609-0.054-0.941 0-4.579 3.712-8.291 8.291-8.291s8.291 3.712 8.291 8.291c0 4.579-3.712 8.291-8.291 8.291h-0zM23 7.25c-0.966 0-1.75 0.784-1.75 1.75s0.784 1.75 1.75 1.75c0.966 0 1.75-0.784 1.75-1.75v0c-0.001-0.966-0.784-1.749-1.75-1.75h-0zM22.75 9c0-0.138 0.112-0.25 0.25-0.25s0.25 0.112 0.25 0.25v0c0 0.275-0.5 0.275-0.5 0z"
-                            />
-                          </g>
-                        </svg>
+                        <KeySVG />
                       </span>
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
@@ -327,34 +313,7 @@ const UserEdit = () => {
                     </label>
                     <div className="relative z-20 bg-white dark:bg-form-input">
                       <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M10.0007 2.50065C5.85852 2.50065 2.50065 5.85852 2.50065 10.0007C2.50065 14.1428 5.85852 17.5007 10.0007 17.5007C14.1428 17.5007 17.5007 14.1428 17.5007 10.0007C17.5007 5.85852 14.1428 2.50065 10.0007 2.50065ZM0.833984 10.0007C0.833984 4.93804 4.93804 0.833984 10.0007 0.833984C15.0633 0.833984 19.1673 4.93804 19.1673 10.0007C19.1673 15.0633 15.0633 19.1673 10.0007 19.1673C4.93804 19.1673 0.833984 15.0633 0.833984 10.0007Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.833984 9.99935C0.833984 9.53911 1.20708 9.16602 1.66732 9.16602H18.334C18.7942 9.16602 19.1673 9.53911 19.1673 9.99935C19.1673 10.4596 18.7942 10.8327 18.334 10.8327H1.66732C1.20708 10.8327 0.833984 10.4596 0.833984 9.99935Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M7.50084 10.0008C7.55796 12.5632 8.4392 15.0301 10.0006 17.0418C11.5621 15.0301 12.4433 12.5632 12.5005 10.0008C12.4433 7.43845 11.5621 4.97153 10.0007 2.95982C8.4392 4.97153 7.55796 7.43845 7.50084 10.0008ZM10.0007 1.66749L9.38536 1.10547C7.16473 3.53658 5.90275 6.69153 5.83417 9.98346C5.83392 9.99503 5.83392 10.0066 5.83417 10.0182C5.90275 13.3101 7.16473 16.4651 9.38536 18.8962C9.54325 19.069 9.76655 19.1675 10.0007 19.1675C10.2348 19.1675 10.4581 19.069 10.6159 18.8962C12.8366 16.4651 14.0986 13.3101 14.1671 10.0182C14.1674 10.0066 14.1674 9.99503 14.1671 9.98346C14.0986 6.69153 12.8366 3.53658 10.6159 1.10547L10.0007 1.66749Z"
-                              fill="#637381"
-                            ></path>
-                          </g>
-                        </svg>
+                        <WebSVG />
                       </span>
                       <select
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"

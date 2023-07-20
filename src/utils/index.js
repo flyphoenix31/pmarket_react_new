@@ -71,7 +71,6 @@ export const setContactList = async () => {
     try {
         const res = await axios.post(serverURL + '/api/chat/contacts');
         const data = res.data;
-        console.warn(data);
         if (data.status) {
             if (!isEmpty(data.message))
                 toastr.warning(data.message);
@@ -136,9 +135,9 @@ export const getRoleFlag = async (userinfo, str) => {
 }
 
 export const setLogout = async () => {
-    window.localStorage.setItem('user_id', '');
-    window.localStorage.setItem('role_name', '');
-    window.localStorage.setItem('token', '');
-    window.localStorage.clear();
-    window.location.href = '/member/auth/signin';
+    // window.localStorage.setItem('user_id', '');
+    // window.localStorage.setItem('role_name', '');
+    // window.localStorage.setItem('token', '');
+    // window.localStorage.clear();
+    // window.location.href = '/member/auth/signin';
 }

@@ -19,7 +19,7 @@ const DropdownUser = (props:any) => {
   const handleLogout = (event: any) => {
     event.preventDefault();
     axios.defaults.headers.common['Authorization'] = '';
-    localStorage.setItem('token', '');
+    window.localStorage.setItem('token', '');
     dispatch(setUser({}));
     navigate('/member/auth/signin');
   }

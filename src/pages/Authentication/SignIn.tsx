@@ -14,13 +14,13 @@ const SignIn = () => {
   const auth = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    if (auth && !isEmpty(localStorage.getItem('token'))) {
+    if (auth && !isEmpty(window.localStorage.getItem('token'))) {
       navigate('/member/dashboard');
     }
   }, [auth])
 
   useEffect(() => {
-    if (!isEmpty(localStorage.getItem('token'))) {
+    if (!isEmpty(window.localStorage.getItem('token'))) {
       navigate('/member/dashboard');
     }
   }, [])

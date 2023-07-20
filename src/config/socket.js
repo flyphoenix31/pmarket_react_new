@@ -9,6 +9,26 @@ import { setNotificationList } from '../store/slice/notificationSlice';
 import { setContactList, setLogout } from '../utils';
 
 const socket = io(isEmpty(serverURL) ? '/' : serverURL, { transports: ["websocket"] });
+const socketStyle1 = {
+    position: "top-right",
+    autoClose: 10000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
+    progress: undefined,
+    width: '2000px',
+}
+
+const socketStyle2 = {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
+    progress: undefined,
+}
 socket.disconnect();
 
 socket.on("connect", () => {
@@ -49,22 +69,26 @@ socket.on('newMessage', (data) => {
     }
 })
 
-socket.on('jobMessage', (data) => {
-    let role_name = localStorage.getItem('role_name');
-    console.log("jobcreated:" , role_name);
-    if(role_name == "designer"){
-        toast.info('New Job Created ', {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            progress: undefined,
-        });
-        store.dispatch(setJobsList());
-    }
+socket.on("sendemail", (data) => {
+    console.log("===========data:", data);
+    toast.info(`${serverURL + "/member/shared" + data.token} came from ${data.email}` , socketStyle1);
 })
+// socket.on('jobMessage', (data) => {
+//     let role_name = window.localStorage.getItem('role_name');
+//     console.log("jobcreated:" , role_name);
+//     if(role_name == "designer"){
+//         toast.info('New Job Created ', {
+//             position: "top-right",
+//             autoClose: 3000,
+//             hideProgressBar: true,
+//             closeOnClick: true,
+//             pauseOnHover: true,
+//             draggable: false,
+//             progress: undefined,
+//         });
+//         store.dispatch(setJobsList());
+//     }
+// })
 
 socket.on('connectionState', list => {
     store.dispatch(setOnlineUsers(list));
@@ -72,16 +96,7 @@ socket.on('connectionState', list => {
 
 socket.on('notification', data => {
     store.dispatch(setNotificationList());
-    toast.success(data.content, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-    });
+    toast.success(data.content, socketStyle2);
 })
 
 socket.on('newUser', data => {

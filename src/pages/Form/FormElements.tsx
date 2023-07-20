@@ -4,6 +4,7 @@ import CheckboxFour from '../../components/CheckboxFour';
 import CheckboxOne from '../../components/CheckboxOne';
 import CheckboxThree from '../../components/CheckboxThree';
 import CheckboxTwo from '../../components/CheckboxTwo';
+import { AddressSVG, PalarmSVG, ArrowDownSVG, BellSVG, CalendarSVG, CheckSVG, ClientSVG, ContentSVG, CopySVG, EmailSVG, EyeSVG, FileSVG, HumanSVG, InvoiceSVG, KeySVG, LoginSVG, MessageSVG, MoneySVG, NumberSVG, PercentSVG, PhoneSVG, PlaneSVG, QuotationSVG, SaveSVG, SearchSVG, SendSVG, SettingSVG, TitleSVG, TrushSVG, UserSVG, WebSVG } from '../../components/SVG';
 import SwitcherFour from '../../components/SwitcherFour';
 import SwitcherOne from '../../components/SwitcherOne';
 import SwitcherThree from '../../components/SwitcherThree';
@@ -342,6 +343,145 @@ const FormElements = () => {
                     </svg>
                   </span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-9">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <h3 className="font-medium text-black dark:text-white">
+                SVG Images
+              </h3>
+            </div>
+            <div className="flex-col gap-5.5 p-6.5">
+            <div className='flex mb-5'>
+                <span>LoginSVG  =  </span>
+                <LoginSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>TitleSVG  =  </span>
+                <TitleSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>MoneySVG  =  </span>
+                <MoneySVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>NumberSVG  =  </span>
+                <NumberSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>ContentSVG  =  </span>
+                <ContentSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>CheckSVG  =  </span>
+                <CheckSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>ClientSVG  =  </span>
+                <ClientSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>HumanSVG  =  </span>
+                <HumanSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>UserSVG  =  </span>
+                <UserSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>TitleSVG  =  </span>
+                <TitleSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>EmailSVG  =  </span>
+                <EmailSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>AddressSVG  =  </span>
+                <AddressSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>ArrowDownSVG  =  </span>
+                <ArrowDownSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>PhoneSVG  =  </span>
+                <PhoneSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>CalendarSVG  =  </span>
+                <CalendarSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>WebSVG  =  </span>
+                <WebSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>SearchSVG  =  </span>
+                <SearchSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>QuotationSVG  =  </span>
+                <QuotationSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>InvoiceSVG  =  </span>
+                <InvoiceSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>SettingSVG  =  </span>
+                <SettingSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>PlaneSVG  =  </span>
+                <PlaneSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>EyeSVG  =  </span>
+                <EyeSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>TrushSVG  =  </span>
+                <TrushSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>SaveSVG  =  </span>
+                <SaveSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>PercentSVG  =  </span>
+                <PercentSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>CopySVG  =  </span>
+                <CopySVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>FileSVG  =  </span>
+                <FileSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>KeySVG  =  </span>
+                <KeySVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>SendSVG  =  </span>
+                <SendSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>MessageSVG  =  </span>
+                <MessageSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>BellSvg  =  </span>
+                <BellSVG />
+              </div>
+              <div className='flex mb-5'>
+                <span>AlarmSVG  =  </span>
+                <PalarmSVG />
               </div>
             </div>
           </div>

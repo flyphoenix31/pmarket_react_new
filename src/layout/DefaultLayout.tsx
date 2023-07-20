@@ -24,7 +24,7 @@ const DefaultLayout = () => {
   const roleList = useSelector((state) => state.users.roleList);
 
   useEffect(() => {
-    axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+    axios.defaults.headers.common['Authorization'] = window.localStorage.getItem('token');
     dispatch(getCurrentUser());
     dispatch(setRoleList());
     dispatch(getSetting());
@@ -32,7 +32,7 @@ const DefaultLayout = () => {
 
   useEffect(() => {
     if (!isEmpty(userInfo) && !isEmpty(userInfo.id)) {
-      socket.emit('id', { id: userInfo.id });
+      socket.emit('userInfo', { id: userInfo.id,email:userInfo.email, name: userInfo.name });
     }
   }, [userInfo])
 
@@ -41,8 +41,8 @@ const DefaultLayout = () => {
       let index = roleList.findIndex(roleItem => {
         if(roleItem.id == userInfo.role_id) return roleItem;
       })
-      console.log("roleinfo:",roleList[index])
-      localStorage.setItem('role_name', roleList[index].name);
+      window.localStorage.setItem('role_id', roleList[index].id);
+      window.localStorage.setItem('role_name', roleList[index].name);
       setHeaderInfo({
         role: roleList[index],
         userInfo: userInfo
@@ -51,7 +51,7 @@ const DefaultLayout = () => {
   }, [roleList])
 
   useEffect(() => {
-    if (!auth && isEmpty(localStorage.getItem('token'))) {
+    if (!auth && isEmpty(window.localStorage.getItem('token'))) {
       navigate('/member/auth/signin');
     }
   }, [auth])

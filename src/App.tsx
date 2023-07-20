@@ -48,7 +48,7 @@ const Alerts = lazy(() => import('./pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('./pages/UiElements/Buttons'));
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] = window.localStorage.getItem('token');
 socket.connect();
 
 function App() {
@@ -56,7 +56,7 @@ function App() {
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
-    // localStorage.setItem('color-theme', 'light');
+    // window.localStorage.setItem('color-theme', 'light');
   }, []);
 
   const theme = useSelector((state: any) => state.auth.theme);
