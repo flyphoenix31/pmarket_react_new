@@ -282,6 +282,11 @@ span.flatpickr-weekday,
   transform: translateY(-2px);
 }
 
+.page-content {
+  padding: 10px; 
+	background: #fff;
+}
+
 @keyframes dialoganim {
   from {
     opacity: 0;

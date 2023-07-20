@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { isEmpty } from '../config/index.js';
-import { newJob } from '../store/slice/jobsSlice.js';
+import { newJob, setRedirect } from '../store/slice/jobsSlice.js';
 import { MoneySVG, TitleSVG } from '../components/SVG.js';
 
 const JobAdd = () => {
@@ -21,6 +21,10 @@ const JobAdd = () => {
   const [is_featured, setFeature] = useState(false);
   const [is_urgent, setUrgent] = useState(false);
 
+  const errors = useSelector((state) => state.jobs.errors);
+  const redirect = useSelector((state) => state.jobs.redirect);
+  const jobsList = useSelector((state) => state.jobs.jobsList);
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -28,11 +32,30 @@ const JobAdd = () => {
   const roleList = useSelector((state) => state.jobs.roleList);
   const categoryList = useSelector((state) => state.jobs.categoryList);
 
+  const init_jobs = {
+    jobsList: '',
+    roleList: '',
+    categoryList: '',
+    currentJob: '',
+  }
+
+  const [items, setJobsList] = useState([init_jobs]);
+  useEffect(() => {
+    console.log("-----jobserrors", errors)
+    if (redirect) {
+      dispatch(setRedirect(false));
+      navigate('/member/jobs');
+    }
+  }, [redirect])
+
   useEffect(() => {
     if (isEmpty(roleList) || isEmpty(categoryList))
       navigate('/member/jobs');
   }, [])
-
+  const handleAddRow = (event: any) => {
+    event.preventDefault();
+    setJobsList([...items, init_jobs])
+  }
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
@@ -52,9 +75,8 @@ const JobAdd = () => {
       jobUsers: [],
       tags: ''
     }
-    let temp;
-    dispatch(temp = newJob(data));
-    navigate('/member/jobs');
+    dispatch(newJob(data));
+    // navigate('/member/jobs');
   }
 
   const handleClose = (event: any) => {
@@ -129,6 +151,12 @@ const JobAdd = () => {
                         placeholder="Write title here"
                       />
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="name"
+                    >
+                      {errors.title}
+                    </label>
                   </div>
 
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
@@ -175,6 +203,12 @@ const JobAdd = () => {
                           placeholder="Write delivery days here"
                         />
                       </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="name"
+                      >
+                        {errors.delivery_day}
+                      </label>
                     </div>
 
                     <div className="w-full sm:w-1/2">
@@ -198,6 +232,12 @@ const JobAdd = () => {
                           placeholder="Write budget here"
                         />
                       </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="name"
+                      >
+                        {errors.budget}
+                      </label>
                     </div>
                   </div>
 
@@ -439,6 +479,12 @@ const JobAdd = () => {
                         </svg>
                       </span>
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="name"
+                    >
+                      {errors.categories}
+                    </label>
                   </div>
 
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
@@ -535,6 +581,12 @@ const JobAdd = () => {
                         style={{ height: '100px' }}
                       ></textarea>
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="name"
+                    >
+                      {errors.short_description}
+                    </label>
                   </div>
 
                   <div className="mb-5.5">
@@ -586,6 +638,12 @@ const JobAdd = () => {
                         placeholder="Write full description here"
                       ></textarea>
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="name"
+                    >
+                      {errors.full_description}
+                    </label>
                   </div>
 
                   <div className="flex justify-end gap-4.5">

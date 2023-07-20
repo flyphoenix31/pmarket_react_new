@@ -4,6 +4,7 @@ import axios from "axios";
 import { isEmpty, serverURL, toastr } from '../../config';
 import { setUser } from "./authSlice";
 import store from "../index";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
     invoiceList: [],
@@ -83,7 +84,10 @@ export const setInvoiceList = createAsyncThunk(
             const res = await axios.get(serverURL + '/api/invoice/list');
             const data = await res.data;
 
-            if (!data.status) return data.list;
+            if (!data.status) {
+                console.log("---------invoicelist", data.list)
+                return data.list;
+            }
             else if (!isEmpty(data.message))
                 toastr.warning(data.message);
             return [];
@@ -99,14 +103,23 @@ export const newInvoice = createAsyncThunk(
     'invoice/newInvoice',
     async (param) => {
         try {
-
+            // const navigate = useNavigate();
+            // navigate('/member/invoice');
+            // const dispatch = useDispatch();
+            // dispatch(setRedirect(true));
+            
             const res = await axios.post(serverURL + '/api/invoice/new', param);
             const data = await res.data;
 
-            if (!data.status)
+            if (!data.status){
                 toastr.success('Successfully added');
-            else if (!isEmpty(data.message))
+            }
+            if (!isEmpty(data.message)){
                 toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                console.log("===========invoicesserrors", data.errors);
+            }
             return data;
 
 
@@ -164,7 +177,10 @@ const invoiceSlice = createSlice({
         builder.addCase(newInvoice.fulfilled, (state, action) => {
             const data = action.payload;
             if(isEmpty(data)) return;
-            if (data.status === 1) state.errors = data.errors;
+            if (data.status === 1) {
+                state.errors = data.errors;
+                console.log("-------newInvoice Errors", state.errors);
+            }
             else if (!data.status) {
                 state.redirect = true;
                 state.errors = {}

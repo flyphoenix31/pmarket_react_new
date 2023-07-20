@@ -11,7 +11,6 @@ const Users = () => {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.users.userList);
   const roleList = useSelector((state) => state.users.roleList);
-
   useEffect(() => {
     dispatch(setUserList());
     dispatch(setRoleList());

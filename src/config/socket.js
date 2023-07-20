@@ -3,7 +3,7 @@ import { isEmpty, serverURL } from '.';
 import { toast } from 'react-toastify';
 import store from '../store';
 import { setUserList } from '../store/slice/usersSlice';
-import { setJobList } from '../store/slice/jobsSlice';
+import { setJobsList } from '../store/slice/jobsSlice';
 import { setOnlineUsers, setNewMessage } from '../store/slice/chatSlice';
 import { setNotificationList } from '../store/slice/notificationSlice';
 import { setContactList, setLogout } from '../utils';
@@ -62,7 +62,7 @@ socket.on('jobMessage', (data) => {
             draggable: false,
             progress: undefined,
         });
-        store.dispatch(setJobList());
+        store.dispatch(setJobsList());
     }
 })
 

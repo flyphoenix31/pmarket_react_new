@@ -7,7 +7,6 @@ import { isEmpty } from '../config/index.js';
 import { newInvoice, setRedirect, findOneInvoice } from '../store/slice/invoiceSlice.js';
 import { HumanSVG, EmailSVG, AddressSVG, PhoneSVG, CalendarSVG, MoneySVG, PercentSVG, TitleSVG } from '../components/SVG.js';
 import ClientModal from './ClientModal.js';
-import InvoicePreview from './InvoicePreview.js';
 
 const InvoiceContent = ({ data, setData, errors }) => {
   return (
@@ -217,18 +216,12 @@ const InvoiceAdd = () => {
 
   let { id } = useParams();
 
-  // useEffect(() => {
-  //   if (isEmpty(invoiceList))
-  //     navigate('/member/invoice');
-  //   dispatch(findOneInvoice(id));
-  // }, [invoiceList])
-
-  // useEffect(() => {
-  //   if (redirect) {
-  //     dispatch(setRedirect(false));
-  //     navigate('/member/invoice');
-  //   }
-  // }, [redirect])
+  useEffect(() => {
+    if (redirect) {
+      dispatch(setRedirect(false));
+      navigate('/member/invoice');
+    }
+  }, [redirect])
 
   useEffect(() => {
       setName(name);
@@ -280,9 +273,7 @@ const InvoiceAdd = () => {
       items,
       invoice_img,
     }
-
     dispatch(newInvoice(data));
-    navigate('/member/invoice');
   }
 
   const handleClose = (event: any) => {
@@ -304,27 +295,7 @@ const InvoiceAdd = () => {
 
   const totalPrice = items.reduce((value, item) => value + (item.unit_price * item.quantity), 0);
 
-  const invoicePreview = (
-    <InvoicePreview
-      company_name={company_name}
-      company_email={company_email}
-      company_phone={company_phone}
-      company_address={company_address}
-      client_name={client_name}
-      client_email={client_email}
-      client_phone={client_phone}
-      client_address={client_address}
-      invoice_number={invoice_number}
-      items={items}
-      totalPrice={totalPrice}
-      invoice_date={invoice_date}
-      due_date={due_date}
-      name={name}
-      notes = {notes}
-      invoice_img = {invoice_img}
-    />
-  );
-
+  
   return (
     <>
       <div className="mx-auto max-w-270">

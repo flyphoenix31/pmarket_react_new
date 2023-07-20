@@ -8,6 +8,7 @@ import './js/all.min.js'
 import './css/index.css';
 // import './css/satoshi.css';
 import './css/sweetalert.css';
+import './js/myfunction.js';
 import store from './store';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

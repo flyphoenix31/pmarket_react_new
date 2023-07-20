@@ -23,6 +23,24 @@ export const getRoleInfo = async (data) => {
     }
 }
 
+export  const validateEmail = (str) => {
+    var validRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(editIndex == 1){
+        return true;
+    }
+    if (str.match(validRegex)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export const removeStrAfteratSymbol = (str) => {
+    let n = str.indexOf("@");
+    let tempstr = '';
+    tempstr = str.substring(0, n != -1 ? n : str.length);
+    return tempstr;
+}
 
 export const getCurrentFormatedDate = () => {
     return moment(new Date()).format("yyyy-MM-DD HH:mm:ss");

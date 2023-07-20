@@ -11,7 +11,7 @@ const Permission = () => {
   const tableHeaderList = [
     'No',
     'Name',
-    'Action'
+    // 'Action'
   ];
 
   const navigate = useNavigate();
@@ -106,10 +106,11 @@ const Permission = () => {
                           value={item.name}
                           onChange={e => { e.preventDefault(); setList([...list.slice(0, index), { ...item, name: e.target.value }, ...list.slice(index + 1, list.length)]) }}
                           placeholder="Write name here"
+                          readOnly
                         />
                       </td>
 
-                      <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      {/* <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                         <div className="flex items-center space-x-3.5">
                           <button
                             className="hover:text-primary"
@@ -149,7 +150,7 @@ const Permission = () => {
                             </svg>
                           </button>
                         </div>
-                      </td>
+                      </td> */}
                     </tr>
                   )
                 })

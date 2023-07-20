@@ -2,17 +2,39 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumb.js';
-import { useNavigate } from 'react-router-dom';
-import { setHistoryList } from '../store/slice/historySlice.js';
+import { useNavigate, useParams } from 'react-router-dom';
+import { setEmailList } from '../store/slice/emailSlice.js';
 import { isEmpty } from '../config/index.js';
 
-const History = () => {
-
+const Email = () => {
   const dispatch = useDispatch();
-  const historyList = useSelector((state) => state.history.historyList);
-
+  const emailList = useSelector((state) => state.email.emailList);
+  console.log("-------------------emaliList", emailList);
+  let { roles } = useParams();
+  let user_id = localStorage.getItem('user_id');
+  console.log("=========id:", roles);
+  console.log("=========id:", user_id);
+  
+  let displayList = [];
+  if(roles == "all"){
+    displayList = emailList;
+  }
+  if(roles == 'send'){
+    emailList.forEach(element => {
+      if(element.from_user == user_id){
+        displayList.push(element);
+      }
+    });
+  }
+  if(roles == 'receive'){
+    emailList.forEach(element => {
+      if(element.to_user == user_id){
+        displayList.push(element);
+      }
+    });
+  }
   useEffect(() => {
-    dispatch(setHistoryList());
+    dispatch(setEmailList());
   }, [])
 
   const tableHeaderList = [
@@ -30,14 +52,14 @@ const History = () => {
 
   const handleAddNew = (event: any) => {
     event.preventDefault();
-    navigate('/member/history/add');
+    navigate('/member/email/add');
   }
 
   const handleView = (id) => {
-    navigate(`/member/history/edit/${id}`);
+    navigate(`/member/email/edit/${id}`);
   }
 
-  const getHistoryStatus = (status) => {
+  const getEmailStatus = (status) => {
     switch (status) {
       case 0:
         return { className: 'text-success bg-success', data: 'Not Read' };
@@ -50,8 +72,9 @@ const History = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Chat History" />
-
+      {roles == "all" ? <Breadcrumb pageName="All Emails" /> : '' }
+      {roles == "Send" ? <Breadcrumb pageName="Sende Emails" /> : '' }
+      {roles == "Receive" ? <Breadcrumb pageName="Receive Emails" /> : '' }
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="py-6 px-4 md:px-6 xl:px-7.5 flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap" style={{ padding: '10px 0px 30px 0px' }}>
           <div className="flex flex-wrap gap-3 sm:gap-5">
@@ -76,28 +99,28 @@ const History = () => {
             </thead>
             <tbody>
               {
-                historyList.map((history, historyIndex) => (
-                  <tr key={historyIndex}>
+                displayList.map((memail, emailIndex) => (
+                  <tr key={emailIndex}>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{history.id}</p>
+                      <p className="text-black dark:text-white">{memail.id}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{history.from_user_email}</p>
+                      <p className="text-black dark:text-white">{memail.from_user_email}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{history.to_user_email}</p>
+                      <p className="text-black dark:text-white">{memail.to_user_email}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{history.message}</p>
+                      <p className="text-black dark:text-white">{memail.message}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{moment(history.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>
+                      <p className="text-black dark:text-white">{moment(memail.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>
                     </td>
                   </tr>
                 ))
               }
               {
-                !isEmpty(historyList) ? '' : (
+                !isEmpty(emailList) ? '' : (
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center" colSpan={7}>
                       No data yet.
@@ -113,4 +136,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default Email;

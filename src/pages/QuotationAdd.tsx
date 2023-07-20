@@ -219,7 +219,6 @@ const QuotationAdd = () => {
     }
 
     dispatch(newQuotation(data));
-    // navigate('/member/invoice');
   }
 
   const handleClose = (event: any) => {

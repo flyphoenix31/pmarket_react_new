@@ -9,7 +9,7 @@ import invoiceSlice from './slice/invoiceSlice';
 import quotationSlice from './slice/quotationSlice';
 import notificationSlice from './slice/notificationSlice';
 import settingSlice from './slice/settingSlice';
-
+import emailSlice from './slice/emailSlice';
 export default configureStore({
     reducer: {
         auth: authSlice,
@@ -22,5 +22,6 @@ export default configureStore({
         notification: notificationSlice,
         setting: settingSlice,
         history: historySlice,
+        email: emailSlice,
     }
 })

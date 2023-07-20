@@ -4,11 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
 import userInit from '../images/user/user-07.png';
 import { isEmpty } from '../config/index.js';
-import { newUser } from '../store/slice/usersSlice.js';
-import { ContentSVG } from '../components/SVG.js';
+import { removeStrAfteratSymbol } from '../utils/index';
+import { newUser, setRedirect } from '../store/slice/usersSlice.js';
+import { ArrowDownSVG, ContentSVG, EmailSVG, PhoneSVG, UserSVG, WebSVG } from '../components/SVG.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import $ from 'jquery';
 
+  
 const UserAdd = () => {
 
   const fileUpload = useRef(null);
@@ -17,20 +20,33 @@ const UserAdd = () => {
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [preemail, setEmail] = useState('');
+  const [lastemail, setLastEmail] = useState('@blender.com');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState(0);
   const [bio, setBio] = useState('');
-  const [role_id, setRole] = useState(0);
+  const [role_id, setRole] = useState(2);
 
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const roleList = useSelector((state) => state.users.roleList);
+  const errors = useSelector((state) => state.users.errors);
+  const redirect = useSelector((state) => state.users.redirect);
+  console.log("roleList", roleList);
 
   useEffect(() => {
-    if(isEmpty(roleList))
+    let tempstr = removeStrAfteratSymbol(preemail);
+    setEmail(tempstr);
+  })
+  useEffect(() => {
+    if (redirect) {
+      dispatch(setRedirect(false));
+      navigate('/member/users');
+    }
+  })
+  useEffect(() => {
+    if (isEmpty(roleList))
       navigate('/member/users');
   }, [])
 
@@ -51,24 +67,27 @@ const UserAdd = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-
+    console.log("email",preemail);
+    console.log("lastemail",lastemail);
+    let temp_email = preemail + lastemail;
+    console.log("=====temp_email:", temp_email);
+    // return
     const formData = new FormData();
     if (imgFile !== null) formData.append('avatar', imgFile);
     formData.append('name', name);
     formData.append('phone', phone);
-    formData.append('email', email);
+    formData.append('email', temp_email);
     formData.append('password', password);
     formData.append('gender', gender);
     formData.append('bio', bio);
     formData.append('role_id', role_id);
     formData.append('skills', []);
-    
-    // useDispatch()(newUser(formData));
-    dispatch(newUser(formData));
-    navigate('/member/users');
-  }
 
-  const handleClose = (event:any) => {
+    dispatch(newUser(formData));
+    // navigate('/member/users');
+  }
+  console.log("------------errors", errors);
+  const handleClose = (event: any) => {
     event.preventDefault();
     navigate('/member/users');
   }
@@ -132,69 +151,96 @@ const UserAdd = () => {
                           placeholder="Write full name here"
                         />
                       </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="name"
+                      >
+                        {errors.name}
+                      </label>
                     </div>
-
                     <div className="w-full sm:w-1/2">
                       <label
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phoneNumber"
+                        htmlFor="fullName"
                       >
-                        Phone Number
+                        Full Name
                       </label>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phoneNumber"
-                        id="phoneNumber"
-                        value={phone}
-                        onChange={e => { e.preventDefault(); setPhone(e.target.value) }}
-                        placeholder="Write phone number here"
-                      />
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <PhoneSVG />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="phoneNumber"
+                          id="phoneNumber"
+                          value={phone}
+                          onChange={e => { e.preventDefault(); setPhone(e.target.value) }}
+                          placeholder="Write your phone number"
+                        />
+                      </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="phone"
+                      >
+                        {errors.phone}
+                      </label>
                     </div>
                   </div>
-
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="emailAddress"
-                    >
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4.5 top-4">
-                        <svg
-                          className="fill-current"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-3/5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="emailAddress"
+                      >
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <EmailSVG />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="emailAddress"
+                          id="emailAddress"
+                          value={preemail}
+                          onChange={e => { e.preventDefault(); setEmail(e.target.value) }}
+                          placeholder="Write email here"
+                        />
+                      </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="email"
+                      >
+                        {errors.email}
+                      </label>
+                    </div>
+                    <div className="w-full sm:w-2/5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-white dark:text-white"
+                        htmlFor="Username"
+                      >
+                        Email Address
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        {/* <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
+                          <WebSVG />
+                        </span> */}
+                        <select
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
+                          value={lastemail}
+                          onChange={e => { e.preventDefault(); setLastEmail(e.target.value) }}
+                          disabled
                         >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                              fill=""
-                            />
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                              fill=""
-                            />
-                          </g>
-                        </svg>
-                      </span>
-                      <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="emailAddress"
-                        id="emailAddress"
-                        value={email}
-                        onChange={e => { e.preventDefault(); setEmail(e.target.value) }}
-                        placeholder="Write email here"
-                      />
+                          <option value={"@blender.com"}>@blender.com</option>
+                          <option value={"@gmail.com"}>@gmail.com</option>
+                          <option value={"@outlook.com"}>@outlook.com</option>
+                        </select>
+                        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
+                          <ArrowDownSVG />
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -235,6 +281,12 @@ const UserAdd = () => {
                         autoComplete='false'
                       />
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="password"
+                    >
+                      {errors.password}
+                    </label>
                   </div>
                   <div className='mb-5.5'>
                     <label
@@ -245,34 +297,7 @@ const UserAdd = () => {
                     </label>
                     <div className="relative z-20 bg-white dark:bg-form-input">
                       <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M10.0007 2.50065C5.85852 2.50065 2.50065 5.85852 2.50065 10.0007C2.50065 14.1428 5.85852 17.5007 10.0007 17.5007C14.1428 17.5007 17.5007 14.1428 17.5007 10.0007C17.5007 5.85852 14.1428 2.50065 10.0007 2.50065ZM0.833984 10.0007C0.833984 4.93804 4.93804 0.833984 10.0007 0.833984C15.0633 0.833984 19.1673 4.93804 19.1673 10.0007C19.1673 15.0633 15.0633 19.1673 10.0007 19.1673C4.93804 19.1673 0.833984 15.0633 0.833984 10.0007Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.833984 9.99935C0.833984 9.53911 1.20708 9.16602 1.66732 9.16602H18.334C18.7942 9.16602 19.1673 9.53911 19.1673 9.99935C19.1673 10.4596 18.7942 10.8327 18.334 10.8327H1.66732C1.20708 10.8327 0.833984 10.4596 0.833984 9.99935Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M7.50084 10.0008C7.55796 12.5632 8.4392 15.0301 10.0006 17.0418C11.5621 15.0301 12.4433 12.5632 12.5005 10.0008C12.4433 7.43845 11.5621 4.97153 10.0007 2.95982C8.4392 4.97153 7.55796 7.43845 7.50084 10.0008ZM10.0007 1.66749L9.38536 1.10547C7.16473 3.53658 5.90275 6.69153 5.83417 9.98346C5.83392 9.99503 5.83392 10.0066 5.83417 10.0182C5.90275 13.3101 7.16473 16.4651 9.38536 18.8962C9.54325 19.069 9.76655 19.1675 10.0007 19.1675C10.2348 19.1675 10.4581 19.069 10.6159 18.8962C12.8366 16.4651 14.0986 13.3101 14.1671 10.0182C14.1674 10.0066 14.1674 9.99503 14.1671 9.98346C14.0986 6.69153 12.8366 3.53658 10.6159 1.10547L10.0007 1.66749Z"
-                              fill="#637381"
-                            ></path>
-                          </g>
-                        </svg>
+                        <WebSVG />
                       </span>
                       <select
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
@@ -283,22 +308,7 @@ const UserAdd = () => {
                         <option value={1}>Female</option>
                       </select>
                       <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                              fill="#637381"
-                            ></path>
-                          </g>
-                        </svg>
+                        <ArrowDownSVG />
                       </span>
                     </div>
                   </div>
@@ -310,36 +320,7 @@ const UserAdd = () => {
                       Select Position
                     </label>
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M10.0007 2.50065C5.85852 2.50065 2.50065 5.85852 2.50065 10.0007C2.50065 14.1428 5.85852 17.5007 10.0007 17.5007C14.1428 17.5007 17.5007 14.1428 17.5007 10.0007C17.5007 5.85852 14.1428 2.50065 10.0007 2.50065ZM0.833984 10.0007C0.833984 4.93804 4.93804 0.833984 10.0007 0.833984C15.0633 0.833984 19.1673 4.93804 19.1673 10.0007C19.1673 15.0633 15.0633 19.1673 10.0007 19.1673C4.93804 19.1673 0.833984 15.0633 0.833984 10.0007Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M0.833984 9.99935C0.833984 9.53911 1.20708 9.16602 1.66732 9.16602H18.334C18.7942 9.16602 19.1673 9.53911 19.1673 9.99935C19.1673 10.4596 18.7942 10.8327 18.334 10.8327H1.66732C1.20708 10.8327 0.833984 10.4596 0.833984 9.99935Z"
-                              fill="#637381"
-                            ></path>
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M7.50084 10.0008C7.55796 12.5632 8.4392 15.0301 10.0006 17.0418C11.5621 15.0301 12.4433 12.5632 12.5005 10.0008C12.4433 7.43845 11.5621 4.97153 10.0007 2.95982C8.4392 4.97153 7.55796 7.43845 7.50084 10.0008ZM10.0007 1.66749L9.38536 1.10547C7.16473 3.53658 5.90275 6.69153 5.83417 9.98346C5.83392 9.99503 5.83392 10.0066 5.83417 10.0182C5.90275 13.3101 7.16473 16.4651 9.38536 18.8962C9.54325 19.069 9.76655 19.1675 10.0007 19.1675C10.2348 19.1675 10.4581 19.069 10.6159 18.8962C12.8366 16.4651 14.0986 13.3101 14.1671 10.0182C14.1674 10.0066 14.1674 9.99503 14.1671 9.98346C14.0986 6.69153 12.8366 3.53658 10.6159 1.10547L10.0007 1.66749Z"
-                              fill="#637381"
-                            ></path>
-                          </g>
-                        </svg>
-                      </span>
+                      <UserSVG />
                       <select
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
                         value={role_id}
@@ -347,34 +328,12 @@ const UserAdd = () => {
                       >
                         {
                           roleList.map((role, roleIndex) => (
-                            <option value={role.id} key={roleIndex}>{role.name}</option>
+                            <option value={role.id}>{role.name}</option>
                           ))
                         }
-                        {/* <option value={0}>Project Manager</option>
-                        <option value={1}>Web Designer</option>
-                        <option value={2}>Logo Designer</option>
-                        <option value={3}>Senior Frontend Developer</option>
-                        <option value={4}>Junior Frontend Developer</option>
-                        <option value={5}>Senior Backend Developer</option>
-                        <option value={6}>Junior Backend Developer</option> */}
                       </select>
                       <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g opacity="0.8">
-                            <path
-                              fillRule="evenodd"
-                              clipRule="evenodd"
-                              d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z"
-                              fill="#637381"
-                            ></path>
-                          </g>
-                        </svg>
+                        <ArrowDownSVG />
                       </span>
                     </div>
                   </div>
@@ -401,6 +360,12 @@ const UserAdd = () => {
                         placeholder="Write bio here"
                       ></textarea>
                     </div>
+                    <label
+                      className="mb-0 block text-sm font-medium mt-2 text-danger"
+                      htmlFor="bio"
+                    >
+                      {errors.bio}
+                    </label>
                   </div>
 
                   <div className="flex justify-end gap-4.5">

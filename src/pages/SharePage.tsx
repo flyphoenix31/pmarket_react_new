@@ -6,7 +6,7 @@ import { isEmpty, serverURL, toastr } from '../config/index.js';
 import moment from 'moment';
 import FolderImg  from '../images/shared/Folder_Small.png';
 import Breadcrumb from '../components/Breadcrumb';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ShareLoginModal from './ShareLoginMoal.js';
 const SharedPage = () => {
 
@@ -21,7 +21,8 @@ const SharedPage = () => {
     const [list, setList] = useState([]);
     const [is_open, setLoginOpen] = useState(true);
     const [is_token, setToken] = useState(false);
-    const token = window.location.pathname.substr(15);
+    let { token } = useParams();
+    // const token = window.location.pathname.substr(15);
     const tempUrl = window.location.host;
     const getToken = async () => {
         try {

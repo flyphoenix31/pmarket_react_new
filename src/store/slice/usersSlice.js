@@ -7,7 +7,9 @@ import { setUser } from "./authSlice";
 
 const initialState = {
     userList: [],
-    roleList: []
+    roleList: [],
+    errors: {},
+    redirect:false,
 }
 
 export const setUserList = createAsyncThunk(
@@ -60,19 +62,19 @@ export const newUser = createAsyncThunk(
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message))
-                    toastr.warning(data.message);
-                return []
-            }
-            else
+            if(!data.status){
                 toastr.success('Successfully added');
-            return data.list;
+            }
+            if (!isEmpty(data.message)) {
+                toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+            }
+            console.log("======new user", data);
+            return data;
 
         } catch (error) {
-            console.log(error);
-            // store.dispatch(setUser({}));
-            return [];
+            store.dispatch(setUser({}));
         }
     }
 )
@@ -85,19 +87,20 @@ export const updateUser = createAsyncThunk(
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message))
-                    toastr.warning(data.message);
-                return []
-            }
-            else 
+            if(!data.status){
                 toastr.success('Successfully updated');
-            return data.list;
+            }
+            if(!isEmpty(data.message)){
+                toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                console.log("=======update user", data);
+            }
+            return data;
 
-        } catch (error) {
-            console.log(error);
-            // store.dispatch(setUser({}));
-            return [];
+        } 
+        catch (error) {
+            store.dispatch(setUser({}));
         }
     }
 )
@@ -105,8 +108,35 @@ export const updateUser = createAsyncThunk(
 const usersSlice = createSlice({
     name: 'users',
     initialState,
-    reducers: {},
+    reducers: {
+        setErrors: (state, action) => { state.errors = action.payload },
+        setRedirect: (state, action) => { state.redirect = action.payload },
+    },
     extraReducers: (builder) => {
+        builder.addCase(newUser.fulfilled, (state, action) => {
+            const data = action.payload;
+            console.log("--------new user errors", data);
+            if(isEmpty(data)) return;
+            if(data.status === 1 ) {
+                state.errors = data.errors;
+            }
+            else if(!data.status){
+                state.redirect = true;
+                state.errors = {};
+            }
+        })  
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            const data = action.payload;
+            if(isEmpty(data)) return;
+            if(data.status === 1) {
+                state.errors = data.errors;
+                console.log("---------",state.errors);
+            }
+            else if(!data.status){
+                state.redirect = true;
+                state.errors = {};
+            }
+        })
         builder.addCase(setUserList.fulfilled, (state, action) => {
             state.userList = action.payload;
             setUserList();
@@ -117,5 +147,5 @@ const usersSlice = createSlice({
         })
     }
 })
-
+export const { setErrors ,setRedirect } = usersSlice.actions;
 export default usersSlice.reducer;

@@ -4,18 +4,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { useNavigate } from 'react-router-dom';
-import { setJobList, setRoleList, setCategoryList } from '../store/slice/jobsSlice.js';
+import { setJobsList, setRoleList, setCategoryList } from '../store/slice/jobsSlice.js';
 import { isEmpty } from '../config/index.js';
 import { getRoleInfo } from '../utils';
 
 const Jobs = () => {
 
   const dispatch = useDispatch();
-  const jobList = useSelector((state) => state.jobs.jobList);
+  const jobsList = useSelector((state) => state.jobs.jobsList);
   const roleList = useSelector((state) => state.jobs.roleList);
 
   const [jobscreate_flag , setJobsCreateFlag] = useState(false);
-  const [jobdelete_flag, setJobsDeleteFlag] = useState(false);
+  const [jobsdelete_flag, setJobsDeleteFlag] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
   let c_data = { role: "jobs_create", roleid: userinfo.role_id };
   let d_data = { role: "jobs_delete", roleid: userinfo.role_id };
@@ -30,7 +30,7 @@ const Jobs = () => {
     })
 
   useEffect(() => {
-    dispatch(setJobList());
+    dispatch(setJobsList());
     dispatch(setRoleList());
     dispatch(setCategoryList());
   }, [])
@@ -121,8 +121,8 @@ const Jobs = () => {
             </thead>
             <tbody>
               {
-                jobList.map((job, jobIndex) => (
-                  <tr key={jobIndex}>
+                jobsList.map((job, jobsIndex) => (
+                  <tr key={jobsIndex}>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">{job.id}</p>
                     </td>
@@ -144,7 +144,7 @@ const Jobs = () => {
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {jobdelete_flag ?
+                      {jobsdelete_flag ?
                       <div className="flex items-center space-x-3.5">
                         <button className="hover:text-primary" onClick={e => { e.preventDefault(); handleView(job.id); }}>
                           <svg
@@ -241,7 +241,7 @@ const Jobs = () => {
                 ))
               }
               {
-                !isEmpty(jobList) ? '' : (
+                !isEmpty(jobsList) ? '' : (
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center" colSpan={7}>
                       No data yet.

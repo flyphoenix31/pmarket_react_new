@@ -65,6 +65,9 @@ export const authSlice = createSlice({
             state.isAuthenticated = !isEmpty(action.payload);
             axios.defaults.headers.common['Authorization'] = '';
             localStorage.setItem('token', '');
+            localStorage.setItem('user_id', '');
+            localStorage.setItem('role_name', '');
+            localStorage.clear();
         }
     },
     extraReducers: (builder) => {

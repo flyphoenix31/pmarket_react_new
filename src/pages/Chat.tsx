@@ -49,9 +49,10 @@ const Chat = () => {
         }
     }
     useEffect(() => {
-        
+
         const newIndex = contactList.findIndex(user => user.id === currentId);
         setCurrentUser(newIndex >= 0 ? contactList[newIndex] : {});
+
     }, [contactList, currentId])
 
     useEffect(() => {
@@ -67,13 +68,14 @@ const Chat = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log("-----------current_user", currentUser);
         const textMessage = messageRef.current.value;
         if ((!isEmpty(textMessage) || file !== null) && currentId >= 0) {
             const formData = new FormData();
             if (file !== null) formData.append('file', file);
             formData.append('to', currentId);
             formData.append('message', textMessage);
-            formData.append('userinfo', currentUser.name);
+            formData.append('userinfo', currentUser.email);
             dispatch(sendMessage(formData));
         }
     }

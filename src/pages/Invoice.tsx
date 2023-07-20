@@ -37,11 +37,12 @@ const Invoice = () => {
   const handleAddNew = (event: any) => {
     event.preventDefault();
     dispatch(setErrors({}));
-    dispatch(setCurrentQuotation({}));
+    // dispatch(setCurrentQuotation({}));
     navigate('/member/invoice/add');
   }
 
   const handleView = (id) => {
+    dispatch(setErrors({}));
     navigate(`/member/invoice/edit/${id}`);
   }
 

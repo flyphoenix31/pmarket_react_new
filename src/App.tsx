@@ -20,7 +20,7 @@ import JobEdit from './pages/JobEdit';
 import Invoice from './pages/Invoice';
 import InvoiceAdd from './pages/InvoiceAdd';
 import InvoiceEdit from './pages/InvoiceEdit';
-
+import Email from './pages/Email';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Clients from './pages/Clients';
@@ -273,22 +273,13 @@ function App() {
             }
           />
           <Route
-          path="/member/setting/emailmanage"
-          element={
-            <Suspense fallback={<Loader />}>
-              <EmailManage />
-            </Suspense>
-          }
-          />
-           <Route
-            path="/member/setting/invoice"
-            element={
-              <Suspense fallback={<Loader />}>
-                <InvoiceSetting />
-              </Suspense>
-            }
-          />
-
+              path="/member/email/:roles"
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Email />
+                </Suspense>
+              }
+            />
           <Route
             path="/member/calendar"
             element={

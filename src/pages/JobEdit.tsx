@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { isEmpty, serverURL } from '../config/index.js';
-import { updateJob, findOneJob } from '../store/slice/jobsSlice.js';
+import { updateJob, findOneJob, setRedirect } from '../store/slice/jobsSlice.js';
 import { MoneySVG, TitleSVG } from '../components/SVG.js';
 import { getRoleInfo } from '../utils';
 
@@ -23,9 +23,10 @@ const JobEdit = () => {
   const navigate = useNavigate();
 
   const categoryList = useSelector((state) => state.jobs.categoryList);
-  const jobList = useSelector((state) => state.jobs.jobList);
+  const jobsList = useSelector((state) => state.jobs.jobsList);
   const currentJob = useSelector((state) => state.jobs.currentJob);
-
+  const errors = useSelector((state) => state.jobs.errors);
+  const redirect = useSelector((state) => state.jobs.redirect);
   const [jobupdate_flag, setJobsUpdateFlag] = useState(false);
   const userinfo = useSelector((state: any) => state.auth.userInfo);
   let u_data = { role: "jobs_update", roleid: userinfo.role_id };
@@ -36,11 +37,16 @@ const JobEdit = () => {
     })
   
   let { id } = useParams();
-
   useEffect(() => {
-    if (isEmpty(categoryList) || isEmpty(jobList))
+    if (redirect) {
+      dispatch(setRedirect(false));
       navigate('/member/jobs');
-  }, [categoryList, jobList])
+    }
+  }, [redirect])
+  useEffect(() => {
+    if (isEmpty(categoryList) || isEmpty(jobsList))
+      navigate('/member/jobs');
+  }, [categoryList, jobsList])
 
   useEffect(() => {
     if (isEmpty(categoryList))

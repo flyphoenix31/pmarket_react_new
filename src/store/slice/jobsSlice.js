@@ -6,25 +6,27 @@ import { setUser } from "./authSlice";
 import store from "..";
 
 const initialState = {
-    jobList: [],
+    jobsList: [],
     roleList: [],
     categoryList: [],
-    currentJob: {}
+    currentJob: {},
+    errors: {},
+    redirect: false,
 }
 
-export const setJobList = createAsyncThunk(
-    'jobs/setJobList',
+export const setJobsList = createAsyncThunk(
+    'jobs/setJobsList',
     async () => {
         try {
-            const res = await axios.get(serverURL + '/api/job/list');
+            const res = await axios.get(serverURL + '/api/jobs/list');
             const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message))
-                    toastr.warning(data.message);
-                return [];
+
+            if (!data.status) {
+                return data.list;
             }
-            console.log("----------jobsList:", data.list);
-            return data.list;
+            else if (!isEmpty(data.message))
+                toastr.warning(data.message);
+            return [];
 
         } catch (error) {
             store.dispatch(setUser({}));
@@ -57,7 +59,7 @@ export const setCategoryList = createAsyncThunk(
     'jobs/setCategoryList',
     async () => {
         try {
-            const res = await axios.get(serverURL + '/api/job/categories');
+            const res = await axios.get(serverURL + '/api/jobs/categories');
             const data = await res.data;
             if (data.status) {
                 if (!isEmpty(data.message))
@@ -77,27 +79,33 @@ export const newJob = createAsyncThunk(
     'jobs/newJob',
     async (param) => {
         try {
-            const res = await axios.post(serverURL + '/api/job/new', param);
+            const res = await axios.post(serverURL + '/api/jobs/new', param);
             const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message)){
-                    toastr.warning(data.message);
-                    return { id: -1, list: [] };
-                }
-                if(!isEmpty(data.errors)){
-                    console.log("------------newJob", data);
-                    toastr.warning(data.errors.message);
-                    return { id: -1, list: [] };
-                }                 
-            }
-            else{
+            if (!data.status){
                 toastr.success('Successfully added');
             }
+            if (!isEmpty(data.message)){
+                toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                console.log("===========jobserrors", data.errors);
+            }
+            return data;
+            // if (data.status) {
+            //     if (!isEmpty(data.message)){
+            //         toastr.warning(data.message);
+            //         return { id: -1, list: [] };
+            //     }
+            //     if(!isEmpty(data.errors)){
+            //         toastr.warning(data.errors.message);
+            //     }                 
+            // }
+            // else{
+            //     toastr.success('Successfully added');
+            // }
 
         } catch (error) {
-            console.log(error);
             store.dispatch(setUser({}));
-            return { id: -1, list: [] };
         }
     }
 )
@@ -106,7 +114,7 @@ export const findOneJob = createAsyncThunk(
     'jobs/findOneJob',
     async (id) => {
         try {
-            const res = await axios.get(serverURL + '/api/job/findOne', { params: { id } });
+            const res = await axios.get(serverURL + '/api/jobs/findOne', { params: { id } });
             const data = await res.data;
             if (!data.status)
                 return data
@@ -125,18 +133,13 @@ export const updateJob = createAsyncThunk(
     'jobs/updateJob',
     async (param) => {
         try {
-            const res = await axios.post(serverURL + '/api/job/update', param);
+            const res = await axios.post(serverURL + '/api/jobs/update', param);
             const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message)){
-                    toastr.warning(data.message);
-                    return []
-                }
-                if(!isEmpty(data.errors)){
-                    toastr.warning(data.errors.message)
-                    return []
-                }
-            }
+            if (!data.status)
+                toastr.success('Successfully updated')
+            else if (!isEmpty(data.message))
+                toastr.warning(data.message);
+            return data;
             toastr.success('Successfully updated');
 
         } catch (error) {
@@ -149,10 +152,37 @@ export const updateJob = createAsyncThunk(
 const jobsSlice = createSlice({
     name: 'jobs',
     initialState,
-    reducers: {},
+    reducers: {
+        setErrors: (state, action) => { state.errors = action.payload },
+        setRedirect: (state, action) => { state.redirect = action.payload },
+        setCurrentJobs: (state, action) => { state.currentJob = action.payload }
+    },
     extraReducers: (builder) => {
-        builder.addCase(setJobList.fulfilled, (state, action) => {
-            state.jobList = action.payload;
+        builder.addCase(newJob.fulfilled, (state, action) => {
+            const data = action.payload;
+            if(isEmpty(data)) return;
+            if(data.status === 1) {
+                state.errors = data.errors;
+                console.log("----------new jobs errorss", state.errors);
+            }
+            else if(!data.status){
+                state.redirect = true;
+                state.errors = {}
+            }
+        })
+
+        builder.addCase(updateJob.fulfilled, (state, action) => {
+            const data = action.payload;
+            if(isEmpty(data)) return;
+            if(data.status === 1) state.errors = data.errors;
+            else if(!data.status){
+                state.redirect = true;
+                state.errors = {};
+            }
+        })
+
+        builder.addCase(setJobsList.fulfilled, (state, action) => {
+            state.jobsList = action.payload;
         })
         builder.addCase(setCategoryList.fulfilled, (state, action) => {
             state.categoryList = action.payload;
@@ -166,4 +196,5 @@ const jobsSlice = createSlice({
     }
 })
 
+export const { setErrors, setRedirect, setCurrentJobs } = jobsSlice.actions;
 export default jobsSlice.reducer;

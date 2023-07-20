@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TitleSVG } from '../components/SVG';
 import { isEmpty, serverURL, toastr} from '../config';
 import axios from 'axios';
-import { getCurrentFormatedDate, randomString } from '../utils';
+import { getCurrentFormatedDate, randomString, validateEmail } from '../utils';
 import $ from 'jquery';
 import { CopySVG, SaveSVG } from '../components/SVG';
 
@@ -36,17 +36,7 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
         // setEmails(preemail);
         // setFileLink(tempUrl + "/member/shared/" + token);
     },[])
-    const validateEmail = (str) => {
-        var validRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(editIndex == 1){
-            return true;
-        }
-        if (str.match(validRegex)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 
     const copyContentToClipboard = async () => {
         // await navigator.clipboard.writeText(temp_filelink);

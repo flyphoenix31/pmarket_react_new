@@ -6,17 +6,15 @@ import { setUser } from "./authSlice";
 import store from "..";
 
 const initialState = {
-    historyList: [],
-    roleList: [],
-    categoryList: [],
-    currentJob: {}
+    emailList: [],
 }
 
-export const setHistoryList = createAsyncThunk(
-    'history/setHistoryList',
+export const setEmailList = createAsyncThunk(
+    'email/setEmailList',
     async () => {
+        console.log("----------email list----------")
         try {
-            const res = await axios.get(serverURL + '/api/history/list');
+            const res = await axios.get(serverURL + '/api/email/list');
             const data = await res.data;
             if (data.status) {
                 if (!isEmpty(data.message))
@@ -32,8 +30,10 @@ export const setHistoryList = createAsyncThunk(
     }
 )
 
+
+
 export const newJob = createAsyncThunk(
-    'history/newJob',
+    'email/newJob',
     async (param) => {
         try {
             const res = await axios.post(serverURL + '/api/job/new', param);
@@ -59,7 +59,7 @@ export const newJob = createAsyncThunk(
 )
 
 export const findOneJob = createAsyncThunk(
-    'history/findOneJob',
+    'email/findOneJob',
     async (id) => {
         try {
             const res = await axios.get(serverURL + '/api/jobs/findOne', { params: { id } });
@@ -78,7 +78,7 @@ export const findOneJob = createAsyncThunk(
 )
 
 export const updateJob = createAsyncThunk(
-    'history/updateJob',
+    'email/updateJob',
     async (param) => {
         try {
             const res = await axios.post(serverURL + '/api/job/update', param);
@@ -102,15 +102,15 @@ export const updateJob = createAsyncThunk(
     }
 )
 
-const historySlice = createSlice({
-    name: 'history',
+const EmailSlice = createSlice({
+    name: 'email',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(setHistoryList.fulfilled, (state, action) => {
-            state.historyList = action.payload;
+        builder.addCase(setEmailList.fulfilled, (state, action) => {
+            state.emailList = action.payload;
         })
     }
 })
 
-export default historySlice.reducer;
+export default EmailSlice.reducer;
