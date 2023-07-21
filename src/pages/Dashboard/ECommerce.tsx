@@ -33,12 +33,10 @@ const ECommerce = () => {
   }
 
   if (isEmpty(role_id)) {
-    console.log("--------111111-----")
     setTimeout(() => {
       setDash();
-    }, 450);
+    }, 500);
   } else {
-    console.log("---------22222222------")
     setDash();
   }
 
@@ -69,7 +67,6 @@ const ECommerce = () => {
           <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
             <ChartTwo />
             <MapOne />
-
           </div>
         </div>
       }

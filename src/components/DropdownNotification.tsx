@@ -98,7 +98,7 @@ const DropdownNotification = () => {
                   </span>{' '}
                   {item.content}
                 </p>
-                <p className="text-xs">{moment(new Date(item.created_at)).format('DD-MM-YYYY')}</p>
+                <p className="text-xs">{moment(new Date(item.created_at)).format('YYYY-MM-DD HH:mm:ss')}</p>
               </Link>
             </li>
             ))

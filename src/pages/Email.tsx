@@ -11,8 +11,8 @@ const Email = () => {
   const emailList = useSelector((state) => state.email.emailList);
   console.log("-------------------emaliList", emailList);
   let { roles } = useParams();
-  let user_email = window.localStorage.getItem('email');
-  console.log("=========id:", roles);
+  let user_email = window.localStorage.getItem('user_email');
+  console.log("=========id:", emailList);
   console.log("=========id:", user_email);
 
  
@@ -24,7 +24,7 @@ const Email = () => {
     'Id',
     'Sender',
     'Receiver',
-    'Token',
+    'Content',
     'Date',
     // 'Status',
     // 'Action'
@@ -32,7 +32,7 @@ const Email = () => {
   const stableHeaderList = [
     'Id',
     'Receiver',
-    'Token',
+    'Content',
     'Date',
     // 'Status',
     // 'Action'
@@ -40,7 +40,7 @@ const Email = () => {
   const rtableHeaderList = [
     'Id',
     'Sender',
-    'Token',
+    'Content',
     'Date',
     // 'Status',
     // 'Action'
@@ -53,7 +53,7 @@ const Email = () => {
   }
   if (roles == 'send') {
     emailList.forEach(element => {
-      if (element.sender_emamil == user_email) {
+      if (element.sender_email == user_email) {
         displayList.push(element);
       }
     });
@@ -68,6 +68,7 @@ const Email = () => {
     tempHeader = tableHeaderList;
   }
 
+  console.log("======displayList", displayList);
 
   const navigate = useNavigate();
 
@@ -137,14 +138,14 @@ const Email = () => {
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">{memail.id}</p>
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <td className="border-b border-[#eee] py-5 px-3 dark:border-strokedark">
                       <p className="text-black dark:text-white">{memail.sender_email}</p>
                     </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <td className="border-b border-[#eee] py-5 px-3 dark:border-strokedark">
                       <p className="text-black dark:text-white">{memail.receiver_email}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">{memail.token}</p>
+                      <p className="text-black dark:text-white">{memail.content}</p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">{moment(memail.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>

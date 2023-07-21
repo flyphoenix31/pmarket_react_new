@@ -70,25 +70,9 @@ socket.on('newMessage', (data) => {
 })
 
 socket.on("sendemail", (data) => {
-    console.log("===========data:", data);
-    toast.info(`${serverURL + "/member/shared" + data.token} came from ${data.email}` , socketStyle1);
+    console.log("===========44444444444444444:", data);
+    toast.success(`${data.content} came from ${data.email}` , socketStyle1);
 })
-// socket.on('jobMessage', (data) => {
-//     let role_name = window.localStorage.getItem('role_name');
-//     console.log("jobcreated:" , role_name);
-//     if(role_name == "designer"){
-//         toast.info('New Job Created ', {
-//             position: "top-right",
-//             autoClose: 3000,
-//             hideProgressBar: true,
-//             closeOnClick: true,
-//             pauseOnHover: true,
-//             draggable: false,
-//             progress: undefined,
-//         });
-//         store.dispatch(setJobsList());
-//     }
-// })
 
 socket.on('connectionState', list => {
     store.dispatch(setOnlineUsers(list));

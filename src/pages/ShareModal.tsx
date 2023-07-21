@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TitleSVG } from '../components/SVG';
+import { KeySVG, TitleSVG } from '../components/SVG';
 import { isEmpty, serverURL, toastr} from '../config';
 import axios from 'axios';
 import { getCurrentFormatedDate, randomString } from '../utils';
@@ -132,7 +132,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                 }
                 else{
                     console.log("-----------filelink:", filelink);
-                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, token: ctoken })
+                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, content: filelink })
                         .then(res => {
                             const data = res.data;
                             if(!data.status) {
@@ -271,7 +271,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                             <div style={{textAlign:'left', paddingBottom:'5px', fontSize:'20px'}}>{isEmpty(prepassword) ? 'Password' : "Change Password"}</div>
                             <div className="relative">
                                 <span className="absolute left-4.5 top-4">
-                                    <TitleSVG />
+                                    <KeySVG />
                                 </span>
                                 <input
                                     className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"

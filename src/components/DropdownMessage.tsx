@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setNotification } from '../store/slice/chatSlice';
-import { MessageSVG } from './SVG';
+import { MessageSVG, PalarmSVG } from './SVG';
 
 // import UserOne from '../images/user/user-01.png';
 // import UserTwo from '../images/user/user-02.png';
@@ -60,12 +60,11 @@ const DropdownMessage = () => {
         to="#"
       >
         {
-          !notification ? '' : (
-            <span className="absolute -top-0.5 -right-0.5 z-1 h-2 w-2 rounded-full bg-meta-1">
-              <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-            </span>
-          )
+          // !notification ? '' : (
+            <PalarmSVG />
+          // )
         }
+
         <MessageSVG />
       </Link>
 
