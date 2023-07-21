@@ -70,11 +70,15 @@ socket.on('newMessage', (data) => {
 
 socket.on("sendemail", (data) => {
     console.log("===========44444444444444444:", data);
-    let {send_email, receive_email, content} = data;
+    let {send_email, receive_email, content, type} = data;
     let user_email = window.localStorage.getItem('user_email');
     if(user_email == receive_email){
-        // toast.success(`${data.content} came from ${data.send_email}` , socketStyle1);
-        toast.success('You got a new Share Alert');
+        // if(type == "email"){
+            toast.success('You got a new Email Alert');
+        // }
+        // if(type == "compose"){
+        //     toast.success('You got a new Compose Alert');
+        // }
     }
 })
 

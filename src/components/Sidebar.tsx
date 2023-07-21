@@ -22,18 +22,51 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   );
-  
+
   const navigate = useNavigate();
-  const [chatmenu_flag , setChatMenuFlag] = useState(false);
+  const [chatmenu_flag, setChatMenuFlag] = useState(false);
   const [settingmenu_flag, setSettingMenuFlag] = useState(false);
   const [emailsmenu_flag, setEmailMenuFlag] = useState(true);
   const [usersmenu_flag, setUsersMenuFlag] = useState(true);
+  const [clientsmenu_flag, setClientsMenuFlag] = useState(true);
+  const [invoicemenu_flag, setInvoiceMenuFlag] = useState(true);
+  const [quotationmenu_flag, setQuotationMenuFlag] = useState(true);
+  const [jobsmenu_flag, setJobsMenuFlag] = useState(true);
   // const userinfo = useSelector((state: any) => state.auth.userInfo);
   let role_id = window.localStorage.getItem('role_id');
-  let umenu = { role: "users_menu", roleid: role_id};
+  let umenu = { role: "users_menu", roleid: role_id };
   let hdata = { role: "chat_history_menu", roleid: role_id };
-  let sdata = { role: "setting_menu", roleid: role_id};
-  let emenu = { role: "emails_menu", roleid: role_id};
+  let sdata = { role: "setting_menu", roleid: role_id };
+  let emenu = { role: "emails_menu", roleid: role_id };
+  let cmenu = { role: "clients_menu", roleid: role_id };
+  let imenu = { role: "invoice_menu", roleid: role_id };
+  let qmenu = { role: "quotation_menu", roleid: role_id };
+  let jmenu = { role: "jobs_menu", rolid: role_id };
+  getRoleInfo(jmenu)
+    .then(result => {
+      setJobsMenuFlag(result);
+    })
+  getRoleInfo(cmenu)
+    .then(result => {
+      setClientsMenuFlag(result);
+    })
+    .catch(err => {
+      setLogout();
+    })
+  getRoleInfo(imenu)
+    .then(result => {
+      setInvoiceMenuFlag(result);
+    })
+    .catch(err => {
+      setLogout();
+    })
+  getRoleInfo(qmenu)
+    .then(result => {
+      setQuotationMenuFlag(result);
+    })
+    .catch(err => {
+      setLogout();
+    })
   getRoleInfo(umenu)
     .then(result => {
       setUsersMenuFlag(result);
@@ -52,21 +85,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
   getRoleInfo(hdata)
-    .then(result  => {
-        setChatMenuFlag(result);
-      })
+    .then(result => {
+      setChatMenuFlag(result);
+    })
     .catch(err => {
       setLogout();
     })
 
   getRoleInfo(sdata)
-    .then(result  => {
-        setSettingMenuFlag(result);
-      })
+    .then(result => {
+      setSettingMenuFlag(result);
+    })
     .catch(err => {
       setLogout();
     })
-      
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
@@ -105,7 +138,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`} 
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
@@ -143,7 +176,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-1 py-4 px-4 lg:mt-0 lg:px-6" style={{overscrollBehaviorY:'contain', overflowY:'auto'}}>
+        <nav className="mt-1 py-4 px-4 lg:mt-0 lg:px-6" style={{ overscrollBehaviorY: 'contain', overflowY: 'auto' }}>
           {/* <!-- Menu Group --> */}
           <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
@@ -472,7 +505,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Chat
                 </NavLink>
               </li>
-              {chatmenu_flag  ?
+              {chatmenu_flag ?
                 <li>
                   <NavLink
                     to="/member/history"
@@ -481,38 +514,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       }`}
                   >
                     <svg
-                    className="fill-current"
-                    width="18"
-                    height="19"
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g clipPath="url(#clip0_130_9801)">
-                      <path d="M10.8563 0.55835C10.5188 0.55835 10.2095 0.8396 10.2095 1.20522V6.83022C10.2095 7.16773 10.4907 7.4771 10.8563 7.4771H16.8751C17.0438 7.4771 17.2126 7.39272 17.3251 7.28022C17.4376 7.1396 17.4938 6.97085 17.4938 6.8021C17.2688 3.28647 14.3438 0.55835 10.8563 0.55835ZM11.4751 6.15522V1.8521C13.8095 2.13335 15.6938 3.8771 16.1438 6.18335H11.4751V6.15522Z" fill=""/>
-                      <path d="M15.3845 8.7427H9.1126V2.69582C9.1126 2.35832 8.83135 2.07707 8.49385 2.07707C8.40947 2.07707 8.3251 2.07707 8.24072 2.07707C3.96572 2.04895 0.506348 5.53645 0.506348 9.81145C0.506348 14.0864 3.99385 17.5739 8.26885 17.5739C12.5438 17.5739 16.0313 14.0864 16.0313 9.81145C16.0313 9.6427 16.0313 9.47395 16.0032 9.33332C16.0032 8.99582 15.722 8.7427 15.3845 8.7427ZM8.26885 16.3083C4.66885 16.3083 1.77197 13.4114 1.77197 9.81145C1.77197 6.3802 4.47197 3.53957 7.8751 3.3427V9.36145C7.8751 9.69895 8.15635 10.0083 8.52197 10.0083H14.7938C14.6813 13.4958 11.7845 16.3083 8.26885 16.3083Z" fill=""/>
-                    </g>
-                    <defs>
-                      <clipPath id="clip0_130_9801">
-                        <rect
-                          width="18"
-                          height="18"
-                          fill="white"
-                          transform="translate(0 0.052124)"
-                        />
-                      </clipPath>
-                    </defs>
+                      className="fill-current"
+                      width="18"
+                      height="19"
+                      viewBox="0 0 18 19"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clipPath="url(#clip0_130_9801)">
+                        <path d="M10.8563 0.55835C10.5188 0.55835 10.2095 0.8396 10.2095 1.20522V6.83022C10.2095 7.16773 10.4907 7.4771 10.8563 7.4771H16.8751C17.0438 7.4771 17.2126 7.39272 17.3251 7.28022C17.4376 7.1396 17.4938 6.97085 17.4938 6.8021C17.2688 3.28647 14.3438 0.55835 10.8563 0.55835ZM11.4751 6.15522V1.8521C13.8095 2.13335 15.6938 3.8771 16.1438 6.18335H11.4751V6.15522Z" fill="" />
+                        <path d="M15.3845 8.7427H9.1126V2.69582C9.1126 2.35832 8.83135 2.07707 8.49385 2.07707C8.40947 2.07707 8.3251 2.07707 8.24072 2.07707C3.96572 2.04895 0.506348 5.53645 0.506348 9.81145C0.506348 14.0864 3.99385 17.5739 8.26885 17.5739C12.5438 17.5739 16.0313 14.0864 16.0313 9.81145C16.0313 9.6427 16.0313 9.47395 16.0032 9.33332C16.0032 8.99582 15.722 8.7427 15.3845 8.7427ZM8.26885 16.3083C4.66885 16.3083 1.77197 13.4114 1.77197 9.81145C1.77197 6.3802 4.47197 3.53957 7.8751 3.3427V9.36145C7.8751 9.69895 8.15635 10.0083 8.52197 10.0083H14.7938C14.6813 13.4958 11.7845 16.3083 8.26885 16.3083Z" fill="" />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_130_9801">
+                          <rect
+                            width="18"
+                            height="18"
+                            fill="white"
+                            transform="translate(0 0.052124)"
+                          />
+                        </clipPath>
+                      </defs>
                     </svg>
                     <div>Chat History</div>
                   </NavLink>
                 </li>
-                :""}
-                <li>
+                : ""}
+              <li>
                 <NavLink
                   to="/member/share"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('share') &&
                     'bg-graydark dark:bg-meta-4'
-                  }`}
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -523,8 +556,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <g clipPath="url(#clip0_130_9807)">
-                      <path d="M15.7501 0.55835H2.2501C1.29385 0.55835 0.506348 1.34585 0.506348 2.3021V7.53335C0.506348 8.4896 1.29385 9.2771 2.2501 9.2771H15.7501C16.7063 9.2771 17.4938 8.4896 17.4938 7.53335V2.3021C17.4938 1.34585 16.7063 0.55835 15.7501 0.55835ZM16.2563 7.53335C16.2563 7.8146 16.0313 8.0396 15.7501 8.0396H2.2501C1.96885 8.0396 1.74385 7.8146 1.74385 7.53335V2.3021C1.74385 2.02085 1.96885 1.79585 2.2501 1.79585H15.7501C16.0313 1.79585 16.2563 2.02085 16.2563 2.3021V7.53335Z" fill=""/>
-                      <path d="M6.13135 10.9646H2.2501C1.29385 10.9646 0.506348 11.7521 0.506348 12.7083V15.8021C0.506348 16.7583 1.29385 17.5458 2.2501 17.5458H6.13135C7.0876 17.5458 7.8751 16.7583 7.8751 15.8021V12.7083C7.90322 11.7521 7.11572 10.9646 6.13135 10.9646ZM6.6376 15.8021C6.6376 16.0833 6.4126 16.3083 6.13135 16.3083H2.2501C1.96885 16.3083 1.74385 16.0833 1.74385 15.8021V12.7083C1.74385 12.4271 1.96885 12.2021 2.2501 12.2021H6.13135C6.4126 12.2021 6.6376 12.4271 6.6376 12.7083V15.8021Z" fill=""/>
+                      <path d="M15.7501 0.55835H2.2501C1.29385 0.55835 0.506348 1.34585 0.506348 2.3021V7.53335C0.506348 8.4896 1.29385 9.2771 2.2501 9.2771H15.7501C16.7063 9.2771 17.4938 8.4896 17.4938 7.53335V2.3021C17.4938 1.34585 16.7063 0.55835 15.7501 0.55835ZM16.2563 7.53335C16.2563 7.8146 16.0313 8.0396 15.7501 8.0396H2.2501C1.96885 8.0396 1.74385 7.8146 1.74385 7.53335V2.3021C1.74385 2.02085 1.96885 1.79585 2.2501 1.79585H15.7501C16.0313 1.79585 16.2563 2.02085 16.2563 2.3021V7.53335Z" fill="" />
+                      <path d="M6.13135 10.9646H2.2501C1.29385 10.9646 0.506348 11.7521 0.506348 12.7083V15.8021C0.506348 16.7583 1.29385 17.5458 2.2501 17.5458H6.13135C7.0876 17.5458 7.8751 16.7583 7.8751 15.8021V12.7083C7.90322 11.7521 7.11572 10.9646 6.13135 10.9646ZM6.6376 15.8021C6.6376 16.0833 6.4126 16.3083 6.13135 16.3083H2.2501C1.96885 16.3083 1.74385 16.0833 1.74385 15.8021V12.7083C1.74385 12.4271 1.96885 12.2021 2.2501 12.2021H6.13135C6.4126 12.2021 6.6376 12.4271 6.6376 12.7083V15.8021Z" fill="" />
                       <path d="M15.75 10.9646H11.8688C10.9125 10.9646 10.125 11.7521 10.125 12.7083V15.8021C10.125 16.7583 10.9125 17.5458 11.8688 17.5458H15.75C16.7063 17.5458 17.4938 16.7583 17.4938 15.8021V12.7083C17.4938 11.7521 16.7063 10.9646 15.75 10.9646ZM16.2562 15.8021C16.2562 16.0833 16.0312 16.3083 15.75 16.3083H11.8688C11.5875 16.3083 11.3625 16.0833 11.3625 15.8021V12.7083C11.3625 12.4271 11.5875 12.2021 11.8688 12.2021H15.75C16.0312 12.2021 16.2562 12.4271 16.2562 12.7083V15.8021Z" fill=""
                       />
                     </g>
@@ -553,89 +586,97 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {usersmenu_flag ?
-              <li>
-                <NavLink
-                  to="/member/users"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
-                >
-                  <svg
-                    className="fill-current"
-                    width="18"
-                    height="19"
-                    viewBox="0 0 18 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <li>
+                  <NavLink
+                    to="/member/users"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') &&
+                      'bg-graydark dark:bg-meta-4'
+                      }`}
                   >
-                    <path
-                      d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
-                      fill=""
-                    />
-                    <path
-                      d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
-                      fill=""
-                    />
-                  </svg>
-                  Users
-                </NavLink>
-              </li>
-              : ""
+                    <svg
+                      className="fill-current"
+                      width="18"
+                      height="19"
+                      viewBox="0 0 18 19"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
+                        fill=""
+                      />
+                      <path
+                        d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
+                        fill=""
+                      />
+                    </svg>
+                    Users
+                  </NavLink>
+                </li>
+                : ""
               }
-              <li>
-                <NavLink
-                  to="/member/clients"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('clients') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
-                >
-                  <ClientSVG />
-                  Clients
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/member/jobs"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('jobs') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
-                >
-                  <svg
-                    className="fill-current"
-                    width="18"
-                    height="19"
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+              {clientsmenu_flag ?
+                <li>
+                  <NavLink
+                    to="/member/clients"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('clients') &&
+                      'bg-graydark dark:bg-meta-4'
+                      }`}
                   >
-                    <path xmlns="http://www.w3.org/2000/svg" className="clr-i-outline clr-i-outline-path-1" d="M33,6.69h0c-.18-3.41-9.47-4.33-15-4.33S3,3.29,3,6.78V29.37c0,3.49,9.43,4.43,15,4.43s15-.93,15-4.43V6.78s0,0,0,0S33,6.7,33,6.69Zm-2,7.56c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,15.34v2.08A43.32,43.32,0,0,0,18,18.7c4,0,9.93-.48,13-2v5.17c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,22.92V25a43.32,43.32,0,0,0,11,1.28c4,0,9.93-.48,13-2v5.1c-.35.86-5.08,2.45-13,2.45S5.3,30.2,5,29.37V6.82C5.3,6,10,4.36,18,4.36c7.77,0,12.46,1.53,13,2.37-.52.87-5.21,2.39-13,2.39A37.6,37.6,0,0,1,7,7.76V9.85a43.53,43.53,0,0,0,11,1.27c4,0,9.93-.48,13-2Z" />
-                    {/* <path xmlns="http://www.w3.org/2000/svg" className="dashing_een" d="M31.5,7H21V3.5C21,3.224,20.776,3,20.5,3h-9C11.224,3,11,3.224,11,3.5V7H0.5C0.224,7,0,7.224,0,7.5v20  C0,27.776,0.224,28,0.5,28h31c0.276,0,0.5-0.224,0.5-0.5v-20C32,7.224,31.776,7,31.5,7z M12,4h8v3h-8V4z M31,27H1V8h30V27z M6,11.5  v2C6,13.776,5.776,14,5.5,14S5,13.776,5,13.5v-2C5,11.224,5.224,11,5.5,11S6,11.224,6,11.5z M6,16.5v2C6,18.776,5.776,19,5.5,19  S5,18.776,5,18.5v-2C5,16.224,5.224,16,5.5,16S6,16.224,6,16.5z M6,21.5v2C6,23.776,5.776,24,5.5,24S5,23.776,5,23.5v-2  C5,21.224,5.224,21,5.5,21S6,21.224,6,21.5z M27,11.5v2c0,0.276-0.224,0.5-0.5,0.5S26,13.776,26,13.5v-2c0-0.276,0.224-0.5,0.5-0.5  S27,11.224,27,11.5z M27,16.5v2c0,0.276-0.224,0.5-0.5,0.5S26,18.776,26,18.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,16.224,27,16.5z   M27,21.5v2c0,0.276-0.224,0.5-0.5,0.5S26,23.776,26,23.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,21.224,27,21.5z" /> */}
-                  </svg>
-                  Jobs
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/member/invoice"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('invoice') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
-                >
-                  <InvoiceSVG />
-                  Invoice
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/member/quotation"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('quotation') &&
-                    'bg-graydark dark:bg-meta-4'
-                    }`}
-                >
-                  <QuotationSVG />
-                  Quotation
-                </NavLink>
-              </li>
+                    <ClientSVG />
+                    Clients
+                  </NavLink>
+                </li>
+                : ""}
+              {jobsmenu_flag ?
+                <li>
+                  <NavLink
+                    to="/member/jobs"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('jobs') &&
+                      'bg-graydark dark:bg-meta-4'
+                      }`}
+                  >
+                    <svg
+                      className="fill-current"
+                      width="18"
+                      height="19"
+                      viewBox="0 0 36 36"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path xmlns="http://www.w3.org/2000/svg" className="clr-i-outline clr-i-outline-path-1" d="M33,6.69h0c-.18-3.41-9.47-4.33-15-4.33S3,3.29,3,6.78V29.37c0,3.49,9.43,4.43,15,4.43s15-.93,15-4.43V6.78s0,0,0,0S33,6.7,33,6.69Zm-2,7.56c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,15.34v2.08A43.32,43.32,0,0,0,18,18.7c4,0,9.93-.48,13-2v5.17c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,22.92V25a43.32,43.32,0,0,0,11,1.28c4,0,9.93-.48,13-2v5.1c-.35.86-5.08,2.45-13,2.45S5.3,30.2,5,29.37V6.82C5.3,6,10,4.36,18,4.36c7.77,0,12.46,1.53,13,2.37-.52.87-5.21,2.39-13,2.39A37.6,37.6,0,0,1,7,7.76V9.85a43.53,43.53,0,0,0,11,1.27c4,0,9.93-.48,13-2Z" />
+                      {/* <path xmlns="http://www.w3.org/2000/svg" className="dashing_een" d="M31.5,7H21V3.5C21,3.224,20.776,3,20.5,3h-9C11.224,3,11,3.224,11,3.5V7H0.5C0.224,7,0,7.224,0,7.5v20  C0,27.776,0.224,28,0.5,28h31c0.276,0,0.5-0.224,0.5-0.5v-20C32,7.224,31.776,7,31.5,7z M12,4h8v3h-8V4z M31,27H1V8h30V27z M6,11.5  v2C6,13.776,5.776,14,5.5,14S5,13.776,5,13.5v-2C5,11.224,5.224,11,5.5,11S6,11.224,6,11.5z M6,16.5v2C6,18.776,5.776,19,5.5,19  S5,18.776,5,18.5v-2C5,16.224,5.224,16,5.5,16S6,16.224,6,16.5z M6,21.5v2C6,23.776,5.776,24,5.5,24S5,23.776,5,23.5v-2  C5,21.224,5.224,21,5.5,21S6,21.224,6,21.5z M27,11.5v2c0,0.276-0.224,0.5-0.5,0.5S26,13.776,26,13.5v-2c0-0.276,0.224-0.5,0.5-0.5  S27,11.224,27,11.5z M27,16.5v2c0,0.276-0.224,0.5-0.5,0.5S26,18.776,26,18.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,16.224,27,16.5z   M27,21.5v2c0,0.276-0.224,0.5-0.5,0.5S26,23.776,26,23.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,21.224,27,21.5z" /> */}
+                    </svg>
+                    Jobs
+                  </NavLink>
+                </li>
+              :""}
+              {invoicemenu_flag ?
+                <li>
+                  <NavLink
+                    to="/member/invoice"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('invoice') &&
+                      'bg-graydark dark:bg-meta-4'
+                      }`}
+                  >
+                    <InvoiceSVG />
+                    Invoice
+                  </NavLink>
+                </li>
+                : ""}
+              {quotationmenu_flag ?
+                <li>
+                  <NavLink
+                    to="/member/quotation"
+                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('quotation') &&
+                      'bg-graydark dark:bg-meta-4'
+                      }`}
+                  >
+                    <QuotationSVG />
+                    Quotation
+                  </NavLink>
+                </li>
+                : ""}
             </ul>
           </div>
 
@@ -658,193 +699,193 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
             </ul>
           </div> */}
-          { settingmenu_flag ?
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              SETTING
-            </h3>
-            <ul className="mb-6 flex flex-col gap-1.5">
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/forms' || pathname.includes('forms')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
-                          pathname.includes('forms')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                      <SettingSVG />
-                      Settings
-                      <svg
-                        className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                          }`}
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                          fill=""
-                        />
-                      </svg>
-                      </NavLink>
-                      <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/member/setting/company"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Company
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/member/setting/roles"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Roles
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/member/setting/permission"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Permission
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-            </ul>
-          </div>
-          : ""
+          {settingmenu_flag ?
+            <div>
+              <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+                SETTING
+              </h3>
+              <ul className="mb-6 flex flex-col gap-1.5">
+                <SidebarLinkGroup
+                  activeCondition={
+                    pathname === '/forms' || pathname.includes('forms')
+                  }
+                >
+                  {(handleClick, open) => {
+                    return (
+                      <React.Fragment>
+                        <NavLink
+                          to="#"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
+                            pathname.includes('forms')) &&
+                            'bg-graydark dark:bg-meta-4'
+                            }`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            sidebarExpanded
+                              ? handleClick()
+                              : setSidebarExpanded(true);
+                          }}
+                        >
+                          <SettingSVG />
+                          Settings
+                          <svg
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                              }`}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                              fill=""
+                            />
+                          </svg>
+                        </NavLink>
+                        <div
+                          className={`translate transform overflow-hidden ${!open && 'hidden'
+                            }`}
+                        >
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/member/setting/company"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Company
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/member/setting/roles"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Roles
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/member/setting/permission"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Permission
+                              </NavLink>
+                            </li>
+                          </ul>
+                        </div>
+                      </React.Fragment>
+                    );
+                  }}
+                </SidebarLinkGroup>
+              </ul>
+            </div>
+            : ""
           }
-          { emailsmenu_flag ?
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              COMMUNICATION
-            </h3>
-            <ul className="mb-6 flex flex-col gap-1.5">
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/forms' || pathname.includes('forms')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
-                          pathname.includes('forms')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                      <EmailSVG />
-                      Emails
-                      <svg
-                        className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                          }`}
-                        width="20"
-                        height="20"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          clipRule="evenodd"
-                          d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                          fill=""
-                        />
-                      </svg>
-                      </NavLink>
-                      <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/member/email/all"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              All
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/member/email/send"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Send Box
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/member/email/receive"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Receive Box
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-            </ul>
-          </div>
-          : ""
+          {emailsmenu_flag ?
+            <div>
+              <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+                COMMUNICATION
+              </h3>
+              <ul className="mb-6 flex flex-col gap-1.5">
+                <SidebarLinkGroup
+                  activeCondition={
+                    pathname === '/forms' || pathname.includes('forms')
+                  }
+                >
+                  {(handleClick, open) => {
+                    return (
+                      <React.Fragment>
+                        <NavLink
+                          to="#"
+                          className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
+                            pathname.includes('forms')) &&
+                            'bg-graydark dark:bg-meta-4'
+                            }`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            sidebarExpanded
+                              ? handleClick()
+                              : setSidebarExpanded(true);
+                          }}
+                        >
+                          <EmailSVG />
+                          Emails
+                          <svg
+                            className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                              }`}
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                              fill=""
+                            />
+                          </svg>
+                        </NavLink>
+                        <div
+                          className={`translate transform overflow-hidden ${!open && 'hidden'
+                            }`}
+                        >
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/member/email/all"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                All
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/member/email/send"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Send Box
+                              </NavLink>
+                            </li>
+                            <li>
+                              <NavLink
+                                to="/member/email/receive"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Receive Box
+                              </NavLink>
+                            </li>
+                          </ul>
+                        </div>
+                      </React.Fragment>
+                    );
+                  }}
+                </SidebarLinkGroup>
+              </ul>
+            </div>
+            : ""
           }
 
           {/* <!-- Others Group --> */}
