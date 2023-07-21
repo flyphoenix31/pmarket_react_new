@@ -21,7 +21,7 @@ const Chat = () => {
     const [currentUser, setCurrentUser] = useState({});
 
     const messageRef = useRef();
-    const panelRef = useRef();
+    const panelRef =  useRef<HTMLDivElement | null>(null);
     const fileUpload = useRef();
 
     // const [file, setfile] = useState(null);
@@ -151,7 +151,8 @@ const Chat = () => {
                                         </svg>
                                     </button>
                                 </form>
-                                <div className="no-scrollbar max-h-full space-y-2.5 overflow-auto">
+                                {/* no-scrollbar */}
+                                <div className="max-h-full space-y-2.5 overflow-auto">
                                     {/* <div className="flex cursor-pointer items-center rounded py-2 px-4 hover:bg-gray-2 dark:hover:bg-strokedark">
                                         <div className="relative mr-3.5 h-11 w-full max-w-11 rounded-full">
                                             <img src={UserOne} alt="profile" className="h-full w-full object-cover object-center" />
@@ -209,7 +210,8 @@ const Chat = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1 }} ref={panelRef}>
+                            {/* no-scrollbar */}
+                            <div className="max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1, overscrollBehaviorY:'contain', overflowY:'auto' }} ref={panelRef}>
                                 {
                                     messageList.map((item, itemIndex) => {
                                         const style = {

@@ -822,7 +822,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Sender
+                              Send Box
                             </NavLink>
                           </li>
                           <li>
@@ -833,7 +833,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Receiver
+                              Receive Box
                             </NavLink>
                           </li>
                         </ul>

@@ -60,9 +60,9 @@ const DropdownMessage = () => {
         to="#"
       >
         {
-          // !notification ? '' : (
+          !notification ? '' : (
             <PalarmSVG />
-          // )
+          )
         }
 
         <MessageSVG />

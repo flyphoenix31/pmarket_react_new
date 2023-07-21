@@ -28,6 +28,13 @@ const SharedPage = () => {
         try {
             const res = await axios.post(serverURL + '/api/shared/gettoken', { is_deleted: 0, token: token });
             const data = res.data;
+            console.log("===========sharedpage", data.result[0].shareMode);
+            if(data.result[0].shareMode == 1){
+                setLoginOpen(false);
+                getFolederList();
+                setToken(true)
+                return;
+            }
             if (data.status) {
                 setLoading(true);
                 setToken(false);
@@ -43,7 +50,6 @@ const SharedPage = () => {
     const getFolederList = async () => {
         try {
             const res = await axios.post(serverURL + '/api/shared/sharelist', { is_deleted: 0,user_id: user_id, token: token });
-         
             const data = res.data;
             if (data.status == 0) {
                 setList(data.result);

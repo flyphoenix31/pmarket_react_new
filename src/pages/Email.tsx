@@ -65,7 +65,7 @@ const Email = () => {
         displayList.push(element);
       }
     });
-    tempHeader = tableHeaderList;
+    tempHeader = rtableHeaderList;
   }
 
   console.log("======displayList", displayList);
@@ -94,9 +94,9 @@ const Email = () => {
 
   return (
     <>
-      {roles == "all" ? <Breadcrumb pageName="All" /> : ''}
-      {roles == "send" ? <Breadcrumb pageName="Send" /> : ''}
-      {roles == "receive" ? <Breadcrumb pageName="Receive" /> : ''}
+      {roles == "all" ? <Breadcrumb pageName="Emails / All" /> : ''}
+      {roles == "send" ? <Breadcrumb pageName="Emails / Send" /> : ''}
+      {roles == "receive" ? <Breadcrumb pageName="Emails / Receive" /> : ''}
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="py-6 px-4 md:px-6 xl:px-7.5 flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap" style={{ padding: '10px 0px 30px 0px' }}>
           <div className="flex flex-wrap gap-3 sm:gap-5">
@@ -122,7 +122,7 @@ const Email = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 {
-                  tableHeaderList.map((header, headerIndex) => (
+                  tempHeader.map((header, headerIndex) => (
                     <th className="py-4 px-4 font-medium text-black dark:text-white" key={headerIndex}>
                       {header}
                     </th>
@@ -131,6 +131,7 @@ const Email = () => {
 
               </tr>
             </thead>
+            {roles == "all" ?
             <tbody>
               {
                 displayList.map((memail, emailIndex) => (
@@ -163,6 +164,72 @@ const Email = () => {
                 )
               }
             </tbody>
+            :""
+            }
+            {roles == "send" ?
+            <tbody>
+              {
+                displayList.map((memail, emailIndex) => (
+                  <tr key={emailIndex}>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.id}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-3 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.receiver_email}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.content}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{moment(memail.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>
+                    </td>
+                  </tr>
+                ))
+              }
+              {
+                !isEmpty(emailList) ? '' : (
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center" colSpan={7}>
+                      No data yet.
+                    </td>
+                  </tr>
+                )
+              }
+            </tbody>
+            :""
+            }
+            {roles == "receive" ?
+            <tbody>
+              {
+                displayList.map((memail, emailIndex) => (
+                  <tr key={emailIndex}>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.id}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-3 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.sender_email}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{memail.content}</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-black dark:text-white">{moment(memail.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>
+                    </td>
+                  </tr>
+                ))
+              }
+              {
+                !isEmpty(emailList) ? '' : (
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center" colSpan={7}>
+                      No data yet.
+                    </td>
+                  </tr>
+                )
+              }
+            </tbody>
+            :""
+            }
           </table>
         </div>
       </div>

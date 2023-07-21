@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import store from '../store';
 import { setUserList } from '../store/slice/usersSlice';
 import { setJobsList } from '../store/slice/jobsSlice';
-import { setOnlineUsers, setNewMessage } from '../store/slice/chatSlice';
+import { setOnlineUsers, setNewMessage, setNotification } from '../store/slice/chatSlice';
 import { setNotificationList } from '../store/slice/notificationSlice';
 import { setContactList, setLogout } from '../utils';
 
@@ -17,7 +17,6 @@ const socketStyle1 = {
     pauseOnHover: true,
     draggable: false,
     progress: undefined,
-    width: '2000px',
 }
 
 const socketStyle2 = {
@@ -51,11 +50,11 @@ socket.on('newMessage', (data) => {
     }
 
     else if (data.to_user === authStore.userInfo.id && window.location.pathname !== '/member/chat') {
-        // store.dispatch(setNotification(true));
+        store.dispatch(setNotification(true));
     }
     // console.error(authStore.userInfo.id, data.to_user);
     
-    if (authStore.userInfo.id === data.to_user) {1
+    if (authStore.userInfo.id === data.to_user) {
         toast.info('New message arrived ', {
             position: "top-right",
             autoClose: 3000,
@@ -71,7 +70,12 @@ socket.on('newMessage', (data) => {
 
 socket.on("sendemail", (data) => {
     console.log("===========44444444444444444:", data);
-    toast.success(`${data.content} came from ${data.email}` , socketStyle1);
+    let {send_email, receive_email, content} = data;
+    let user_email = window.localStorage.getItem('user_email');
+    if(user_email == receive_email){
+        // toast.success(`${data.content} came from ${data.send_email}` , socketStyle1);
+        toast.success('You got a new Share Alert');
+    }
 })
 
 socket.on('connectionState', list => {

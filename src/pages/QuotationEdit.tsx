@@ -253,6 +253,7 @@ const QuotationEdit = () => {
 
   const [company_name, setCompanyName] = useState('');
   const [company_email, setCompanyEmail] = useState('');
+  const [quotation_date, setQuotationData] = useState('');
   const [company_phone, setCompanyPhone] = useState('');
   const [company_address, setCompanyAddress] = useState('');
   const [client_name, setClientName] = useState('');
@@ -267,7 +268,7 @@ const QuotationEdit = () => {
   const redirect = useSelector((state) => state.quotation.redirect);
   const quotationList = useSelector((state) => state.quotation.quotationList);
   const currentQuotation = useSelector((state) => state.quotation.currentQuotation);
-
+  console.log("------------quotationlist", currentQuotation);
   const init_quotation = {
     description: '',
     unit_price: '',
@@ -280,7 +281,7 @@ const QuotationEdit = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const settingData = useSelector((state) => state.setting.data);
   let { id } = useParams();
 
   useEffect(() => {
@@ -299,6 +300,7 @@ const QuotationEdit = () => {
   useEffect(() => {
     if (!isEmpty(currentQuotation)) {
       setName(currentQuotation.name);
+      setQuotationData(moment(currentQuotation.created_at).format('YYYY-MM-DD'));
       setNotes(currentQuotation.notes);
       setCompanyName(currentQuotation.company_name);
       setCompanyEmail(currentQuotation.company_email);
@@ -329,7 +331,8 @@ const QuotationEdit = () => {
       client_phone,
       client_address,
       currency_id: 1,
-      items
+      items,
+      quotation_date
     }
 
     dispatch(updateQuotation(data));
@@ -369,6 +372,8 @@ const QuotationEdit = () => {
       totalPrice={totalPrice}
       name={name}
       notes={notes}
+      settingData = {settingData}
+      quotation_date = {quotation_date}
     />
   );
 
@@ -421,7 +426,7 @@ const QuotationEdit = () => {
                       </div>
 
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                        {/* <div className="w-full sm:w-1/2">
                           <label
                             className="mb-3 block text-sm font-medium text-black dark:text-white"
                             htmlFor="company_name"
@@ -449,9 +454,9 @@ const QuotationEdit = () => {
                           >
                             {errors.company_name}
                           </label>
-                        </div>
+                        </div> */}
 
-                        <div className="w-full sm:w-1/2">
+                        <div className="w-full">
                           <label
                             className="mb-3 block text-sm font-medium text-black dark:text-white flex"
                             htmlFor="client_name"
@@ -494,7 +499,7 @@ const QuotationEdit = () => {
                       </div>
 
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                        {/* <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <EmailSVG />
@@ -516,9 +521,9 @@ const QuotationEdit = () => {
                           >
                             {errors.company_email}
                           </label>
-                        </div>
+                        </div> */}
 
-                        <div className="w-full sm:w-1/2">
+                        <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <EmailSVG />
@@ -543,7 +548,7 @@ const QuotationEdit = () => {
                       </div>
 
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                        {/* <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <AddressSVG />
@@ -565,9 +570,9 @@ const QuotationEdit = () => {
                           >
                             {errors.company_address}
                           </label>
-                        </div>
+                        </div> */}
 
-                        <div className="w-full sm:w-1/2">
+                        <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <AddressSVG />
@@ -592,7 +597,7 @@ const QuotationEdit = () => {
                       </div>
 
                       <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                        <div className="w-full sm:w-1/2">
+                        {/* <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <PhoneSVG />
@@ -614,9 +619,9 @@ const QuotationEdit = () => {
                           >
                             {errors.company_phone}
                           </label>
-                        </div>
+                        </div> */}
 
-                        <div className="w-full sm:w-1/2">
+                        <div className="w-full">
                           <div className="relative">
                             <span className="absolute left-4.5 top-4">
                               <PhoneSVG />

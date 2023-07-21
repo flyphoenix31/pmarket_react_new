@@ -8,13 +8,14 @@ import FolderImg from '../images/shared/Folder_Small.png';
 import { FileSVG } from '../components/SVG.js';
 import Breadcrumb from '../components/Breadcrumb'; 1
 import { useNavigate } from 'react-router-dom';
-import SwitcherThree  from '../components/SwitcherThree.js';
+import SwitcherThree from '../components/SwitcherThree.js';
 import CreateFolderModal from './CreateFolderModal.js';
 import UploadFileModal from './UploadFileModal.js';
 import ShareModal from './ShareModal.js';
 import ShareLink from './ShareLink.js';
 import EditNameModal from './EditNameModal.js';
 import DeleteModal from './DeleteModal.js';
+import CheckboxOne from '../components/CheckboxOne.js';
 
 const Shared = () => {
 
@@ -34,8 +35,21 @@ const Shared = () => {
     const [password, setPassword] = useState('');
     const [preid, setPreId] = useState('');
     const [prename, setPreName] = useState('');
+    const [isChecked1, setIsChecked1] = useState<boolean>(false);
+    const [isChecked2, setIsChecked2] = useState<boolean>(false);
     const [shareMode, setShareMode] = useState(0);   //0(false) => Private Mode,  1(true) => Full Mode
     const tempUrl = window.location.host;
+
+    const checkValidate = (mtoken, mshareMode) => {
+        if (!isEmpty(mtoken)) {
+            if (mshareMode == 1) {
+                setIsChecked2(true);
+            }
+            else {
+                setIsChecked1(true);
+            }
+        }
+    }
 
     const getFolederList = async () => {
         try {
@@ -66,7 +80,7 @@ const Shared = () => {
             <div className="flex flex-col gap-10">
                 <div className="h-[calc(100vh-186px)] overflow-hidden sm:h-[calc(100vh-174px)]">
                     <div className="h-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark xl:flex">
-                        <div className="flex h-full flex-col border-l border-stroke dark:border-strokedark" style={{ flexGrow: 0, width:'100%' }}>
+                        <div className="flex h-full flex-col border-l border-stroke dark:border-strokedark" style={{ flexGrow: 0, width: '100%' }}>
                             <div className="sticky items-center justify-between border-b border-stroke px-6 py-4.5 dark:border-strokedark" style={{ float: 'right' }}>
                                 <div className="flex items-center">
                                     <h3 className="text-lg font-medium text-black dark:text-white 2xl:text-xl">List of shared files</h3>
@@ -85,43 +99,108 @@ const Shared = () => {
                             <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1, backgroundColor: '#f1f2f3' }}>
                                 {
                                     list.map((item: any, index: any) => {
-                                        return (
-                                            <div className="col-xl-3 col-lg-6 col-md-4 col-sm-12 col-12 layout-spacing9" key={index} id={index}>
-                                                <div className="widget widget-five">
-                                                    <div className="widget-heading">
-                                                        <div className='flex'>
-                                                            <a href={serverURL + item.filepath} className="task-info flex">
-                                                                <div className="w-img">
-                                                                    {/* <img src={FolderImg} alt="" /> */}
-                                                                    <FileSVG/>
+                                        let check1 = false ;
+                                        let check2= false;
+                                        if (!isEmpty(item.token)) {
+                                            if (item.shareMode == 1) {
+                                                check2 = true
+                                            }
+                                            else {
+                                                check1 = true;
+                                            }
+                                        }
+                                            return (
+                                                <div className="col-xl-3 col-lg-6 col-md-4 col-sm-12 col-12 layout-spacing9" key={index} id={index}>
+                                                    <div className="widget widget-five">
+                                                        <div className="widget-heading">
+                                                            <div className='flex'>
+                                                                <a href={serverURL + item.filepath} className="task-info flex">
+                                                                    <div className="w-img">
+                                                                        <img src={FolderImg} alt="" />
+                                                                        {/* <FileSVG/> */}
+                                                                    </div>
+                                                                </a>
+                                                                <div className="w-title ml-2">
+                                                                    <h5 id="folname_8">{item.name}</h5>
+                                                                    <div><span style={{ fontSize: '12px' }}>{getCurrentFormatedDate1(item.created_at)}</span>{isEmpty(item.file_size) ? <i className="fas fa-link text-warning" style={{ fontSize: '12px', margin: '0 3px' }}></i> : <i className="fas fa-link text-success" style={{ fontSize: '12px', margin: '0 3px' }}></i>}<span style={{ fontSize: '12px' }}>{isEmpty(item.file_size) ? "...Empty" : item.file_size}</span></div>
                                                                 </div>
-                                                            </a>
-                                                            <div className="w-title ml-2">
-                                                                <h5 id="folname_8">{item.name}</h5>
-                                                                <div><span style={{ fontSize: '12px' }}>{getCurrentFormatedDate1(item.created_at)}</span>{isEmpty(item.file_size) ? <i className="fas fa-link text-warning" style={{ fontSize: '12px', margin: '0 3px' }}></i> : <i className="fas fa-link text-success" style={{ fontSize: '12px', margin: '0 3px' }}></i>}<span style={{ fontSize: '12px' }}>{isEmpty(item.file_size) ? "...Empty" : item.file_size}</span></div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div>
-                                                            <div className="task-action pr-2" style={{textAlign:'right'}}>
-                                                                <div className="dropdown">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                                    <div className="dropdown-content">
-                                                                        <a href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password); setShareMode(item.shareMode);console.log("itemshareMode:",item.shareMode)}}>Edit Share</a>
-                                                                        <a href="#" onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
-                                                                        <a href="#" onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
-                                                                        <div className="dropdown-divider"></div>
-                                                                        <a href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
+                                                                <div className="w-title ml-4">
+                                                                    <div>
+                                                                        <label
+                                                                            htmlFor="checkboxLabelOne"
+                                                                            className="flex cursor-pointer select-none items-center"
+                                                                        >
+                                                                            <div className="relative">
+                                                                                <input
+                                                                                    type="checkbox"
+                                                                                    id="checkboxLabelOne"
+                                                                                    className="sr-only"
+                                                                                    // onChange={() => {
+                                                                                    //     setIsChecked1(!isChecked1);
+                                                                                    // }}
+                                                                                    disabled
+                                                                                />
+                                                                                <div
+                                                                                    className={`mr-2 flex h-5 w-5 items-center justify-center rounded border ${check1 && 'border-primary bg-gray dark:bg-transparent'
+                                                                                        }`}
+                                                                                >
+                                                                                    <span
+                                                                                        className={`h-2.5 w-2.5 rounded-sm ${check1 && 'bg-primary'}`}
+                                                                                    ></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            Private Mode
+                                                                        </label>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label
+                                                                            htmlFor="checkboxLabelOne"
+                                                                            className="flex cursor-pointer select-none items-center"
+                                                                        >
+                                                                            <div className="relative">
+                                                                                <input
+                                                                                    type="checkbox"
+                                                                                    id="checkboxLabelOne"
+                                                                                    className="sr-only"
+                                                                                    // onChange={() => {
+                                                                                    //     setIsChecked2(!isChecked2);
+                                                                                    // }}
+                                                                                    disabled
+                                                                                />
+                                                                                <div
+                                                                                    className={`mr-2 flex h-5 w-5 items-center justify-center rounded border ${check2 && 'border-primary bg-gray dark:bg-transparent'
+                                                                                        }`}
+                                                                                >
+                                                                                    <span
+                                                                                        className={`h-2.5 w-2.5 rounded-sm ${check2 && 'bg-primary'}`}
+                                                                                    ></span>
+                                                                                </div>
+                                                                            </div>
+                                                                            Public Mode
+                                                                        </label>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            {/* <SwitcherThree shareMode={item.shareMode}/> */}
+                                                            <div>
+                                                                <div className="task-action pr-2" style={{ textAlign: 'right' }}>
+                                                                    <div className="dropdown">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                                                        <div className="dropdown-content">
+                                                                            <a href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password); setShareMode(item.shareMode); console.log("itemshareMode:", item.shareMode) }}>Edit Share</a>
+                                                                            <a href="#" onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
+                                                                            <a href="#" onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
+                                                                            <div className="dropdown-divider"></div>
+                                                                            <a href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                {/* <SwitcherThree shareMode={item.shareMode}/> */}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        )
-                                    })
+                                            )
+                                        })
                                 }
                             </div>
                         </div>

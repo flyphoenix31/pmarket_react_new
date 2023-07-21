@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { KeySVG, TitleSVG } from '../components/SVG';
+import { CloseSVG, EmailSVG, KeySVG, TickSVG, TitleSVG } from '../components/SVG';
 import { isEmpty, serverURL, toastr} from '../config';
 import axios from 'axios';
 import { getCurrentFormatedDate, randomString } from '../utils';
@@ -100,16 +100,16 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                     console.log("newfoldererror", error)
                 })
         }
-        else{
+        else if(shareMode == true){
             setEditIndex(-1);
             axios.post(serverURL + '/api/shared/savetp', {id: preid, token:mtoken, password: '', email:'', shareMode: 1})
                 .then(res => {
                     const data = res.data;
                     if(!data.status) {
                         setPassword('');
-                        handleClose(event);
-                        navigate('/member/share');
-                        toastr.success('Full Mode was successful.');
+                        // handleClose(event);
+                        // navigate('/member/share');
+                        // toastr.success('Full Mode was successful.');
                     }
                 })
                 .catch((error) => {
@@ -119,37 +119,58 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
     }
 
     const handleSavem = (event: any) => {
-        if(validateEmail(emails) == false) return;
-
-        axios.post(serverURL + '/api/user/checkemail', {email: emails})
-            .then(res => {
-                let data = res.data;
-                if(data.status == 1){
-                    let str = "Email is not exist...";
-                    setWarningStr(str);
-                    setEmailFlag(false);
-                    return;
-                }
-                else{
-                    console.log("-----------filelink:", filelink);
-                    axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, content: filelink })
-                        .then(res => {
-                            const data = res.data;
-                            if(!data.status) {
-                                refreshList();
-                                handleClose(event);
-                                toastr.success('Email successfully sended.');
-                                navigate('/member/share');
-                            }else{
-                                toastr.success(data.message);
-                            }
-                        })
-                        .catch((error) => {
-                            setShare(false);
-                            navigate('/member/auth/signin');
-                        })
-                }
-            })
+        if(shareMode == false){
+            if(validateEmail(emails) == false) return;
+    
+            axios.post(serverURL + '/api/user/checkemail', {email: emails})
+                .then(res => {
+                    let data = res.data;
+                    if(data.status == 1){
+                        let str = "Email is not exist...";
+                        setWarningStr(str);
+                        setEmailFlag(false);
+                        return;
+                    }
+                    else{
+                        console.log("-----------filelink:", filelink);
+                        axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, content: filelink, shareMode: 0 })
+                            .then(res => {
+                                const data = res.data;
+                                if(!data.status) {
+                                    refreshList();
+                                    handleClose(event);
+                                    toastr.success('Private Email successfully sended.');
+                                    navigate('/member/share');
+                                }else{
+                                    toastr.success(data.message);
+                                }
+                            })
+                            .catch((error) => {
+                                setShare(false);
+                                navigate('/member/auth/signin');
+                            })
+                    }
+                })
+            
+        }
+        else if(shareMode == true){
+            axios.post(serverURL + '/api/shared/savem', {id: preid, email: emails,send_email: send_email, content: filelink, shareMode: 1 })
+                .then(res => {
+                    const data = res.data;
+                    if(!data.status) {
+                        refreshList();
+                        handleClose(event);
+                        toastr.success('Public Email successfully sended.');
+                        navigate('/member/share');
+                    }else{
+                        toastr.success(data.message);
+                    }
+                })
+                .catch((error) => {
+                    setShare(false);
+                    navigate('/member/auth/signin');
+                })
+        }
     }
 
     const firstFlag = (mtoken, memail) => {
@@ -229,36 +250,10 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                                 }`}
                                             >
                                                 <span className={`hidden ${shareMode && '!block'}`}>
-                                                <svg
-                                                    className="fill-white dark:fill-black"
-                                                    width="11"
-                                                    height="8"
-                                                    viewBox="0 0 11 8"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                    d="M10.0915 0.951972L10.0867 0.946075L10.0813 0.940568C9.90076 0.753564 9.61034 0.753146 9.42927 0.939309L4.16201 6.22962L1.58507 3.63469C1.40401 3.44841 1.11351 3.44879 0.932892 3.63584C0.755703 3.81933 0.755703 4.10875 0.932892 4.29224L0.932878 4.29225L0.934851 4.29424L3.58046 6.95832C3.73676 7.11955 3.94983 7.2 4.1473 7.2C4.36196 7.2 4.55963 7.11773 4.71406 6.9584L10.0468 1.60234C10.2436 1.4199 10.2421 1.1339 10.0915 0.951972ZM4.2327 6.30081L4.2317 6.2998C4.23206 6.30015 4.23237 6.30049 4.23269 6.30082L4.2327 6.30081Z"
-                                                    fill=""
-                                                    stroke=""
-                                                    strokeWidth="0.4"
-                                                    ></path>
-                                                </svg>
+                                                    <TickSVG />
                                                 </span>
                                                 <span className={`${shareMode && 'hidden'}`}>
-                                                <svg
-                                                    className="h-4 w-4 stroke-current"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    d="M6 18L18 6M6 6l12 12"
-                                                    ></path>
-                                                </svg>
+                                                    <CloseSVG />
                                                 </span>
                                             </div>
                                         </div>
@@ -332,6 +327,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                             </div>
                         
                         </div>
+                        { !shareMode ? 
                         <div>
                             <div style={{fontSize:'17px', color:'grey', textAlign:'left'}} className='mb-1'>{isEmpty(preemail) ? "Recipients" : 'Change Recipients'}</div> 
                             <div>
@@ -347,21 +343,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                         required
                                     />
                                     <span className="absolute right-4 top-4">
-                                        <svg
-                                            className="fill-current"
-                                            width="22"
-                                            height="22"
-                                            viewBox="0 0 22 22"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <g opacity="0.5">
-                                            <path
-                                                d="M19.2516 3.30005H2.75156C1.58281 3.30005 0.585938 4.26255 0.585938 5.46567V16.6032C0.585938 17.7719 1.54844 18.7688 2.75156 18.7688H19.2516C20.4203 18.7688 21.4172 17.8063 21.4172 16.6032V5.4313C21.4172 4.26255 20.4203 3.30005 19.2516 3.30005ZM19.2516 4.84692C19.2859 4.84692 19.3203 4.84692 19.3547 4.84692L11.0016 10.2094L2.64844 4.84692C2.68281 4.84692 2.71719 4.84692 2.75156 4.84692H19.2516ZM19.2516 17.1532H2.75156C2.40781 17.1532 2.13281 16.8782 2.13281 16.5344V6.35942L10.1766 11.5157C10.4172 11.6875 10.6922 11.7563 10.9672 11.7563C11.2422 11.7563 11.5172 11.6875 11.7578 11.5157L19.8016 6.35942V16.5688C19.8703 16.9125 19.5953 17.1532 19.2516 17.1532Z"
-                                                fill=""
-                                            />
-                                            </g>
-                                        </svg>
+                                        <EmailSVG />
                                     </span>
                                     {
                                         (validateEmail(emails) && emailflag == true) ?
@@ -372,6 +354,8 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                 </div>
                             </div>
                         </div>
+                        : ""
+                        }
                         <div className="flex justify-end gap-4.5 mt-4.5">
                             <button
                                 className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white" style={{color:'cornflowerblue'}}
