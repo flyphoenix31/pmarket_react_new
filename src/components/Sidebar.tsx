@@ -32,6 +32,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const [invoicemenu_flag, setInvoiceMenuFlag] = useState(true);
   const [quotationmenu_flag, setQuotationMenuFlag] = useState(true);
   const [jobsmenu_flag, setJobsMenuFlag] = useState(true);
+  const [managementmenu_flag, setManagementMenuFlag] = useState(true);
   // const userinfo = useSelector((state: any) => state.auth.userInfo);
   let role_id = window.localStorage.getItem('role_id');
   let umenu = { role: "users_menu", roleid: role_id };
@@ -42,6 +43,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   let imenu = { role: "invoice_menu", roleid: role_id };
   let qmenu = { role: "quotation_menu", roleid: role_id };
   let jmenu = { role: "jobs_menu", rolid: role_id };
+  let mmenu = { role: "management_menu", roleid: role_id };
+  getRoleInfo(mmenu)
+    .then(result => {
+      setManagementMenuFlag(result);
+    })
   getRoleInfo(jmenu)
     .then(result => {
       setJobsMenuFlag(result);
@@ -578,107 +584,109 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </ul>
 
           </div>
+          {managementmenu_flag ?
+            <div>
+              <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+                MANAGEMENT
+              </h3>
 
-          <div>
-            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-              MANAGEMENT
-            </h3>
-
-            <ul className="mb-6 flex flex-col gap-1.5">
-              {usersmenu_flag ?
-                <li>
-                  <NavLink
-                    to="/member/users"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') &&
-                      'bg-graydark dark:bg-meta-4'
-                      }`}
-                  >
-                    <svg
-                      className="fill-current"
-                      width="18"
-                      height="19"
-                      viewBox="0 0 18 19"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+              <ul className="mb-6 flex flex-col gap-1.5">
+                {usersmenu_flag ?
+                  <li>
+                    <NavLink
+                      to="/member/users"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') &&
+                        'bg-graydark dark:bg-meta-4'
+                        }`}
                     >
-                      <path
-                        d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
-                        fill=""
-                      />
-                      <path
-                        d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
-                        fill=""
-                      />
-                    </svg>
-                    Users
-                  </NavLink>
-                </li>
-                : ""
-              }
-              {clientsmenu_flag ?
-                <li>
-                  <NavLink
-                    to="/member/clients"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('clients') &&
-                      'bg-graydark dark:bg-meta-4'
-                      }`}
-                  >
-                    <ClientSVG />
-                    Clients
-                  </NavLink>
-                </li>
-                : ""}
-              {jobsmenu_flag ?
-                <li>
-                  <NavLink
-                    to="/member/jobs"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('jobs') &&
-                      'bg-graydark dark:bg-meta-4'
-                      }`}
-                  >
-                    <svg
-                      className="fill-current"
-                      width="18"
-                      height="19"
-                      viewBox="0 0 36 36"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                      <svg
+                        className="fill-current"
+                        width="18"
+                        height="19"
+                        viewBox="0 0 18 19"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
+                          fill=""
+                        />
+                        <path
+                          d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
+                          fill=""
+                        />
+                      </svg>
+                      Users
+                    </NavLink>
+                  </li>
+                  : ""
+                }
+                {clientsmenu_flag ?
+                  <li>
+                    <NavLink
+                      to="/member/clients"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('clients') &&
+                        'bg-graydark dark:bg-meta-4'
+                        }`}
                     >
-                      <path xmlns="http://www.w3.org/2000/svg" className="clr-i-outline clr-i-outline-path-1" d="M33,6.69h0c-.18-3.41-9.47-4.33-15-4.33S3,3.29,3,6.78V29.37c0,3.49,9.43,4.43,15,4.43s15-.93,15-4.43V6.78s0,0,0,0S33,6.7,33,6.69Zm-2,7.56c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,15.34v2.08A43.32,43.32,0,0,0,18,18.7c4,0,9.93-.48,13-2v5.17c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,22.92V25a43.32,43.32,0,0,0,11,1.28c4,0,9.93-.48,13-2v5.1c-.35.86-5.08,2.45-13,2.45S5.3,30.2,5,29.37V6.82C5.3,6,10,4.36,18,4.36c7.77,0,12.46,1.53,13,2.37-.52.87-5.21,2.39-13,2.39A37.6,37.6,0,0,1,7,7.76V9.85a43.53,43.53,0,0,0,11,1.27c4,0,9.93-.48,13-2Z" />
-                      {/* <path xmlns="http://www.w3.org/2000/svg" className="dashing_een" d="M31.5,7H21V3.5C21,3.224,20.776,3,20.5,3h-9C11.224,3,11,3.224,11,3.5V7H0.5C0.224,7,0,7.224,0,7.5v20  C0,27.776,0.224,28,0.5,28h31c0.276,0,0.5-0.224,0.5-0.5v-20C32,7.224,31.776,7,31.5,7z M12,4h8v3h-8V4z M31,27H1V8h30V27z M6,11.5  v2C6,13.776,5.776,14,5.5,14S5,13.776,5,13.5v-2C5,11.224,5.224,11,5.5,11S6,11.224,6,11.5z M6,16.5v2C6,18.776,5.776,19,5.5,19  S5,18.776,5,18.5v-2C5,16.224,5.224,16,5.5,16S6,16.224,6,16.5z M6,21.5v2C6,23.776,5.776,24,5.5,24S5,23.776,5,23.5v-2  C5,21.224,5.224,21,5.5,21S6,21.224,6,21.5z M27,11.5v2c0,0.276-0.224,0.5-0.5,0.5S26,13.776,26,13.5v-2c0-0.276,0.224-0.5,0.5-0.5  S27,11.224,27,11.5z M27,16.5v2c0,0.276-0.224,0.5-0.5,0.5S26,18.776,26,18.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,16.224,27,16.5z   M27,21.5v2c0,0.276-0.224,0.5-0.5,0.5S26,23.776,26,23.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,21.224,27,21.5z" /> */}
-                    </svg>
-                    Jobs
-                  </NavLink>
-                </li>
-              :""}
-              {invoicemenu_flag ?
-                <li>
-                  <NavLink
-                    to="/member/invoice"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('invoice') &&
-                      'bg-graydark dark:bg-meta-4'
-                      }`}
-                  >
-                    <InvoiceSVG />
-                    Invoice
-                  </NavLink>
-                </li>
-                : ""}
-              {quotationmenu_flag ?
-                <li>
-                  <NavLink
-                    to="/member/quotation"
-                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('quotation') &&
-                      'bg-graydark dark:bg-meta-4'
-                      }`}
-                  >
-                    <QuotationSVG />
-                    Quotation
-                  </NavLink>
-                </li>
-                : ""}
-            </ul>
-          </div>
+                      <ClientSVG />
+                      Clients
+                    </NavLink>
+                  </li>
+                  : ""}
+                {jobsmenu_flag ?
+                  <li>
+                    <NavLink
+                      to="/member/jobs"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('jobs') &&
+                        'bg-graydark dark:bg-meta-4'
+                        }`}
+                    >
+                      <svg
+                        className="fill-current"
+                        width="18"
+                        height="19"
+                        viewBox="0 0 36 36"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path xmlns="http://www.w3.org/2000/svg" className="clr-i-outline clr-i-outline-path-1" d="M33,6.69h0c-.18-3.41-9.47-4.33-15-4.33S3,3.29,3,6.78V29.37c0,3.49,9.43,4.43,15,4.43s15-.93,15-4.43V6.78s0,0,0,0S33,6.7,33,6.69Zm-2,7.56c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,15.34v2.08A43.32,43.32,0,0,0,18,18.7c4,0,9.93-.48,13-2v5.17c-.33.86-5.06,2.45-13,2.45A37.45,37.45,0,0,1,7,22.92V25a43.32,43.32,0,0,0,11,1.28c4,0,9.93-.48,13-2v5.1c-.35.86-5.08,2.45-13,2.45S5.3,30.2,5,29.37V6.82C5.3,6,10,4.36,18,4.36c7.77,0,12.46,1.53,13,2.37-.52.87-5.21,2.39-13,2.39A37.6,37.6,0,0,1,7,7.76V9.85a43.53,43.53,0,0,0,11,1.27c4,0,9.93-.48,13-2Z" />
+                        {/* <path xmlns="http://www.w3.org/2000/svg" className="dashing_een" d="M31.5,7H21V3.5C21,3.224,20.776,3,20.5,3h-9C11.224,3,11,3.224,11,3.5V7H0.5C0.224,7,0,7.224,0,7.5v20  C0,27.776,0.224,28,0.5,28h31c0.276,0,0.5-0.224,0.5-0.5v-20C32,7.224,31.776,7,31.5,7z M12,4h8v3h-8V4z M31,27H1V8h30V27z M6,11.5  v2C6,13.776,5.776,14,5.5,14S5,13.776,5,13.5v-2C5,11.224,5.224,11,5.5,11S6,11.224,6,11.5z M6,16.5v2C6,18.776,5.776,19,5.5,19  S5,18.776,5,18.5v-2C5,16.224,5.224,16,5.5,16S6,16.224,6,16.5z M6,21.5v2C6,23.776,5.776,24,5.5,24S5,23.776,5,23.5v-2  C5,21.224,5.224,21,5.5,21S6,21.224,6,21.5z M27,11.5v2c0,0.276-0.224,0.5-0.5,0.5S26,13.776,26,13.5v-2c0-0.276,0.224-0.5,0.5-0.5  S27,11.224,27,11.5z M27,16.5v2c0,0.276-0.224,0.5-0.5,0.5S26,18.776,26,18.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,16.224,27,16.5z   M27,21.5v2c0,0.276-0.224,0.5-0.5,0.5S26,23.776,26,23.5v-2c0-0.276,0.224-0.5,0.5-0.5S27,21.224,27,21.5z" /> */}
+                      </svg>
+                      Jobs
+                    </NavLink>
+                  </li>
+                  : ""}
+                {invoicemenu_flag ?
+                  <li>
+                    <NavLink
+                      to="/member/invoice"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('invoice') &&
+                        'bg-graydark dark:bg-meta-4'
+                        }`}
+                    >
+                      <InvoiceSVG />
+                      Invoice
+                    </NavLink>
+                  </li>
+                  : ""}
+                {quotationmenu_flag ?
+                  <li>
+                    <NavLink
+                      to="/member/quotation"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('quotation') &&
+                        'bg-graydark dark:bg-meta-4'
+                        }`}
+                    >
+                      <QuotationSVG />
+                      Quotation
+                    </NavLink>
+                  </li>
+                  : ""}
+              </ul>
+            </div>
+          :""
+          }
 
           {/* <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">

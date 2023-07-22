@@ -2,18 +2,21 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AddressSVG, ArrowDownSVG, ContentSVG, TitleSVG } from '../components/SVG';
 import { isEmpty, serverURL, toastr } from '../config';
+import { newCompose } from '../store/slice/emailSlice.js';
 import axios from 'axios';
 import { getCurrentFormatedDate, randomString, validateEmail } from '../utils';
 import $ from 'jquery';
 import { CopySVG, SaveSVG } from '../components/SVG';
+import { useDispatch } from 'react-redux';
 
-const ComposeModal = ({ onlyEmailList, is_compose, setCompose, setOnlyEmailList }) => {
+const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmailList }) => {
 
     const [emailaddress, setEmailAddress] = useState('No Select');
     const [msgcontent, setMsgContent] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
-    console.log("---------------------------------",onlyEmailList)
+    const dispatch = useDispatch();
+    console.log("---------------------------------",curPage)
     useEffect(() => {
 
     }, [])
@@ -21,7 +24,7 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, setOnlyEmailList 
     const handleClose = (event: any) => {
         event.preventDefault();
         setCompose(false);
-        setOnlyEmailList();
+        getEmailList();
     }
 
     const handleSavem = (event: any) => {
@@ -36,27 +39,15 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, setOnlyEmailList 
             setErrors({"msgcontent":"Please enter"});
         }
         if(errors.length >= 1) return;
-        axios.post(serverURL + '/api/email/compose', {send_email: send_email,receive_email: emailaddress, content: msgcontent})
-            .then(res => {
-                const data = res.data;
-                console.log("data: ", data)
-                if(!data.status) {
-                    setOnlyEmailList();
-                    handleClose(event);
-                    setCompose(false);
-                    toastr.success('Email successfully sended!');
-                }
-                else if(data.status == 1){
-                    setOnlyEmailList();
-                    handleClose(event);
-                    setCompose(false);
-                    toastr.success(data.message);
-                }
-            })
-            .catch((error) => {
-                console.log("newfoldererror", error)
-                setCompose(false);
-            })
+        let data = {
+            send_email: send_email,
+            receive_email: emailaddress, 
+            content: msgcontent
+        };
+        dispatch(newCompose(data));
+        getEmailList();
+        setCompose(false);
+        navigate(`/member/email/${curPage}`);
     }
 
     return (

@@ -74,12 +74,13 @@ const SharedPage = () => {
                         <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1, backgroundColor: '#f1f2f3' }}>
                             {
                                 list.map((item: any, index: any) => {
+                                    console.log("ddddddddddddddd",item);
                                     return (
                                         <div className="col-xl-3 col-lg-6 col-md-4 col-sm-12 col-12 layout-spacing9" key={index} id={index}>
                                             <div className="widget widget-five">
                                                 <div className="widget-heading">
                                                     <div className='flex'>
-                                                        <a href={serverURL + item.filepath} className="task-info flex">
+                                                        <a href={serverURL + item.filepath} className="task-info flex" download={item.name}>
                                                             <div className="w-img">
                                                                 <img src={FolderImg} alt="" />
                                                             </div>
@@ -89,7 +90,7 @@ const SharedPage = () => {
                                                             <div><span style={{ fontSize: '12px' }}>{getCurrentFormatedDate1(item.created_at)}</span>{isEmpty(item.file_size) ? <i className="fas fa-link text-warning" style={{ fontSize: '12px', margin: '0 3px' }}></i> : <i className="fas fa-link text-success" style={{ fontSize: '12px', margin: '0 3px' }}></i>}<span style={{ fontSize: '12px' }}>{isEmpty(item.file_size) ? "...Empty" : item.file_size}</span></div>
                                                         </div>
                                                     </div>
-                                                    <a href={serverURL + item.filepath} className="btn-peffect justify-center rounded bg-primary py-4 px-6 font-medium text-gray hover:shadow-1" style={{alignSelf:'center'}}>
+                                                    <a href={item.filepath} className="btn-peffect justify-center rounded bg-primary py-4 px-6 font-medium text-gray hover:shadow-1" style={{alignSelf:'center'}} download>
                                                         <div className="justify-end gap-4.5">DOWNLOAD</div>
                                                     </a>
                                                 </div>

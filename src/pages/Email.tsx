@@ -2,25 +2,44 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb.js';
+
 import { useNavigate, useParams } from 'react-router-dom';
-import { setEmailList } from '../store/slice/emailSlice.js';
-import { isEmpty } from '../config/index.js';
+import { isEmpty, serverURL, toastr } from '../config/index.js';
 import { EmailSVG, PlaneSVG } from '../components/SVG.js';
 import ComposeModal from './ComposeModal.js';
+import axios from 'axios';
+
 
 const Email = () => {
   const dispatch = useDispatch();
-  const emailList = useSelector((state) => state.email.emailList);
-  console.log("-------------------emaliList", emailList);
+  // const preemailList = useSelector((state) => state.email.emailList);
+
   let { roles } = useParams();
   let user_email = window.localStorage.getItem('user_email');
-  console.log("=========emailList:", emailList);
   console.log("=========user_email:", user_email);
   const [is_compose, setCompose] = useState(false);
-  const [onlyEmailList , setOnlyEmailList] = useState([]);
+  const [onlyEmailList, setOnlyEmailList] = useState([]);
+  const [emailList, setList] = useState([]);
+
+  const getEmailList = async () => {
+    try {
+      console.log("----------------------")
+      const res = await axios.get(serverURL + '/api/email/list');
+      const data = res.data;
+      console.log("-----------------data", data);
+      if (data.status == 0) {
+        setList(data.list);
+      }
+    }
+    catch (error) {
+      // navigate('/member/auth/signin');
+    }
+  }
+  useEffect(() => {
+    getEmailList();
+  }, [])
 
   useEffect(() => {
-    dispatch(setEmailList());
   }, [])
 
   const tableHeaderList = [
@@ -52,6 +71,9 @@ const Email = () => {
   let temp_emailList = [];
   let temp = [];
   let tempHeader: any[] = [];
+  useEffect(() => {
+
+  })
   if (roles == "all") {
     displayList = emailList;
     tempHeader = tableHeaderList;
@@ -61,7 +83,7 @@ const Email = () => {
     emailList.forEach(element => {
       if (element.sender_email == user_email) {
         const index = temp_emailList.findIndex(item => item.receiver_email == element.receiver_email)
-        if(index < 0){
+        if (index < 0) {
           temp_emailList.push(element);
           temp.push(element.receiver_email);
         }
@@ -76,7 +98,7 @@ const Email = () => {
     emailList.forEach(element => {
       if (element.receiver_email == user_email) {
         const index = temp_emailList.findIndex(item => item.sender_email == element.sender_email)
-        if(index < 0){
+        if (index < 0) {
           temp_emailList.push(element);
           temp.push(element.sender_email);
         }
@@ -117,7 +139,7 @@ const Email = () => {
 
   return (
     <>
-      <ComposeModal onlyEmailList={temp} is_compose={is_compose} setCompose={setCompose} setOnlyEmailList= {setOnlyEmailList}/>
+      <ComposeModal onlyEmailList={temp} is_compose={is_compose} setCompose={setCompose} curPage={roles} getEmailList={getEmailList}/>
       {roles == "all" ? <Breadcrumb pageName="Emails / All" /> : ''}
       {roles == "send" ? <Breadcrumb pageName="Emails / Send" /> : ''}
       {roles == "receive" ? <Breadcrumb pageName="Emails / Receive" /> : ''}
@@ -141,10 +163,10 @@ const Email = () => {
             <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
               {roles == "send" ?
                 <button className="btn-peffect flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1" onClick={e => { e.preventDefault(); setCompose(true); }}>
-                    <PlaneSVG />
-                    <span className='pl-2'>Compose</span>
+                  <PlaneSVG />
+                  <span className='pl-2'>Compose</span>
                 </button>
-              :""
+                : ""
               }
               {/* {roles == "receive" ?
                 <button className="btn-peffect flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1" onClick={e => { e.preventDefault(); setCompose(true); }}>

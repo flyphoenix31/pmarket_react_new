@@ -139,7 +139,8 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                 if(!data.status) {
                                     refreshList();
                                     handleClose(event);
-                                    toastr.success('Private Email successfully sended.');
+                                    toastr.success('Email successfully sended.');
+                                    // toastr.success('Private Email successfully sended.');
                                     navigate('/member/share');
                                 }else{
                                     toastr.success(data.message);
@@ -160,7 +161,8 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                     if(!data.status) {
                         refreshList();
                         handleClose(event);
-                        toastr.success('Public Email successfully sended.');
+                        // toastr.success('Public Email successfully sended.');
+                        toastr.success('Email successfully sended.');
                         navigate('/member/share');
                     }else{
                         toastr.success(data.message);
@@ -249,10 +251,10 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                                 shareMode && '!right-1 !translate-x-full !bg-primary dark:!bg-white'
                                                 }`}
                                             >
-                                                <span className={`hidden ${shareMode && '!block'}`}>
+                                                <span className={`hidden ${false && '!block'}`}>
                                                     <TickSVG />
                                                 </span>
-                                                <span className={`${shareMode && 'hidden'}`}>
+                                                <span className={`${false && 'hidden'}`}>
                                                     <CloseSVG />
                                                 </span>
                                             </div>
@@ -262,29 +264,32 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                 <span style={{fontSize:'17px'}}>(Private / Public)</span>
                             </div>
                          </div>
-                        <div className='mb-5.5'>
-                            <div style={{textAlign:'left', paddingBottom:'5px', fontSize:'20px'}}>{isEmpty(prepassword) ? 'Password' : "Change Password"}</div>
-                            <div className="relative">
-                                <span className="absolute left-4.5 top-4">
-                                    <KeySVG />
-                                </span>
-                                <input
-                                    className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={e => {e.preventDefault(); setPassword(e.target.value); setEditIndex(1);}}
-                                    placeholder="Type Your Password or Leave empty for no password"
-                                />
+                         { !shareMode ? 
+                            <div className='mb-5.5'>
+                                <div style={{textAlign:'left', paddingBottom:'5px', fontSize:'20px'}}>{isEmpty(prepassword) ? 'Password' : "Change Password"}</div>
+                                <div className="relative">
+                                    <span className="absolute left-4.5 top-4">
+                                        <KeySVG />
+                                    </span>
+                                    <input
+                                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                        type="password"
+                                        name="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={e => {e.preventDefault(); setPassword(e.target.value); setEditIndex(1);}}
+                                        placeholder="Type Your Password or Leave empty for no password"
+                                    />
+                                </div>
+                                <label
+                                    className="text-left mb-0 block text-sm font-medium mt-2 text-danger"
+                                    htmlFor="item"
+                                >
+                                    {isEmpty(error) ? '' : error}
+                                </label>
                             </div>
-                            <label
-                                className="text-left mb-0 block text-sm font-medium mt-2 text-danger"
-                                htmlFor="item"
-                            >
-                                {isEmpty(error) ? '' : error}
-                            </label>
-                        </div>
+                            :""                         
+                         }
 
                         <div className="flex justify-end gap-4.5">
                             <button

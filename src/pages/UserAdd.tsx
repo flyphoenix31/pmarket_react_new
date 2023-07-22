@@ -187,62 +187,7 @@ const UserAdd = () => {
                       </label>
                     </div>
                   </div>
-                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <div className="w-full sm:w-3/5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="emailAddress"
-                      >
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-4.5 top-4">
-                          <EmailSVG />
-                        </span>
-                        <input
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="emailAddress"
-                          id="emailAddress"
-                          value={preemail}
-                          onChange={e => { e.preventDefault(); setEmail(e.target.value) }}
-                          placeholder="Write email here"
-                        />
-                      </div>
-                      <label
-                        className="mb-0 block text-sm font-medium mt-2 text-danger"
-                        htmlFor="email"
-                      >
-                        {errors.email}
-                      </label>
-                    </div>
-                    <div className="w-full sm:w-2/5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-white dark:text-white"
-                        htmlFor="Username"
-                      >
-                        Email Address
-                      </label>
-                      <div className="relative z-20 bg-white dark:bg-form-input">
-                        {/* <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
-                          <WebSVG />
-                        </span> */}
-                        <select
-                          className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
-                          value={lastemail}
-                          onChange={e => { e.preventDefault(); setLastEmail(e.target.value) }}
-                          disabled
-                        >
-                          <option value={"@blender.com"}>@blender.com</option>
-                          <option value={"@gmail.com"}>@gmail.com</option>
-                          <option value={"@outlook.com"}>@outlook.com</option>
-                        </select>
-                        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
-                          <ArrowDownSVG />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  
 
                   <div className="mb-5.5">
                     <label

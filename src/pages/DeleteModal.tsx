@@ -51,7 +51,7 @@ const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
 
                     <div className='mb-5.5' style={{textAlign: 'center'}}>
                         <div style={{paddingBottom:'10px', fontSize:'35px'}}>Are you sure?</div>
-                        <div className='block text-danger' style={{paddingBottom:'10px', fontSize:'23px'}}>The will delete data from server</div>
+                        <div className='block text-danger' style={{paddingBottom:'10px', fontSize:'23px'}}>This will delete data from server</div>
                         
                         <label
                             className="text-left mb-0 block text-sm font-medium mt-2 text-danger"

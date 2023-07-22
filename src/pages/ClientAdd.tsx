@@ -2,40 +2,50 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
+import { removeStrAfteratSymbol } from '../utils/index';
 import { newClient, setRedirect } from '../store/slice/clientsSlice.js';
-import { AddressSVG, CheckSVG, EmailSVG, HumanSVG, PhoneSVG, TitleSVG, WebSVG } from '../components/SVG.js';
+import { AddressSVG, ArrowDownSVG, CheckSVG, EmailSVG, HumanSVG, PhoneSVG, TitleSVG, WebSVG } from '../components/SVG.js';
 
 const ClientAdd = () => {
 
   const [title, setTitle] = useState(0);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [preemail, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [website, setWebsite] = useState('');
   const [status_id, setStatus] = useState(1);
   const [remark, setRemark] = useState('');
+  const [lastemail, setLastEmail] = useState('@blender.com');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const errors = useSelector((state) => state.clients.errors);
   const redirect = useSelector((state) => state.clients.redirect);
+  useEffect(() => {
+    let tempstr = removeStrAfteratSymbol(preemail);
+    setEmail(tempstr);
+  })
 
   useEffect(() => {
-    if(redirect) {
+    if (redirect) {
       dispatch(setRedirect(false));
       navigate('/member/clients');
     }
   }, [redirect])
 
   const handleSubmit = (event: any) => {
-
+    event.preventDefault();
+    console.log("email",preemail);
+    console.log("lastemail",lastemail);
+    let temp_email = preemail + lastemail;
+    console.log("=====temp_email:", temp_email);
     event.preventDefault();
     const data = {
       title,
       name,
-      email,
+      email: temp_email,
       phone,
       website,
       address,
@@ -155,7 +165,7 @@ const ClientAdd = () => {
                           type="text"
                           name="delivery"
                           id="delivery"
-                          value={email}
+                          value={preemail}
                           onChange={e => { e.preventDefault(); setEmail(e.target.value) }}
                           placeholder="Write email here"
                         />
@@ -166,6 +176,32 @@ const ClientAdd = () => {
                       >
                         {errors.email}
                       </label>
+                    </div>
+                    <div className="w-full sm:w-2/6">
+                      <label
+                        className="mb-3 block text-sm font-medium text-white dark:text-white"
+                        htmlFor="Username"
+                      >
+                        Email Address
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        {/* <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
+                          <WebSVG />
+                        </span> */}
+                        <select
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
+                          value={lastemail}
+                          onChange={e => { e.preventDefault(); setLastEmail(e.target.value) }}
+                          disabled
+                        >
+                          <option value={"@blender.com"}>@blender.com</option>
+                          <option value={"@gmail.com"}>@gmail.com</option>
+                          <option value={"@outlook.com"}>@outlook.com</option>
+                        </select>
+                        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
+                          <ArrowDownSVG />
+                        </span>
+                      </div>
                     </div>
                     <div className="w-full sm:w-1/2">
                       <label
