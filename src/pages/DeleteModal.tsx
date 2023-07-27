@@ -25,7 +25,7 @@ const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
                     refreshList();
                     toastr.success('It was succefully deleted!');
                     setDelete(false);
-                    navigate('/member/share');
+                    navigate('/member/shares');
                 }
             })
             .catch((error) => {

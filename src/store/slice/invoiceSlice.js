@@ -12,7 +12,8 @@ const initialState = {
     errors: {},
     redirect: false,
     previewInvoice: {},
-    previewType: ''
+    previewType: '',
+    pageInfo: {},
 }
 export const updateInvoicePreview = createAsyncThunk(
     'invoice/updateinvoicepreview',
@@ -81,16 +82,14 @@ export const setInvoiceList = createAsyncThunk(
     'invoice/setInvoiceList',
     async (param, {dispatch}) => {
         try {
-            const res = await axios.get(serverURL + '/api/invoice/list');
+            const res = await axios.post(serverURL + '/api/invoice/list', param);
             const data = await res.data;
-
-            if (!data.status) {
-                console.log("---------invoicelist", data.list)
-                return data.list;
+            if (data.status) {
+                if (!isEmpty(data.message))
+                    toastr.warning(data.message);
+                return []
             }
-            else if (!isEmpty(data.message))
-                toastr.warning(data.message);
-            return [];
+            return data;
 
         } catch (error) {
             dispatch(setUser({}));
@@ -153,10 +152,16 @@ export const updateInvoice = createAsyncThunk(
         try {
             const res = await axios.post(serverURL + '/api/invoice/update', param);
             const data = await res.data;
-            if (!data.status)
-                toastr.success('Successfully updated')
-            else if (!isEmpty(data.message))
+            console.log("--------reqinvoiceList:", data);
+            if (!data.status) {
+                toastr.success('Successfully updated');
+            }
+            if (!isEmpty(data.message)){
                 toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                toastr.warning(data.errors.message);
+            }
             return data;
 
         } catch (error) {
@@ -191,12 +196,12 @@ const invoiceSlice = createSlice({
             if(isEmpty(data)) return;
             if (data.status === 1) state.errors = data.errors;
             else if (!data.status) {
-                state.redirect = true;
                 state.errors = {}
             }
         })
         builder.addCase(setInvoiceList.fulfilled, (state, action) => {
-            state.invoiceList = action.payload;
+            state.invoiceList = action.payload.list;
+            state.pageInfo = action.payload;
         })
         builder.addCase(findOneInvoice.fulfilled, (state, action) => {
             const data = action.payload;

@@ -3,12 +3,6 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-// import './css/all.min.css'
-import './js/all.min.js'
-import './css/index.css';
-// import './css/satoshi.css';
-import './css/sweetalert.css';
-import './js/myfunction.js';
 import store from './store';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

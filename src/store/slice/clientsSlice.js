@@ -9,21 +9,24 @@ const initialState = {
     clientList: [],
     currentClient: {},
     errors: {},
-    redirect: false
+    redirect: false,
+    pageInfo: {},
 }
 
 export const setClientList = createAsyncThunk(
     'clients/setClientList',
-    async () => {
+    async (param) => {
         try {
-            const res = await axios.get(serverURL + '/api/client/list');
+            console.log("-----clientList:", param);
+            const res = await axios.post(serverURL + '/api/client/list', param);
             const data = await res.data;
+            console.log("--------reqclientList:", data);
             if (data.status) {
                 if (!isEmpty(data.message))
                     toastr.warning(data.message);
                 return []
             }
-            return data.list;
+            return data;
 
         } catch (error) {
             store.dispatch(setUser({}));
@@ -62,8 +65,12 @@ export const updateClient = createAsyncThunk(
             if (!data.status) {
                 toastr.success('Successfully updated');
             }
-            else if (!isEmpty(data.message))
+            if (!isEmpty(data.message)){
                 toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                toastr.warning(data.errors.message);
+            }
             return data;
 
         } catch (error) {
@@ -110,13 +117,12 @@ const clientsSlice = createSlice({
             const data = action.payload;
             if (data.status === 1) state.errors = data.errors;
             else if (!data.status) {
-                state.redirect = true;
                 state.errors = {}
             }
         })
         builder.addCase(setClientList.fulfilled, (state, action) => {
-            state.clientList = action.payload;
-            setClientList();
+            state.clientList = action.payload.list;
+            state.pageInfo = action.payload;
         })
         builder.addCase(findOne.fulfilled, (state, action) => {
             state.currentClient = action.payload.client;

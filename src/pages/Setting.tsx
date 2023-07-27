@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 const Setting = () => {
 
   const fileUpload = useRef(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
   const [imgFile, setImgFile] = useState(null);
 
   const [business_name, setBusinessName] = useState('');
@@ -47,7 +47,10 @@ const Setting = () => {
 
   const handleUpload = (event: any) => {
     event.preventDefault();
-    fileUpload.current.click();
+    const inputElement = fileUpload.current as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.click();
+    }
   }
 
   const handleImage = (event: any) => {
@@ -81,7 +84,7 @@ const Setting = () => {
   return (
     <>
       <div className="mx-auto max-w-270">
-        <Breadcrumb pageName="Setting / Company" />
+        <Breadcrumb pageName="SETTING / COMPANY" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
@@ -242,7 +245,7 @@ const Setting = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                      className="btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Save

@@ -36,6 +36,9 @@ export const newCompose = createAsyncThunk(
         try {
             const res = await axios.post(serverURL + '/api/email/compose', param)
             const data = res.data;
+            if(!data.status){
+                toastr.success('Email successfully sended!');
+            }
             return data
         }
         catch (err) {

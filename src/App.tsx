@@ -9,8 +9,9 @@ import Loader from './common/Loader';
 import Users from './pages/Users';
 import UserProfile from './pages/UserProfile';
 import Chat from './pages/Chat';
-import History from './pages/History';
+import History from './pages/ChatHistory';
 import Shared from './pages/Shared';
+import SharedHistory from './pages/SharedHistory';
 import SharePage from './pages/SharePage';
 import socket from './config/socket';
 import { setUserInformation } from './store/slice/authSlice';
@@ -21,6 +22,10 @@ import Invoice from './pages/Invoice';
 import InvoiceAdd from './pages/InvoiceAdd';
 import InvoiceEdit from './pages/InvoiceEdit';
 import Email from './pages/Email';
+import EmailAll from './pages/EmailAll';
+import EmailSend from './pages/EmailSend';
+import EmailRecive from './pages/EmailReceive';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Clients from './pages/Clients';
@@ -70,13 +75,13 @@ function App() {
         <Route path="/member/auth/signin" element={<SignIn />} />
         <Route path="/member/auth/signup" element={<SignUp />} />
         <Route
-            path="/member/shared/:token"
-            element={
-              <Suspense fallback={<Loader />}>
-                <SharePage />
-              </Suspense>
-            }
-          />
+          path="/member/shared/:token"
+          element={
+            <Suspense fallback={<Loader />}>
+              <SharePage />
+            </Suspense>
+          }
+        />
         <Route
           path="/member/quote/view/:id"
           element={
@@ -96,7 +101,7 @@ function App() {
             }
           />
           <Route
-            path="/member/chat"
+            path="/member/chats"
             element={
               <Suspense fallback={<Loader />}>
                 <Chat />
@@ -104,7 +109,7 @@ function App() {
             }
           />
           <Route
-            path="/member/history"
+            path="/member/chathistory"
             element={
               <Suspense fallback={<Loader />}>
                 <History />
@@ -112,14 +117,21 @@ function App() {
             }
           />
           <Route
-            path="/member/share"
+            path="/member/shares"
             element={
               <Suspense fallback={<Loader />}>
                 <Shared />
               </Suspense>
             }
           />
-          
+          <Route
+            path="/member/sharehistory"
+            element={
+              <Suspense fallback={<Loader />}>
+                <SharedHistory />
+              </Suspense>
+            }
+          />
           <Route
             path="/member/users"
             element={
@@ -144,7 +156,7 @@ function App() {
               </Suspense>
             }
           />
-          <Route 
+          <Route
             path="/member/profile"
             element={
               <Suspense fallback={<Loader />}>
@@ -272,14 +284,38 @@ function App() {
               </Suspense>
             }
           />
-          <Route
+          {/* <Route
               path="/member/email/:roles"
               element={
                 <Suspense fallback={<Loader />}>
                   <Email />
                 </Suspense>
               }
-            />
+            /> */}
+          <Route
+            path="/member/email/all"
+            element={
+              <Suspense fallback={<Loader />}>
+                <EmailAll />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/member/email/send"
+            element={
+              <Suspense fallback={<Loader />}>
+                <EmailSend />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/member/email/receive"
+            element={
+              <Suspense fallback={<Loader />}>
+                <EmailRecive />
+              </Suspense>
+            }
+          />
           <Route
             path="/member/calendar"
             element={

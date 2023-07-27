@@ -3,11 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { isEmpty } from '../config';
-import { updateClient, setRedirect, setClientList, findOne } from '../store/slice/clientsSlice.js';
+import { updateClient } from '../store/slice/clientsSlice.js';
 import { AddressSVG, CheckSVG, EmailSVG, HumanSVG, PhoneSVG, TitleSVG, WebSVG } from '../components/SVG.js';
 
 const ClientEdit = () => {
+  
 
+  const { id } = useParams();
   const [title, setTitle] = useState(0);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,42 +22,27 @@ const ClientEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const errors = useSelector((state) => state.clients.errors);
-  const redirect = useSelector((state) => state.clients.redirect);
+  // const errors = useSelector((state) => state.clients.errors);
   const clientList = useSelector((state) => state.clients.clientList);
-  const currentClient = useSelector((state) => state.clients.currentClient);
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    if (redirect) {
-      dispatch(setRedirect(false));
-      navigate('/member/clients');
-    }
-  }, [redirect])
+  
+  console.log("clientList:",  clientList);
 
   useEffect(() => {
-    if (isEmpty(clientList))
-      navigate('/member/clients');
-    dispatch(findOne(id));
-  }, [clientList])
-
-  useEffect(() => {
-    if (!isEmpty(currentClient)) {
-      setTitle(currentClient.title)
-      setName(currentClient.name)
-      setEmail(currentClient.email)
-      setPhone(isEmpty(currentClient.phone) ? '' : currentClient.phone)
-      setAddress(isEmpty(currentClient.address) ? '' : currentClient.address)
-      setWebsite(isEmpty(currentClient.website) ? '' : currentClient.website)
-      setStatus(currentClient.status_id)
-      setRemark(isEmpty(currentClient.remark) ? '' : currentClient.remark)
+    if (!isEmpty(clientList)) {
+      const editIndex = clientList.findIndex((item: { id: { toString: () => string; }; }) => item.id.toString() == id);
+      if(editIndex >= 0){
+        let currentClient = clientList[editIndex];
+        setTitle(currentClient.title)
+        setName(currentClient.name)
+        setEmail(currentClient.email)
+        setPhone(isEmpty(currentClient.phone) ? '' : currentClient.phone)
+        setAddress(isEmpty(currentClient.address) ? '' : currentClient.address)
+        setWebsite(isEmpty(currentClient.website) ? '' : currentClient.website)
+        setStatus(currentClient.status_id)
+        setRemark(isEmpty(currentClient.remark) ? '' : currentClient.remark)
+      }
     }
   }, [clientList])
-
-  useEffect(() => {
-    dispatch(setClientList());
-  }, [])
 
   const handleSubmit = (event: any) => {
 
@@ -72,6 +59,7 @@ const ClientEdit = () => {
       remark
     }
     dispatch(updateClient(data));
+    navigate('/member/clients');
   }
 
   const handleClose = (event: any) => {
@@ -158,12 +146,12 @@ const ClientEdit = () => {
                           placeholder="Write name here"
                         />
                       </div>
-                      <label
+                      {/* <label
                         className="mb-0 block text-sm font-medium mt-2 text-danger"
                         htmlFor="name"
                       >
                         {errors.name}
-                      </label>
+                      </label> */}
                     </div>
                   </div>
 
@@ -189,12 +177,12 @@ const ClientEdit = () => {
                           placeholder="Write email here"
                         />
                       </div>
-                      <label
+                      {/* <label
                         className="mb-0 block text-sm font-medium mt-2 text-danger"
                         htmlFor="email"
                       >
                         {errors.email}
-                      </label>
+                      </label> */}
                     </div>
                     <div className="w-full sm:w-1/2">
                       <label
@@ -258,12 +246,12 @@ const ClientEdit = () => {
                         placeholder="Write phone here"
                       />
                     </div>
-                    <label
+                    {/* <label
                       className="mb-0 block text-sm font-medium mt-2 text-danger"
                       htmlFor="phone"
                     >
                       {errors.phone}
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className='mb-5.5'>
@@ -287,12 +275,12 @@ const ClientEdit = () => {
                         placeholder="Write phone here"
                       />
                     </div>
-                    <label
+                    {/* <label
                       className="mb-0 block text-sm font-medium mt-2 text-danger"
                       htmlFor="address"
                     >
                       {errors.address}
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className='mb-5.5'>
@@ -316,12 +304,12 @@ const ClientEdit = () => {
                         placeholder="Write website here"
                       />
                     </div>
-                    <label
+                    {/* <label
                       className="mb-0 block text-sm font-medium mt-2 text-danger"
                       htmlFor="website"
                     >
                       {errors.website}
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className="mb-5.5">
@@ -373,23 +361,23 @@ const ClientEdit = () => {
                         placeholder="Write remark here"
                       ></textarea>
                     </div>
-                    <label
+                    {/* <label
                       className="mb-0 block text-sm font-medium mt-2 text-danger"
                       htmlFor="remark"
                     >
                       {errors.remark}
-                    </label>
+                    </label> */}
                   </div>
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       onClick={handleClose}
                     >
                       Close
                     </button>
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                      className="btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Save

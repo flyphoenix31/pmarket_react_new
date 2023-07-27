@@ -47,7 +47,7 @@ const DropdownMessage = () => {
   const handleClick = (event) => {
     event.preventDefault();
     dispatch(setNotification(false));
-    navigate('/member/chat');
+    navigate('/member/chats');
   }
 
 

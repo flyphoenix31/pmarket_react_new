@@ -734,7 +734,7 @@ const QuotationEdit = () => {
               <div className="p-7">
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded bg-success py-2 px-6 font-medium text-gray hover:shadow-1"
+                    className="w-full btn-peffect justify-center rounded bg-success py-2 px-6 font-medium text-gray hover:shadow-1"
                     onClick={(e) => { e.preventDefault(); setPreviewMode(!previewMode) }}
                   >
                     {previewMode ? 'Edit' : 'Preview'}
@@ -742,7 +742,7 @@ const QuotationEdit = () => {
                 </div>
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                    className="w-full btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                     onClick={handleSubmit}
                   >
                     Save
@@ -750,7 +750,7 @@ const QuotationEdit = () => {
                 </div>
                 <div className="mb-5.5">
                   <button
-                    className="w-full flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="w-full btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                     onClick={handleClose}
                   >
                     Close

@@ -28,7 +28,7 @@ const Role = () => {
       axios.get(serverURL + '/api/role/list-with-permission'),
       axios.get(serverURL + '/api/permission/list')
     ]).then(([pRes, rRes]) => {
-      if(!pRes.data.status && !rRes.data.status) {
+      if (!pRes.data.status && !rRes.data.status) {
         setList(pRes.data.list);
         setPlist(rRes.data.list);
       }
@@ -82,7 +82,7 @@ const Role = () => {
 
   return (
     <>
-      <Breadcrumb pageName="Setting / Roles" />
+      <Breadcrumb pageName="SETTING / ROLES" />
       <RoleModal open={open} setOpen={setOpen} pList={pList} refreshTable={getRoleList} currentItem={currentItem} />
 
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -94,11 +94,8 @@ const Role = () => {
           </div>
           <div className="flex justify-end">
             <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-              <button
-                className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark"
-                onClick={e => { e.preventDefault(); setOpen(true); setCurrentItem(null); }}
-              >
-                + Add New
+              <button className="btn-peffect flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1" onClick={e => { e.preventDefault(); setOpen(true); setCurrentItem(null); }}>
+                <span className='pl-2'>+ Add New</span>
               </button>
             </div>
           </div>

@@ -12,21 +12,22 @@ const initialState = {
     currentJob: {},
     errors: {},
     redirect: false,
+    pageInfo: {},
 }
 
 export const setJobsList = createAsyncThunk(
     'jobs/setJobsList',
-    async () => {
+    async (params) => {
         try {
-            const res = await axios.get(serverURL + '/api/jobs/list');
+            const res = await axios.post(serverURL + '/api/jobs/list', params);
             const data = await res.data;
-
-            if (!data.status) {
-                return data.list;
+            console.log("--------reqjobsList:", data);
+            if (data.status) {
+                if (!isEmpty(data.message))
+                    toastr.warning(data.message);
+                return []
             }
-            else if (!isEmpty(data.message))
-                toastr.warning(data.message);
-            return [];
+            return data;
 
         } catch (error) {
             store.dispatch(setUser({}));
@@ -135,12 +136,16 @@ export const updateJob = createAsyncThunk(
         try {
             const res = await axios.post(serverURL + '/api/jobs/update', param);
             const data = await res.data;
-            if (!data.status)
-                toastr.success('Successfully updated')
-            else if (!isEmpty(data.message))
+            if (!data.status) {
+                toastr.success('Successfully updated');
+            }
+            if (!isEmpty(data.message)){
                 toastr.warning(data.message);
+            }
+            if(!isEmpty(data.errors)){
+                toastr.warning(data.errors.message);
+            }
             return data;
-            toastr.success('Successfully updated');
 
         } catch (error) {
             store.dispatch(setUser({}));
@@ -176,13 +181,13 @@ const jobsSlice = createSlice({
             if(isEmpty(data)) return;
             if(data.status === 1) state.errors = data.errors;
             else if(!data.status){
-                state.redirect = true;
                 state.errors = {};
             }
         })
 
         builder.addCase(setJobsList.fulfilled, (state, action) => {
-            state.jobsList = action.payload;
+            state.jobsList = action.payload.list;
+            state.pageInfo = action.payload;
         })
         builder.addCase(setCategoryList.fulfilled, (state, action) => {
             state.categoryList = action.payload;

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb.js';
 import { removeStrAfteratSymbol } from '../utils/index';
-import { newClient, setRedirect } from '../store/slice/clientsSlice.js';
+import { newClient, setRedirect, setErrors } from '../store/slice/clientsSlice.js';
 import { AddressSVG, ArrowDownSVG, CheckSVG, EmailSVG, HumanSVG, PhoneSVG, TitleSVG, WebSVG } from '../components/SVG.js';
 
 const ClientAdd = () => {
@@ -390,13 +390,13 @@ const ClientAdd = () => {
 
                   <div className="flex justify-end gap-4.5">
                     <button
-                      className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                      className="btn-neffect justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                       onClick={handleClose}
                     >
                       Close
                     </button>
                     <button
-                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
+                      className="btn-peffect justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                       type="submit"
                     >
                       Save

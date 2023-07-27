@@ -5,13 +5,12 @@ import Breadcrumb from '../components/Breadcrumb';
 import userInit from '../images/user/user-07.png';
 import { PhoneSVG } from '../components/SVG.js';
 import { isEmpty, serverURL } from '../config';
-import { updateUser, setUserList } from '../store/slice/usersSlice.js';
 import { updateInvoicePreview } from '../store/slice/invoiceSlice.js'
 
 const InvoiceSetting = () => {
 
   const fileUpload = useRef(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
   const [imgFile, setImgFile] = useState(null);
 
   const [maddress, setAddress] = useState('');
@@ -29,7 +28,10 @@ const InvoiceSetting = () => {
 
   const handleUpload = (event: any) => {
     event.preventDefault();
-    fileUpload.current.click();
+    const inputElement = fileUpload.current as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.click();
+    }
   }
 
   const handleImage = (event: any) => {

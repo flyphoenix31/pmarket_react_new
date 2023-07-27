@@ -7,93 +7,23 @@ import store from "..";
 
 const initialState = {
     historyList: [],
-    roleList: [],
-    categoryList: [],
-    currentJob: {}
+    pageInfo: {},
 }
 
 export const setHistoryList = createAsyncThunk(
     'history/setHistoryList',
-    async () => {
+    async (param) => {
         try {
-            const res = await axios.get(serverURL + '/api/history/list');
+            const res = await axios.post(serverURL + '/api/history/list', param);
             const data = await res.data;
+            console.log('==========chatHistory:', data);
+
             if (data.status) {
                 if (!isEmpty(data.message))
-                toastr.warning(data.message);
+                    toastr.warning(data.message);
                 return [];
             }
-            return data.list;
-
-        } catch (error) {
-            store.dispatch(setUser({}));
-            return [];
-        }
-    }
-)
-
-export const newJob = createAsyncThunk(
-    'history/newJob',
-    async (param) => {
-        try {
-            const res = await axios.post(serverURL + '/api/job/new', param);
-            const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message)){
-                    toastr.warning(data.message);
-                    return { id: -1, list: [] };
-                }
-                if(!isEmpty(data.errors)){
-                    toastr.warning(data.errors.message);
-                    return { id: -1, list: []};
-                }
-            }
-            else
-                toastr.success('Successfully added');
-
-        } catch (error) {
-            store.dispatch(setUser({}));
-            return { id: -1, list: [] };
-        }
-    }
-)
-
-export const findOneJob = createAsyncThunk(
-    'history/findOneJob',
-    async (id) => {
-        try {
-            const res = await axios.get(serverURL + '/api/jobs/findOne', { params: { id } });
-            const data = await res.data;
-            if (!data.status)
-                return data
-            else {
-                if (!isEmpty(data.message))
-                    toastr.warning(data.message);
-            }
-            return null;
-        } catch (error) {
-            store.dispatch(setUser({}));
-        }
-    }
-)
-
-export const updateJob = createAsyncThunk(
-    'history/updateJob',
-    async (param) => {
-        try {
-            const res = await axios.post(serverURL + '/api/job/update', param);
-            const data = await res.data;
-            if (data.status) {
-                if (!isEmpty(data.message)){
-                    toastr.warning(data.message);
-                    return []
-                }
-                if(!isEmpty(data.errors)){
-                    toastr.warning(data.errors.message);
-                    return []
-                }
-            }
-            toastr.success('Successfully updated');
+            return data;
 
         } catch (error) {
             store.dispatch(setUser({}));
@@ -108,7 +38,8 @@ const historySlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(setHistoryList.fulfilled, (state, action) => {
-            state.historyList = action.payload;
+            state.historyList = action.payload.history;
+            state.pageInfo = action.payload
         })
     }
 })

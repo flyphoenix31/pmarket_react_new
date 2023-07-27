@@ -7,23 +7,48 @@ import { setUser } from "./authSlice";
 
 const initialState = {
     userList: [],
+    disUserList: [],
     roleList: [],
     errors: {},
     redirect:false,
+    pageInfo:{},
 }
 
 export const setUserList = createAsyncThunk(
     'users/setUserList',
-    async () => {
+    async (param) => {
         try {
-            const res = await axios.get(serverURL + '/api/user/list');
+            const res = await axios.post(serverURL + '/api/user/list');
             const data = await res.data;
             if (data.status) {
                 if (!isEmpty(data.message))
                     toastr.warning(data.message);
                 return []
             }
-            return data.users;
+            return data;
+
+        } catch (error) {
+            console.log(error);
+            store.dispatch(setUser({}));
+            return [];
+        }
+    }
+)
+
+export const disUserList = createAsyncThunk(
+    'users/disUserList',
+    async (param) => {
+        try {
+            console.log("---userPreParam", param);
+            const res = await axios.post(serverURL + '/api/user/list', param);
+            const data = await res.data;
+            console.log("---userForwardParam", param);
+            if (data.status) {
+                if (!isEmpty(data.message))
+                    toastr.warning(data.message);
+                return []
+            }
+            return data;
 
         } catch (error) {
             console.log(error);
@@ -56,7 +81,7 @@ export const setRoleList = createAsyncThunk(
 
 export const newUser = createAsyncThunk(
     'users/newUser',
-    async (param) => {
+    async (param, {dispatch}) => {
         try {
             const res = await axios.post(serverURL + '/api/user/register', param, {
                 headers: { 'Content-Type': 'multipart/form-data' }
@@ -68,8 +93,7 @@ export const newUser = createAsyncThunk(
             if (!isEmpty(data.message)) {
                 toastr.warning(data.message);
             }
-            if(!isEmpty(data.errors)){
-            }
+      
             console.log("======new user", data);
             return data;
 
@@ -92,9 +116,6 @@ export const updateUser = createAsyncThunk(
             }
             if(!isEmpty(data.message)){
                 toastr.warning(data.message);
-            }
-            if(!isEmpty(data.errors)){
-                console.log("=======update user", data);
             }
             return data;
 
@@ -133,13 +154,15 @@ const usersSlice = createSlice({
                 console.log("---------",state.errors);
             }
             else if(!data.status){
-                state.redirect = true;
                 state.errors = {};
             }
         })
         builder.addCase(setUserList.fulfilled, (state, action) => {
-            state.userList = action.payload;
-            setUserList();
+            state.userList = action.payload.users;
+        })
+        builder.addCase(disUserList.fulfilled, (state, action) => {
+            state.disUserList = action.payload.users;
+            state.pageInfo = action.payload;
         })
         builder.addCase(setRoleList.fulfilled, (state, action) => {
             state.roleList = action.payload;

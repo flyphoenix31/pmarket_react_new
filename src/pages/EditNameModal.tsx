@@ -13,7 +13,8 @@ const EditNameModal = ({preid, prename, editname, setEditName, refreshList }) =>
     const navigate = useNavigate();
     useEffect(() => {
         if(editIndex == -1){
-            setItem(prename)
+            console.log("----------------")
+            setItem('')
         }
     })
 
@@ -32,7 +33,7 @@ const EditNameModal = ({preid, prename, editname, setEditName, refreshList }) =>
                     refreshList();
                     toastr.success('Name is renamed successfully!');
                     setEditName(false);
-                    navigate('/member/share');
+                    navigate('/member/shares');
                 }
             })
             .catch((error) => {

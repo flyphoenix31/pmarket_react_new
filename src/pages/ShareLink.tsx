@@ -58,7 +58,7 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
         console.log("------Send Email------");
         handleClose(event);
         toastr.success('Email successfully sended!');
-        // navigate('/member/share');
+        // navigate('/member/shares');
         // axios.post(serverURL + '/api/shared/sharelink', {id: preid, email: emails})
         //     .then(res => {
         //         const data = res.data;
@@ -67,7 +67,7 @@ const ShareLink = ({preid, preemail, token, is_sharelink, setShareLink, refreshL
         //             refreshList();
         //             handleClose(event);
         //             toastr.success('Email successfully sended!');
-        //             navigate('/member/share');
+        //             navigate('/member/shares');
         //         }
         //     })
         //     .catch((error) => {

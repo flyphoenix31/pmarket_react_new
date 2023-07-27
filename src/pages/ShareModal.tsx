@@ -108,7 +108,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                     if(!data.status) {
                         setPassword('');
                         // handleClose(event);
-                        // navigate('/member/share');
+                        // navigate('/member/shares');
                         // toastr.success('Full Mode was successful.');
                     }
                 })
@@ -141,7 +141,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                     handleClose(event);
                                     toastr.success('Email successfully sended.');
                                     // toastr.success('Private Email successfully sended.');
-                                    navigate('/member/share');
+                                    navigate('/member/shares');
                                 }else{
                                     toastr.success(data.message);
                                 }
@@ -163,7 +163,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                         handleClose(event);
                         // toastr.success('Public Email successfully sended.');
                         toastr.success('Email successfully sended.');
-                        navigate('/member/share');
+                        navigate('/member/shares');
                     }else{
                         toastr.success(data.message);
                     }
@@ -196,7 +196,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                     refreshList();
                     toastr.success('Name is renamed successfully!');
                     // setShare(false);
-                    // navigate('/member/share');
+                    // navigate('/member/shares');
                 }
             })
             .catch((error) => {
@@ -344,7 +344,7 @@ const ShareModal = ({mshareMode, preid, preemail,prepassword, token, is_shared, 
                                         id="email"
                                         value={emails}
                                         onChange={e => {setEmails(e.target.value); setEditIndex(2); setEmailFlag(true);setWarningStr("Please enter your email address.")}}
-                                        placeholder="Type your emails"
+                                        placeholder="Type recipient emails"
                                         required
                                     />
                                     <span className="absolute right-4 top-4">

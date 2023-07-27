@@ -40,7 +40,7 @@ const InvoicePreview = ({
 
 
     const fileUpload = useRef(null);
-    const [imgPreview, setImgPreview] = useState(null);
+    const [imgPreview, setImgPreview] = useState('');
     const [imgFile, setImgFile] = useState(null);
     const [mcompany_address, setAddress] = useState('');
     const [mcompany_phone, setPhone] = useState('');
@@ -64,7 +64,10 @@ const InvoicePreview = ({
 
     const handleUpload = (event: any) => {
         event.preventDefault();
-        fileUpload.current.click();
+        const inputElement = fileUpload.current as HTMLInputElement | null;
+        if (inputElement) {
+            inputElement.click();
+        }
     }
 
     const handleImage = (event: any) => {

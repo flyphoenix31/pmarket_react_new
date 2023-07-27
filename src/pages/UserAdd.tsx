@@ -6,16 +6,16 @@ import userInit from '../images/user/user-07.png';
 import { isEmpty } from '../config/index.js';
 import { removeStrAfteratSymbol } from '../utils/index';
 import { newUser, setRedirect } from '../store/slice/usersSlice.js';
-import { ArrowDownSVG, ContentSVG, EmailSVG, KeySVG, PhoneSVG, UserSVG, WebSVG } from '../components/SVG.js';
+import { ArrowDownSVG, CheckSVG, ContentSVG, EmailSVG, KeySVG, PhoneSVG, UserSVG, WebSVG } from '../components/SVG.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import $ from 'jquery';
 
-  
+
 const UserAdd = () => {
 
   const fileUpload = useRef(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
   const [imgFile, setImgFile] = useState(null);
 
   const [name, setName] = useState('');
@@ -33,7 +33,7 @@ const UserAdd = () => {
   const roleList = useSelector((state) => state.users.roleList);
   const errors = useSelector((state) => state.users.errors);
   const redirect = useSelector((state) => state.users.redirect);
-  console.log("roleList", roleList);
+  console.log("======userRedirect", redirect);
 
   useEffect(() => {
     let tempstr = removeStrAfteratSymbol(preemail);
@@ -52,7 +52,10 @@ const UserAdd = () => {
 
   const handleUpload = (event: any) => {
     event.preventDefault();
-    fileUpload.current.click();
+    const inputElement = fileUpload.current as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.click();
+    }
   }
 
   const handleImage = (event: any) => {
@@ -67,11 +70,14 @@ const UserAdd = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log("email",preemail);
-    console.log("lastemail",lastemail);
+    console.log("email", preemail);
+    console.log("lastemail", lastemail);
     let temp_email = preemail + lastemail;
     console.log("=====temp_email:", temp_email);
-    // return
+    if(isEmpty(imgPreview)){
+      toast.warning("Upload your profile");
+      return;
+    }
     const formData = new FormData();
     if (imgFile !== null) formData.append('avatar', imgFile);
     formData.append('name', name);
@@ -163,7 +169,7 @@ const UserAdd = () => {
                         className="mb-3 block text-sm font-medium text-black dark:text-white"
                         htmlFor="fullName"
                       >
-                        Full Name
+                        Phone Number
                       </label>
                       <div className="relative">
                         <span className="absolute left-4.5 top-4">
@@ -187,7 +193,62 @@ const UserAdd = () => {
                       </label>
                     </div>
                   </div>
-                  
+                  <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="delivery"
+                      >
+                        Email
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4.5 top-4">
+                          <EmailSVG />
+                        </span>
+                        <input
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                          type="text"
+                          name="delivery"
+                          id="delivery"
+                          value={preemail}
+                          onChange={e => { e.preventDefault(); setEmail(e.target.value) }}
+                          placeholder="Write email here"
+                        />
+                      </div>
+                      <label
+                        className="mb-0 block text-sm font-medium mt-2 text-danger"
+                        htmlFor="email"
+                      >
+                        {errors.email}
+                      </label>
+                    </div>
+                    <div className="w-full sm:w-1/2">
+                      <label
+                        className="mb-3 block text-sm font-medium text-white dark:text-white"
+                        htmlFor="Username"
+                      >
+                        Email Address
+                      </label>
+                      <div className="relative z-20 bg-white dark:bg-form-input">
+                        {/* <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
+                          <WebSVG />
+                        </span> */}
+                        <select
+                          className="w-full rounded border border-stroke bg-gray py-3 pl-6 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
+                          value={lastemail}
+                          onChange={e => { e.preventDefault(); setLastEmail(e.target.value) }}
+                          disabled
+                        >
+                          <option value={"@blender.com"}>@blender.com</option>
+                          <option value={"@gmail.com"}>@gmail.com</option>
+                          <option value={"@outlook.com"}>@outlook.com</option>
+                        </select>
+                        <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
+                          <ArrowDownSVG />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
                   <div className="mb-5.5">
                     <label
@@ -250,7 +311,9 @@ const UserAdd = () => {
                       Select Position
                     </label>
                     <div className="relative z-20 bg-white dark:bg-form-input">
-                      <UserSVG />
+                      <span className="absolute top-1/2 left-4 z-30 -translate-y-1/2">
+                        <WebSVG />
+                      </span>
                       <select
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
                         value={role_id}

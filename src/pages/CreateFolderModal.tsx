@@ -24,7 +24,7 @@ const CreateFolderModal = ({ opencreate, setOpenCreate, refreshList }) => {
                     refreshList();
                     toastr.success('Successfully added');
                     setOpenCreate(false);
-                    navigate('/member/share');
+                    navigate('/member/shares');
                 } else {
                     setError(data.errors.name);
                 }

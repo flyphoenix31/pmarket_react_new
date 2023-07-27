@@ -10,7 +10,8 @@ const initialState = {
     currentQuotation: {},
     errors: {},
     redirect: false,
-    previewQuotation: {}
+    previewQuotation: {},
+    pageInfo: {},
 }
 
 export const sendQuotation = createAsyncThunk(
@@ -55,13 +56,15 @@ export const setQuotationList = createAsyncThunk(
     'quotation/setQuotationList',
     async (param, {dispatch}) => {
         try {
-            const res = await axios.get(serverURL + '/api/quotation/list');
+            console.log("============prequotationList:", param)
+            const res = await axios.post(serverURL + '/api/quotation/list', param);
             const data = await res.data;
-
-            if (!data.status) return data.list;
-            else if (!isEmpty(data.message))
-                toastr.warning(data.message);
-            return [];
+            if (data.status) {
+                if (!isEmpty(data.message))
+                    toastr.warning(data.message);
+                return []
+            }
+            return data;
 
         } catch (error) {
             dispatch(setUser({}));
@@ -155,7 +158,8 @@ const quotationSlice = createSlice({
             }
         })
         builder.addCase(setQuotationList.fulfilled, (state, action) => {
-            state.quotationList = action.payload;
+            state.quotationList = action.payload.list;
+            state.pageInfo = action.payload;
         })
         builder.addCase(findOneQuotation.fulfilled, (state, action) => {
             const data = action.payload;

@@ -117,7 +117,7 @@ const Chat = () => {
 
     return (
         <>
-            <Breadcrumb pageName="Chat" />
+            <Breadcrumb pageName="CHAT" />
 
             <div className="flex flex-col gap-10">
                 <div className="h-[calc(100vh-186px)] overflow-hidden sm:h-[calc(100vh-174px)]">

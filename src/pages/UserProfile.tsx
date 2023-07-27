@@ -10,7 +10,7 @@ import { ArrowDownSVG, ContentSVG, EmailSVG, WebSVG } from '../components/SVG.js
 const UserProfile = () => {
 
   const fileUpload = useRef(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
   const [imgFile, setImgFile] = useState(null);
   
   const [name, setName] = useState('');
@@ -29,6 +29,7 @@ const UserProfile = () => {
   let mrole_name = window.localStorage.getItem('role_name');
   const userinfo = useSelector((state: any) => state.auth.userInfo);
   const id = window.localStorage.getItem('user_id');
+  const role_id = window.localStorage.getItem('role_id');
   useEffect(() => {
     if (!isEmpty(userinfo)) {
         setName(userinfo.name);
@@ -48,7 +49,10 @@ const UserProfile = () => {
 
   const handleUpload = (event: any) => {
     event.preventDefault();
-    fileUpload.current.click();
+    const inputElement = fileUpload.current as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.click();
+    }
   }
 
   const handleImage = (event: any) => {
@@ -56,10 +60,11 @@ const UserProfile = () => {
     if (isEmpty(event.target) || isEmpty(event.target.files))
       return;
     const file = event.target.files[0];
-    setImgFile(file);
-    setImgPreview(URL.createObjectURL(file));
+      setImgFile(file);
+      setImgPreview(URL.createObjectURL(file));
   }
 
+  
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
@@ -70,7 +75,7 @@ const UserProfile = () => {
     formData.append('phone', phone);
     formData.append('email', email);
     // formData.append('password', password);
-    formData.append('gender', gender);
+    formData.append('gender', gender.toString());
     formData.append('bio', bio);
     formData.append('role_id', role_id);
     formData.append('skills', []);
@@ -315,7 +320,7 @@ const UserProfile = () => {
                 <form action="#">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="h-14 w-14 rounded-full">
-                      <img src={isEmpty(imgPreview) ? userInit : imgPreview} alt="User" style={{ borderRadius: '50%', width: '56px', height: '56px' }} />
+                      <img id='imgPreview' src={isEmpty(imgPreview) ? userInit : imgPreview} alt="User" style={{ borderRadius: '50%', width: '56px', height: '56px' }} />
                     </div>
                     <div>
                       <span className="mb-1.5 text-black dark:text-white">

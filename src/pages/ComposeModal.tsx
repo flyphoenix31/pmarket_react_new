@@ -11,12 +11,13 @@ import { useDispatch } from 'react-redux';
 
 const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmailList }) => {
 
-    const [emailaddress, setEmailAddress] = useState('No Select');
+    const [emailaddress, setEmailAddress] = useState('');
     const [msgcontent, setMsgContent] = useState('');
+    const [msgsubject, setMsgSubject] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    console.log("---------------------------------",curPage)
+    console.log("---------------------------------", curPage)
     useEffect(() => {
 
     }, [])
@@ -29,26 +30,48 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmail
 
     const handleSavem = (event: any) => {
         event.preventDefault();
-        console.log("------Send EmailAddress------",emailaddress);
-        console.log("------Send MsgContent------",msgcontent);
+        console.log("------Send EmailAddress------", emailaddress);
+        console.log("------Send MsgContent------", msgcontent);
         let send_email = window.localStorage.getItem('user_email');
-        if(emailaddress == "No Select") {
-            setErrors({"to":"Select the Email"})
+        let error_flag = 0;
+        // if (emailaddress == "No Select") {
+        //     setErrors({ "to": "Select the Email" });
+        //     error_flag++;
+        //     // return;
+        // }
+        if(isEmpty(emailaddress)){
+            setErrors({ "to": "Write email address" });
+            error_flag++;
         }
-        if(isEmpty(msgcontent)){
-            setErrors({"msgcontent":"Please enter"});
+        if(validateEmail(emailaddress) == false){
+            setErrors({ "to": "Write email address" });
+            error_flag++;
+        };
+    
+        if (isEmpty(msgsubject)) {
+            setErrors({ "msgsubject": "Write subject here" });
+            error_flag++;
         }
-        if(errors.length >= 1) return;
+        if (isEmpty(msgcontent)) {
+            setErrors({ "msgcontent": "Please enter" });
+            error_flag++;
+            // return;
+        }
+        if (error_flag > 0) return;
         let data = {
             send_email: send_email,
-            receive_email: emailaddress, 
+            receive_email: emailaddress,
+            subject: msgsubject,
             content: msgcontent
         };
+        console.log("=====newdata", data);
         dispatch(newCompose(data));
         getEmailList();
         setCompose(false);
-        navigate(`/member/email/${curPage}`);
-    }
+        // navigate(`/member/email/${curPage}`);
+        navigate(`/member/email/send`)
+        setErrors({})
+;    }
 
     return (
         <>
@@ -67,7 +90,7 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmail
                     </div>
                     <div>
                         <div style={{ textAlign: 'left' }} className='mb-5'>
-                            <div className='mb-5.5'>
+                            {/* <div className='mb-5.5'>
                                 <label
                                     className="mb-3 block text-sm font-medium text-black dark:text-white"
                                     htmlFor="Username"
@@ -82,10 +105,10 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmail
                                     <select
                                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary appearance-none"
                                         value={emailaddress}
-                                        onChange={e => { e.preventDefault(); setEmailAddress(e.target.value) ;setErrors({})}}
+                                        onChange={e => { e.preventDefault(); setEmailAddress(e.target.value); setErrors({}) }}
                                     >
                                         {
-                                             ["No Select", ...onlyEmailList].map((email, emailIndex) => (
+                                            ["No Select", ...onlyEmailList].map((email, emailIndex) => (
                                                 <option value={email}>{email}</option>
                                             ))
                                         }
@@ -99,13 +122,69 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmail
                                     className="mb-0 block text-sm font-medium mt-2 text-danger"
                                     htmlFor="bio"
                                 >
-                                {errors.to}
+                                    {errors.to}
+                                </label>
+                            </div> */}
+                            <div className="mb-5.5">
+                                <label
+                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                    htmlFor="subject"
+                                >
+                                    To
+                                </label>
+                                <div className="relative">
+                                    <span className="absolute left-4.5 top-4">
+                                        <AddressSVG />
+                                    </span>
+                                    <input
+                                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                        type="email"
+                                        name="email"
+                                        id="email"
+                                        value={emailaddress}
+                                        onChange={e => { e.preventDefault(); setEmailAddress(e.target.value) }}
+                                        placeholder="Write email here"
+                                    />
+                                </div>
+                                <label
+                                    className="mb-0 block text-sm font-medium mt-2 text-danger"
+                                    htmlFor="message"
+                                >
+                                    {errors.to}
                                 </label>
                             </div>
                             <div className="mb-5.5">
                                 <label
                                     className="mb-3 block text-sm font-medium text-black dark:text-white"
-                                    htmlFor="Username"
+                                    htmlFor="subject"
+                                >
+                                    Subject
+                                </label>
+                                <div className="relative">
+                                    <span className="absolute left-4.5 top-4">
+                                        <TitleSVG />
+                                    </span>
+                                    <input
+                                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                                        type="subject"
+                                        name="subject"
+                                        id="subject"
+                                        value={msgsubject}
+                                        onChange={e => { e.preventDefault(); setMsgSubject(e.target.value) }}
+                                        placeholder="Write subject here"
+                                    />
+                                </div>
+                                <label
+                                    className="mb-0 block text-sm font-medium mt-2 text-danger"
+                                    htmlFor="message"
+                                >
+                                    {errors.msgsubject}
+                                </label>
+                            </div>
+                            <div className="mb-5.5">
+                                <label
+                                    className="mb-3 block text-sm font-medium text-black dark:text-white"
+                                    htmlFor="Content"
                                 >
                                     Message
                                 </label>
@@ -116,19 +195,19 @@ const ComposeModal = ({ onlyEmailList, is_compose, setCompose, curPage, getEmail
 
                                     <textarea
                                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                                        name="bio"
-                                        id="bio"
+                                        name="message"
+                                        id="message"
                                         value={msgcontent}
-                                        onChange={e => { e.preventDefault(); setMsgContent(e.target.value) ;setErrors({})}}
+                                        onChange={e => { e.preventDefault(); setMsgContent(e.target.value); setErrors({}) }}
                                         rows={6}
                                         placeholder="Write  here"
                                     ></textarea>
                                 </div>
                                 <label
                                     className="mb-0 block text-sm font-medium mt-2 text-danger"
-                                    htmlFor="bio"
+                                    htmlFor="message"
                                 >
-                                {errors.msgcontent}
+                                    {errors.msgcontent}
                                 </label>
                             </div>
                         </div>

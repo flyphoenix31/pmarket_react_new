@@ -4,15 +4,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import Breadcrumb from '../components/Breadcrumb';
 import userInit from '../images/user/user-07.png';
 import { isEmpty, serverURL } from '../config';
-import { updateUser, setUserList } from '../store/slice/usersSlice.js';
+import { updateUser } from '../store/slice/usersSlice.js';
 import { KeySVG, WebSVG } from '../components/SVG.js';
 
 const UserEdit = () => {
 
   const fileUpload = useRef(null);
-  const [imgPreview, setImgPreview] = useState(null);
+  const [imgPreview, setImgPreview] = useState('');
   const [imgFile, setImgFile] = useState(null);
 
+  let { id } = useParams();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -21,39 +22,37 @@ const UserEdit = () => {
   const [bio, setBio] = useState('');
   const [role_id, setRole] = useState(0);
 
-  const [editIndex, setEditIndex] = useState(-1);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const roleList = useSelector((state) => state.users.roleList);
-  const userList = useSelector((state) => state.users.userList);
-  let { id } = useParams();
+  const userList = useSelector((state) => state.users.disUserList);
 
   useEffect(() => {
     if (!isEmpty(userList)) {
-      const editIndex = userList.findIndex(item => item.id.toString() === id.toString());
-      setEditIndex(editIndex);
+      const editIndex = userList.findIndex((item: { id: { toString: () => string; }; }) => item.id.toString() === id);
       if (editIndex >= 0) {
-        setName(userList[editIndex].name);
-        setPhone(userList[editIndex].phone);
-        setEmail(userList[editIndex].email);
-        // setPassword(userList[editIndex].password);
-        setGender(userList[editIndex].gender);
-        setBio(userList[editIndex].bio);
-        setRole(userList[editIndex].role_id);
-        setImgPreview(serverURL + userList[editIndex].avatar);
+        let currentUser = userList[editIndex];
+        setName(currentUser.name);
+        setPhone(currentUser.phone);
+        setEmail(currentUser.email);
+        // setPassword(currentUser.password);
+        setGender(currentUser.gender);
+        setBio(currentUser.bio);
+        setRole(currentUser.role_id);
+        setImgPreview(serverURL + currentUser.avatar);
       }
     }
   }, [userList])
 
-  useEffect(() => {
-    dispatch(setUserList());
-  }, [])
 
   const handleUpload = (event: any) => {
     event.preventDefault();
-    fileUpload.current.click();
+    const inputElement = fileUpload.current as HTMLInputElement | null;
+    if (inputElement) {
+      inputElement.click();
+    }
   }
 
   const handleImage = (event: any) => {

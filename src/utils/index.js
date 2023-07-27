@@ -25,9 +25,6 @@ export const getRoleInfo = async (data) => {
 
 export  const validateEmail = (str) => {
     var validRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(editIndex == 1){
-        return true;
-    }
     if (str.match(validRegex)) {
         return true;
     } else {

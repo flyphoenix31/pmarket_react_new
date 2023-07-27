@@ -59,7 +59,7 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
                             refreshList();
                             toastr.success('Successfully added!');
                             setOpenUpload(false);
-                            navigate('/member/share');
+                            navigate('/member/shares');
                         }
                     })
                     .catch((error) => {
@@ -125,10 +125,10 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
                     </h3>
                     <span className="mx-auto mb-6 inline-block h-1 w-35 rounded bg-primary"></span>
                     
-                    <div className="sticky bottom-0 border-t border-stroke bg-white py-5 px-6 dark:border-strokedark dark:bg-boxdark" style={{ flexGrow: 0 }}>
+                    <div className={file === null ? "mt-3 sticky bottom-0  border-stroke bg-white py-5 px-6 dark:border-strokedark dark:bg-boxdark" : "sticky bottom-0 border-t border-stroke bg-white py-5 px-6 dark:border-strokedark dark:bg-boxdark"} style={{ flexGrow: 0 }}>
                         {
                             file === null ? 
-                            <div style={{ position: 'relative',height:'400px',  border: '2px dotted #1A222C', borderRadius: '5px', padding: '10px', marginBottom: '10px',alignSelf:'center' }}></div> 
+                            <div className='imgupload'></div> 
                             : 
                             (
                                 <div style={{ position: 'relative',  border: '2px dotted #1A222C', borderRadius: '5px', padding: '10px', marginBottom: '10px' }}>
@@ -147,7 +147,7 @@ const UploadFileModal = ({openupload, setOpenUpload, refreshList }) => {
                                                 
                                             </div>
                                            
-                                            <div className='text-center' style={{ width: '100%', fontSize:'25px', padding:'10px' }}>
+                                            <div className='text-center text-ellipsis4' style={{ width: '100%', fontSize:'25px', padding:'10px' }}>
                                                 {file.name}
                                             </div>
                                             
