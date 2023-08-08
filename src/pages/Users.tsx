@@ -257,9 +257,9 @@ const Users = () => {
                           <button className="hover:text-primary" onClick={e => { e.preventDefault(); handleView(user.id); }}>
                             <EyeSVG />
                           </button>
-                          <button className="hover:text-primary" onClick={e => { e.preventDefault(); handleEmailView(user.id)}}>
+                          {/* <button className="hover:text-primary" onClick={e => { e.preventDefault(); handleEmailView(user.id)}}>
                             <EmailSVG />
-                          </button>
+                          </button> */}
                           <button className="hover:text-primary" onClick={e => { e.preventDefault(); setDelete(true); setPreId(user.id); }}>
                             <TrushSVG />
                           </button>
