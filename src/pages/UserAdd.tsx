@@ -321,7 +321,7 @@ const UserAdd = () => {
                       >
                         {
                           roleList.map((role, roleIndex) => (
-                            <option value={role.id}>{role.name}</option>
+                            <option value={role.id} key={roleIndex}>{role.name}</option>
                           ))
                         }
                       </select>

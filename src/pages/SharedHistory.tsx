@@ -5,9 +5,10 @@ import Breadcrumb from '../components/Breadcrumb.js';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { isEmpty, serverURL, toastr } from '../config/index.js';
-import { ArrowDownSVG, EmailSVG, PlaneSVG, SaveSVG, SearchSVG, SharedSVG } from '../components/SVG.js';
+import { ArrowDownSVG, EmailSVG, PlaneSVG, SaveSVG, SearchSVG, SharedSVG, TrushSVG } from '../components/SVG.js';
 import { setHistoryList } from '../store/slice/shistorySlice.js'
 import axios from 'axios';
+import SharedhistoryDeleteModal from './SharedHistoryDeleteModal.js';
 
 
 const SharedHistory = () => {
@@ -21,15 +22,26 @@ const SharedHistory = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [kind, setKind] = useState('Sender');
   const [searchValue, setSearchValue] = useState('');
+
+  const [preid, setPreId] = useState('');
+  const [is_deleted, setDelete] = useState(false);
+
   let perPageList = [10, 25, 50, 100];
   let kindList = ["Sender", "Receiver"];
   ////
   let pageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
+
+  const initPage = () => {
+    setPageNumRefresh(1);
+    setPageNum(1);
+  }
+
+
   const paginate = (totalPage: number, currentPage: any) => {
-    
+
     console.log("totalpage:", totalPage, "currentPage:", currentPage)
-   
+
     let data: string | any[] = [];
     for (let i = 0; i < totalPage; i++) {
       data.push(i + 1);
@@ -41,23 +53,23 @@ const SharedHistory = () => {
     return paginatedData;
   }
 
-  const setNextPage = ( currentPage: number ) => {
+  const setNextPage = (currentPage: number) => {
     let num = Math.ceil(totalPage / pageSize);
-    if(currentPage > num){
+    if (currentPage > num) {
       return num;
     }
-    else{
+    else {
       return currentPage
     }
   }
-  const setPreNextPage = ( currentPage: number ) => {
+  const setPreNextPage = (currentPage: number) => {
     let num = Math.ceil(totalPage / pageSize);
-    console.log("currnetPage:",currentPage, totalPage, num);
-    
-    if(currentPage < num){
+    console.log("currnetPage:", currentPage, totalPage, num);
+
+    if (currentPage < num) {
       return currentPage * pageSize - pageSize + 1
     }
-    else{
+    else {
       let remain = totalPage % pageSize;
       return totalPage - remain + 1
     }
@@ -72,7 +84,7 @@ const SharedHistory = () => {
     return num;
   }
   /////
-  
+
   const setPageNumRefresh = (mpage: number) => {
     let data = { page: mpage, perPage: Number(perPage), kind: kind, searchValue: searchValue };
     console.log("=========data", data);
@@ -104,7 +116,7 @@ const SharedHistory = () => {
     'Content',
     'Date',
     // 'Status',
-    // 'Action'
+    'Action'
   ];
 
 
@@ -135,6 +147,7 @@ const SharedHistory = () => {
   return (
     <>
       <Breadcrumb pageName="FILE SHARING HISTORY" />
+      <SharedhistoryDeleteModal preid={preid} is_deleted={is_deleted} setDelete={setDelete} initPage={initPage} />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="py-6 px-4 md:px-6 xl:px-7.5 flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap" style={{ padding: '10px 0px 30px 0px' }}>
           <div className="flex flex-wrap gap-3 sm:gap-5">
@@ -213,7 +226,6 @@ const SharedHistory = () => {
                     </th>
                   ))
                 }
-
               </tr>
             </thead>
             <tbody>
@@ -235,6 +247,13 @@ const SharedHistory = () => {
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">{moment(mshare.created_at).format('YYYY:MM:DD:hh:mm:ss')}</p>
                     </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <div className="flex items-center space-x-3.5 ml-4">
+                        <button className="hover:text-primary" onClick={e => { e.preventDefault(); setDelete(true); setPreId(mshare.id); }}>
+                          <TrushSVG />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               }
@@ -252,13 +271,12 @@ const SharedHistory = () => {
         </div>
         {/*bottom pagination start */}
         <div className='perPage mt-5 mb-5'>
-        
           <div className="col-sm-12 col-md-6" style={{ float: 'right' }}>
             <div className="dataTables_length bs-select" id="dtBasicExample_length">
-              <label>Show
-                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm"
+              <label className='dark:text-white'>Show
+                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm dark:bg-meta-4 dark:text-white"
                   value={perPage}
-                  onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value);setPageNum(1); setCurrentPage(1)}}
+                  onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value); setPageNum(1); setCurrentPage(1); }}
                 >
                   {
                     perPageList.map((item, index) => (
@@ -269,21 +287,21 @@ const SharedHistory = () => {
             </div>
           </div>
           <div className="center flex">
-            <div className="dataTables_info mt-2 text-primary" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
+            <div className="dataTables_info mt-2 text-primary dark:text-white" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
             <div className="pagination mx-auto">
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1)}}>&laquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1) )}}>&lsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
               {
                 paginate(totalPage, currentPage).map((item, index) => (
-                  <a href="#" className={pageNum == item ? "active" : ""} key={item}
+                  <a href="#" className={pageNum == item ? "active text-black dark:text-white" : "text-black dark:text-white"} key={item}
                     onClick={e => { e.preventDefault(); setPageNum(item); setPageNumRefresh(item); }}>
                     {item}
                   </a>
 
                 ))
               }
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1))}}>&rsaquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage())}}>&raquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
             </div>
           </div>
         </div>

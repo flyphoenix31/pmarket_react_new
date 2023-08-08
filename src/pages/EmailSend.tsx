@@ -14,9 +14,8 @@ const EmailSend = () => {
   const dispatch = useDispatch();
   // const preemailList = useSelector((state) => state.email.emailList);
 
-  let roles  = "send"
+  let roles = "send"
   let user_email = window.localStorage.getItem('user_email');
-  console.log("=========user_email:", user_email);
   const [is_compose, setCompose] = useState(false);
   const [emailList, setList] = useState([]);
   const [pageInfo, setPageInfo] = useState({});
@@ -47,7 +46,7 @@ const EmailSend = () => {
 
   let perPageList = [10, 25, 50, 100];
   let kindList = ["Name", "Email", "Phone"];
-  let initData = { page: pageNum, perPage: Number(perPage), kind: kind, searchValue: searchValue, email:user_email };
+  let initData = { page: pageNum, perPage: Number(perPage), kind: kind, searchValue: searchValue, email: user_email };
   ////
   let pageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,12 +93,12 @@ const EmailSend = () => {
   }
   /////
   const setPageNumRefresh = (mpage: number) => {
-    let data = { page: mpage, perPage: Number(perPage), kind: kind, searchValue: searchValue, email:user_email };
+    let data = { page: mpage, perPage: Number(perPage), kind: kind, searchValue: searchValue, email: user_email };
     console.log("=========data", data);
     getEmailList(data)
   }
   const setPerPageRefresh = (mperpage: string) => {
-    let data = { page: pageNum, perPage: Number(mperpage), kind: kind, searchValue: searchValue, email:user_email };
+    let data = { page: pageNum, perPage: Number(mperpage), kind: kind, searchValue: searchValue, email: user_email };
     console.log("=========data", data);
     getEmailList(data)
   }
@@ -275,13 +274,12 @@ const EmailSend = () => {
         </div>
         {/*bottom pagination start */}
         <div className='perPage mt-5 mb-5'>
-
           <div className="col-sm-12 col-md-6" style={{ float: 'right' }}>
             <div className="dataTables_length bs-select" id="dtBasicExample_length">
-              <label>Show
-                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm"
+              <label className='dark:text-white'>Show
+                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm dark:bg-meta-4 dark:text-white"
                   value={perPage}
-                  onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value); setPageNum(1);setCurrentPage(1); }}
+                  onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value); setPageNum(1); setCurrentPage(1); }}
                 >
                   {
                     perPageList.map((item, index) => (
@@ -292,21 +290,21 @@ const EmailSend = () => {
             </div>
           </div>
           <div className="center flex">
-            <div className="dataTables_info mt-2 text-primary" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
+            <div className="dataTables_info mt-2 text-primary dark:text-white" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
             <div className="pagination mx-auto">
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
               {
                 paginate(totalPage, currentPage).map((item, index) => (
-                  <a href="#" className={pageNum == item ? "active" : ""} key={item}
+                  <a href="#" className={pageNum == item ? "active text-black dark:text-white" : "text-black dark:text-white"} key={item}
                     onClick={e => { e.preventDefault(); setPageNum(item); setPageNumRefresh(item); }}>
                     {item}
                   </a>
 
                 ))
               }
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
             </div>
           </div>
         </div>

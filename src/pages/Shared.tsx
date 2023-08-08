@@ -5,7 +5,7 @@ import { getCurrentFormatedDate1 } from '../utils';
 import { isEmpty, serverURL, toastr } from '../config/index.js';
 import moment from 'moment';
 import FolderImg from '../images/shared/Folder_Small.png';
-import { ArrowDownSVG, FileSVG, SearchSVG, SharedSVG } from '../components/SVG.js';
+import { ArrowDownSVG, FileSVG, SearchSVG, SharedSVG, ThreeDotSVG } from '../components/SVG.js';
 import Breadcrumb from '../components/Breadcrumb'; 1
 import { useNavigate } from 'react-router-dom';
 import SwitcherThree from '../components/SwitcherThree.js';
@@ -14,7 +14,7 @@ import UploadFileModal from './UploadFileModal.js';
 import ShareModal from './ShareModal.js';
 import ShareLink from './ShareLink.js';
 import EditNameModal from './EditNameModal.js';
-import DeleteModal from './DeleteModal.js';
+import ShareDeleteModal from './ShareDeleteModal.js';
 import CheckboxOne from '../components/CheckboxOne.js';
 
 const Shared = () => {
@@ -153,7 +153,7 @@ const Shared = () => {
             {/* <CreateFolderModal opencreate={opencreate} setOpenCreate={setOpenCreate} refreshList={getFolederList} /> */}
             <UploadFileModal openupload={openupload} setOpenUpload={setOpenUpload} refreshList={getFolederList} />
             <EditNameModal preid={preid} prename={prename} editname={editname} setEditName={setEditName} refreshList={getFolederList} />
-            <DeleteModal preid={preid} is_deleted={is_deleted} setDelete={setDelete} refreshList={getFolederList} />
+            <ShareDeleteModal preid={preid} is_deleted={is_deleted} setDelete={setDelete} refreshList={getFolederList} />
             <ShareModal mshareMode={shareMode} preid={preid} preemail={email} prepassword={password} token={token} is_shared={is_shared} setShare={setShare} refreshList={getFolederList} />
             <ShareLink preid={preid} preemail={email} token={token} is_sharelink={is_sharelink} setShareLink={setShareLink} refreshList={getFolederList} />
             <div className="flex flex-col gap-10">
@@ -225,7 +225,7 @@ const Shared = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1, backgroundColor: '#f1f2f3' }}>
+                        <div className="no-scrollbar max-h-full space-y-3.5 overflow-auto px-6 py-7.5" style={{ flexGrow: 1 }}>
                             {
                                 list.map((item: any, index: any) => {
                                     let check1 = false;
@@ -250,8 +250,8 @@ const Shared = () => {
                                                             </div>
                                                         </a>
                                                         <div className="w-title ml-2">
-                                                            <h5 id="folname_8" className='text-ellipsis5'>{item.name}</h5>
-                                                            <div><span style={{ fontSize: '12px' }}>{getCurrentFormatedDate1(item.created_at)}</span>{isEmpty(item.file_size) ? <i className="fas fa-link text-warning" style={{ fontSize: '12px', margin: '0 3px' }}></i> : <i className="fas fa-link text-success" style={{ fontSize: '12px', margin: '0 3px' }}></i>}<span style={{ fontSize: '12px' }}>{isEmpty(item.file_size) ? "...Empty" : item.file_size}</span></div>
+                                                            <h5 id="folname_8" className='text-ellipsis5 text-black dark:text-white'>{item.name}</h5>
+                                                            <div><span style={{ fontSize: '12px' }} className='text-black dark:text-white'>{getCurrentFormatedDate1(item.created_at)}</span>{isEmpty(item.file_size) ? <i className="fas fa-link text-warning" style={{ fontSize: '12px', margin: '0 3px' }}></i> : <i className="fas fa-link text-success" style={{ fontSize: '12px', margin: '0 3px' }}></i>}<span style={{ fontSize: '12px' }} className='text-black dark:text-white'>{isEmpty(item.file_size) ? "...Empty" : item.file_size}</span></div>
                                                         </div>
                                                         <div className="w-title ml-4">
                                                             <div>
@@ -278,7 +278,7 @@ const Shared = () => {
                                                                             ></span>
                                                                         </div>
                                                                     </div>
-                                                                    Private Mode
+                                                                    <span className='text-black dark:text-white'>Private Mode</span>
                                                                 </label>
                                                             </div>
                                                             <div>
@@ -305,7 +305,7 @@ const Shared = () => {
                                                                             ></span>
                                                                         </div>
                                                                     </div>
-                                                                    Public Mode
+                                                                    <span className='text-black dark:text-white'>Public Mode</span>
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -313,13 +313,13 @@ const Shared = () => {
                                                     <div>
                                                         <div className="task-action pr-2" style={{ textAlign: 'right' }}>
                                                             <div className="dropdown">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                                <div className="dropdown-content">
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password); setShareMode(item.shareMode); console.log("itemshareMode:", item.shareMode) }}>Edit Share</a>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
+                                                                <ThreeDotSVG />
+                                                                <div className="dropdown-content dark:bg-meta-4">
+                                                                    <a className='dark:text-white' href="#" onClick={e => { e.preventDefault(); setShare(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password); setShareMode(item.shareMode); console.log("itemshareMode:", item.shareMode) }}>Edit Share</a>
+                                                                    <a href="#" className='dark:text-white' onClick={e => { e.preventDefault(); setShareLink(true); setPreId(item.id); setEmail(item.email); setToken(item.token); setPassword(item.password) }}>Share Link</a>
+                                                                    <a href="#" className='dark:text-white' onClick={e => { e.preventDefault(); setEditName(true); setPreId(item.id); setPreName(item.name) }}>Rename</a>
                                                                     <div className="dropdown-divider"></div>
-                                                                    <a href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
+                                                                    <a className='dark:text-white' href="#" onClick={e => { e.preventDefault(); setDelete(true); setPreId(item.id); }}>Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -336,11 +336,10 @@ const Shared = () => {
                 </div>
                 {/*bottom pagination start */}
                 <div className='perPage mt-5 mb-5'>
-
                     <div className="col-sm-12 col-md-6" style={{ float: 'right' }}>
                         <div className="dataTables_length bs-select" id="dtBasicExample_length">
-                            <label>Show
-                                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm"
+                            <label className='dark:text-white'>Show
+                                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm dark:bg-meta-4 dark:text-white"
                                     value={perPage}
                                     onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value); setPageNum(1); setCurrentPage(1); }}
                                 >
@@ -353,21 +352,21 @@ const Shared = () => {
                         </div>
                     </div>
                     <div className="center flex">
-                        <div className="dataTables_info mt-2 text-primary" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
+                        <div className="dataTables_info mt-2 text-primary dark:text-white" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
                         <div className="pagination mx-auto">
-                            <a href="#" onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
-                            <a href="#" onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
+                            <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
+                            <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
                             {
                                 paginate(totalPage, currentPage).map((item, index) => (
-                                    <a href="#" className={pageNum == item ? "active" : ""} key={item}
+                                    <a href="#" className={pageNum == item ? "active text-black dark:text-white" : "text-black dark:text-white"} key={item}
                                         onClick={e => { e.preventDefault(); setPageNum(item); setPageNumRefresh(item); }}>
                                         {item}
                                     </a>
 
                                 ))
                             }
-                            <a href="#" onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
-                            <a href="#" onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
+                            <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
+                            <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
                         </div>
                     </div>
                 </div>

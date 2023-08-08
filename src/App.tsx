@@ -48,6 +48,7 @@ const FormLayout = lazy(() => import('./pages/Form/FormLayout'));
 const Profile = lazy(() => import('./pages/Profile'));
 const UserAdd = lazy(() => import('./pages/UserAdd'));
 const UserEdit = lazy(() => import('./pages/UserEdit'));
+const UserEmailEdit = lazy(() => import('./pages/UserEmailEdit'));
 const Tables = lazy(() => import('./pages/Tables'));
 const Alerts = lazy(() => import('./pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('./pages/UiElements/Buttons'));
@@ -149,10 +150,18 @@ function App() {
             }
           />
           <Route
-            path="/member/users/edit/:id"
+          path="/member/users/edit/:id"
             element={
               <Suspense fallback={<Loader />}>
                 <UserEdit />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/member/users/emailedit/:id"
+            element={
+              <Suspense fallback={<Loader />}>
+                <UserEmailEdit />
               </Suspense>
             }
           />

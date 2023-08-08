@@ -179,7 +179,7 @@ span.flatpickr-weekday,
   padding: 0 20px;
 }
 .widget-five {
-  background: #fff;
+  border-bottom: 1px solid lightgray;
   padding: 20px 0px;
   height: 70%;
   border-radius: 10px;
@@ -205,6 +205,7 @@ span.flatpickr-weekday,
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   right: 0;
+  border-radius: 3px;
 }
 
 .dropdown-content a {
@@ -214,7 +215,7 @@ span.flatpickr-weekday,
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {background-color: lightgray;}
 
 .dropdown:hover .dropdown-content {display: block;}
 

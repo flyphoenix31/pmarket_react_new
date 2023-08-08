@@ -35,7 +35,7 @@ const ECommerce = () => {
   if (isEmpty(role_id)) {
     setTimeout(() => {
       setDash();
-    }, 500);
+    }, 700);
   } else {
     setDash();
   }

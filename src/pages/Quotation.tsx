@@ -7,6 +7,7 @@ import { setQuotationList, setErrors, findOneQuotation, sendQuotation } from '..
 import { isEmpty } from '../config/index.js';
 import { ArrowDownSVG, EyeSVG, PlaneSVG, QuotationSVG, SearchSVG, TrushSVG } from '../components/SVG.js';
 import QuotationModal from './QuotationModal.js';
+import QuotationDeleteModal from './QuotationDeleteModal.js';
 
 const Quotation = () => {
 
@@ -23,11 +24,20 @@ const Quotation = () => {
   const [kind, setKind] = useState('Name');
   const [searchValue, setSearchValue] = useState('');
 
+  const [preid, setPreId] = useState('');
+  const [is_deleted, setDelete] = useState(false);
+
   let perPageList = [10, 25, 50, 100];
   let kindList = ["Name", "Email", "Phone"];
   ////
   let pageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
+
+  const initPage = () => {
+    setPageNumRefresh(1);
+    setPageNum(1);
+  }
+
   const paginate = (totalPage: number, currentPage: any) => {
     let data: string | any[] = [];
     for (let i = 0; i < totalPage; i++) {
@@ -136,7 +146,7 @@ const Quotation = () => {
     <>
       <Breadcrumb pageName="QUOTATION LIST" />
       <QuotationModal open={open} setOpen={setOpen} handleSend={handleSend} />
-
+      <QuotationDeleteModal preid={preid} is_deleted={is_deleted} setDelete={setDelete} initPage={initPage} />
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="py-6 px-4 md:px-6 xl:px-7.5 flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap" style={{ padding: '10px 0px 30px 0px' }}>
           <div className="flex flex-wrap gap-3 sm:gap-5">
@@ -244,7 +254,7 @@ const Quotation = () => {
                         <button className="hover:text-primary" onClick={e => { e.preventDefault(); dispatch(findOneQuotation(quote.id)); setOpen(true) }}>
                           <PlaneSVG />
                         </button>
-                        <button className="hover:text-primary">
+                        <button className="hover:text-primary" onClick={e => { e.preventDefault(); setDelete(true); setPreId(quote.id); }}>
                           <TrushSVG />
                         </button>
                       </div>
@@ -266,11 +276,10 @@ const Quotation = () => {
         </div>
         {/*bottom pagination start */}
         <div className='perPage mt-5 mb-5'>
-
           <div className="col-sm-12 col-md-6" style={{ float: 'right' }}>
             <div className="dataTables_length bs-select" id="dtBasicExample_length">
-              <label>Show
-                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm"
+              <label className='dark:text-white'>Show
+                <select name="dtBasicExample_length" aria-controls="dtBasicExample" className="custom-select custom-select-sm form-control form-control-sm dark:bg-meta-4 dark:text-white"
                   value={perPage}
                   onChange={e => { e.preventDefault(); setPerPage(e.target.value); setPerPageRefresh(e.target.value); setPageNum(1); setCurrentPage(1); }}
                 >
@@ -283,21 +292,21 @@ const Quotation = () => {
             </div>
           </div>
           <div className="center flex">
-            <div className="dataTables_info mt-2 text-primary" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
+            <div className="dataTables_info mt-2 text-primary dark:text-white" id="dtBasicExample_info" role="status" aria-live="polite">Showing {isEmpty(paginate(totalPage, currentPage)[0]) ? 0 : paginate(totalPage, currentPage)[0]} to {isEmpty(paginate(totalPage, currentPage).slice(-1)) ? 0 : paginate(totalPage, currentPage).slice(-1)} of {isEmpty(totalPage) ? 0 : totalPage} pages</div>
             <div className="pagination mx-auto">
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(1); setPageNumRefresh(1); setCurrentPage(1) }}>&laquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum((currentPage - 1) < 1 ? 1 : ((currentPage - 1) * pageSize) - pageSize + 1); setPageNumRefresh(1); setCurrentPage((currentPage - 1) < 1 ? 1 : (currentPage - 1)) }}>&lsaquo;</a>
               {
                 paginate(totalPage, currentPage).map((item, index) => (
-                  <a href="#" className={pageNum == item ? "active" : ""} key={item}
+                  <a href="#" className={pageNum == item ? "active text-black dark:text-white" : "text-black dark:text-white"} key={item}
                     onClick={e => { e.preventDefault(); setPageNum(item); setPageNumRefresh(item); }}>
                     {item}
                   </a>
 
                 ))
               }
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
-              <a href="#" onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setPreNextPage(currentPage + 1)); setPageNumRefresh(setPreNextPage(currentPage + 1)); setCurrentPage(setNextPage(currentPage + 1)) }}>&rsaquo;</a>
+              <a href="#" className='text-black dark:text-white' onClick={e => { e.preventDefault(); setPageNum(setLastNextPage()); setPageNumRefresh(setLastNextPage()); setCurrentPage(setLastPage()) }}>&raquo;</a>
             </div>
           </div>
         </div>

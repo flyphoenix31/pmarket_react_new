@@ -46,24 +46,21 @@ const QuotationPreviewCli = () => {
               due_date={previewInvoice.due_date}
               name={previewInvoice.name}
               notes={previewInvoice.notes}
-              totalPrice={totalPrice}
-              settingData={settingData}
-            />) : (
+              settingData={settingData} bank_name={undefined} account_number={undefined} swift_code={undefined} country={undefined} invoice_img={undefined}            />) : (
             <QuotationPreview
-              company_name={previewInvoice.company_name}
-              company_email={previewInvoice.company_email}
-              company_phone={previewInvoice.company_phone}
-              company_address={previewInvoice.company_address}
-              client_name={previewInvoice.client_name}
-              client_email={previewInvoice.client_email}
-              client_phone={previewInvoice.client_phone}
-              client_address={previewInvoice.client_address}
-              items={previewInvoice.items}
-              totalPrice={previewInvoice.totalPrice}
-              name={previewInvoice.name}
-              notes={previewInvoice.notes}
-              totalPrice={totalPrice}
-            />
+                company_name={previewInvoice.company_name}
+                company_email={previewInvoice.company_email}
+                company_phone={previewInvoice.company_phone}
+                company_address={previewInvoice.company_address}
+                client_name={previewInvoice.client_name}
+                client_email={previewInvoice.client_email}
+                client_phone={previewInvoice.client_phone}
+                client_address={previewInvoice.client_address}
+                items={previewInvoice.items}
+                totalPrice={previewInvoice.totalPrice}
+                name={previewInvoice.name}
+                notes={previewInvoice.notes}
+                settingData={undefined} quotation_date={undefined}            />
           )
         )
       }

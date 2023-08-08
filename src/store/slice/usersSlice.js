@@ -16,16 +16,16 @@ const initialState = {
 
 export const setUserList = createAsyncThunk(
     'users/setUserList',
-    async (param) => {
+    async () => {
         try {
-            const res = await axios.post(serverURL + '/api/user/list');
+            const res = await axios.post(serverURL + '/api/user/fulllist');
             const data = await res.data;
             if (data.status) {
                 if (!isEmpty(data.message))
                     toastr.warning(data.message);
                 return []
             }
-            return data;
+            return data.list;
 
         } catch (error) {
             console.log(error);
@@ -126,6 +126,30 @@ export const updateUser = createAsyncThunk(
     }
 )
 
+export const updateEmailUser = createAsyncThunk(
+    'users/updateEmailUser',
+    async (param) => {
+        try {
+            const res = await axios.post(serverURL + '/api/user/emailupdate', param, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            const data = await res.data;
+            if(!data.status){
+                toastr.success('Successfully updated');
+            }
+            if(!isEmpty(data.message)){
+                toastr.warning(data.message);
+            }
+            return data;
+
+        } 
+        catch (error) {
+            store.dispatch(setUser({}));
+        }
+    }
+)
+
+
 const usersSlice = createSlice({
     name: 'users',
     initialState,
@@ -158,7 +182,7 @@ const usersSlice = createSlice({
             }
         })
         builder.addCase(setUserList.fulfilled, (state, action) => {
-            state.userList = action.payload.users;
+            state.userList = action.payload;
         })
         builder.addCase(disUserList.fulfilled, (state, action) => {
             state.disUserList = action.payload.users;

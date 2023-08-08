@@ -3,12 +3,15 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import { ChartSVG, ClientSVG, DashboardSVG, EmailSVG, FileSVG, HumanSVG, InvoiceSVG, JobsSVG, MessageSVG, QuotationSVG, SaveSVG, SettingSVG, SharedSVG, UserSVG } from './SVG';
 import { getRoleInfo, setLogout } from '../utils';
-
+import store from '../store';
 import { useSelector } from 'react-redux';
+import { setUserList } from '../store/slice/usersSlice.js';
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
 }
+
 
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
@@ -120,6 +123,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
   });
+  useEffect(() => {
+    store.dispatch(setUserList());
+  })
 
   // close if the esc key is pressed
   useEffect(() => {

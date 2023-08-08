@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TitleSVG } from '../components/SVG';
 import { isEmpty, serverURL, toastr} from '../config';
 import axios from 'axios';
-import { getCurrentFormatedDate } from '../utils';
-const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
+import { useDispatch } from 'react-redux';
+const UserDeleteModal = ({preid, is_deleted, setDelete, initPage}) => {
+    const dispatch = useDispatch();
+
     const [error, setError] = useState('');
     const [item, setItem] = useState('');
-
     const navigate = useNavigate();
-
-
     const handleClose = (event: any) => {
         event.preventDefault();
         setDelete(false);
@@ -18,20 +16,20 @@ const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
 
     const handleSave = (event: any) => {
         event.preventDefault();
-        axios.post(serverURL + '/api/shared/delete', {id: preid})
+        axios.post(serverURL + '/api/user/delete', {id: preid})
             .then(res => {
                 const data = res.data;
                 if(!data.status) {
-                    refreshList();
-                    toastr.success('It was succefully deleted!');
+                    initPage();
                     setDelete(false);
-                    navigate('/member/shares');
+                    toastr.success('It was succefully deleted!');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 700);
                 }
             })
             .catch((error) => {
-                console.log("newfoldererror", error)
-                // setDelete(false);
-                // navigate('/member/auth/signin');
+                navigate('/member/auth/signin');
             })
     }
 
@@ -81,4 +79,4 @@ const DeleteModal = ({preid, is_deleted, setDelete, refreshList }) => {
     );
 };
 
-export default DeleteModal;
+export default UserDeleteModal;
